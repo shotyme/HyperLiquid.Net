@@ -1,0 +1,1002 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HyperLiquid.Net</name>
+    </assembly>
+    <members>
+        <member name="T:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApi">
+            <inheritdoc cref="T:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApi" />
+        </member>
+        <member name="P:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApi.Account">
+            <inheritdoc />
+        </member>
+        <member name="P:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApi.ExchangeData">
+            <inheritdoc />
+        </member>
+        <member name="P:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApi.Trading">
+            <inheritdoc />
+        </member>
+        <member name="P:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApi.ExchangeName">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApi.CreateAccessor">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApi.CreateSerializer">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApi.GetServerTimestampAsync">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApi.GetTimeSyncInfo">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApi.GetTimeOffset">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApi.FormatSymbol(System.String,System.String,CryptoExchange.Net.SharedApis.TradingMode,System.Nullable{System.DateTime})">
+            <inheritdoc />
+        </member>
+        <member name="P:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApi.SharedClient">
+            <inheritdoc />
+        </member>
+        <member name="T:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.GetBalancesAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.GetRateLimitsAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.GetApprovedBuilderFeeAsync(System.String,System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiExchangeData">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiExchangeData.GetSpotExchangeInfoAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiExchangeData.GetSpotExchangeInfoAndTickersAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiExchangeData.GetAssetInfoAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiExchangeData.GetMidsAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiExchangeData.GetOrderBookAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiExchangeData.GetKlinesAsync(System.String,HyperLiquid.Net.Enums.KlineInterval,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.GetOpenOrdersAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.GetOpenOrdersExtendedAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.GetUserTradesAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.GetUserTradesByTimeAsync(System.String,System.DateTime,System.Nullable{System.DateTime},System.Nullable{System.Boolean},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.GetOrderAsync(System.String,System.Nullable{System.Int64},System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.GetClosedOrdersAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.CancelOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="T:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi">
+            <summary>
+            Client providing access to the HyperLiquid  websocket Api
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.#ctor(Microsoft.Extensions.Logging.ILogger,HyperLiquid.Net.Objects.Options.HyperLiquidSocketOptions)">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.CreateAccessor">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.CreateSerializer">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.CreateAuthenticationProvider(CryptoExchange.Net.Authentication.ApiCredentials)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.SubscribeToXXXUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{HyperLiquid.Net.Objects.Models.HyperLiquidModel}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.GetListenerIdentifier(CryptoExchange.Net.Interfaces.IMessageAccessor)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.GetAuthenticationRequestAsync(CryptoExchange.Net.Sockets.SocketConnection)">
+            <inheritdoc />
+        </member>
+        <member name="P:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.SharedClient">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.FormatSymbol(System.String,System.String,CryptoExchange.Net.SharedApis.TradingMode,System.Nullable{System.DateTime})">
+            <inheritdoc />
+        </member>
+        <member name="T:HyperLiquid.Net.Clients.HyperLiquidRestClient">
+            <inheritdoc cref="T:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidRestClient" />
+        </member>
+        <member name="P:HyperLiquid.Net.Clients.HyperLiquidRestClient.Api">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.HyperLiquidRestClient.#ctor(System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidRestOptions})">
+            <summary>
+            Create a new instance of the HyperLiquidRestClient using provided options
+            </summary>
+            <param name="optionsDelegate">Option configuration delegate</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.HyperLiquidRestClient.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Options.IOptions{HyperLiquid.Net.Objects.Options.HyperLiquidRestOptions})">
+            <summary>
+            Create a new instance of the HyperLiquidRestClient using provided options
+            </summary>
+            <param name="options">Option configuration</param>
+            <param name="loggerFactory">The logger factory</param>
+            <param name="httpClient">Http client for this client</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.HyperLiquidRestClient.SetOptions(CryptoExchange.Net.Objects.Options.UpdateOptions)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.HyperLiquidRestClient.SetDefaultOptions(System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidRestOptions})">
+            <summary>
+            Set the default options to be used when creating new clients
+            </summary>
+            <param name="optionsDelegate">Option configuration delegate</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.HyperLiquidRestClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
+            <inheritdoc />
+        </member>
+        <member name="T:HyperLiquid.Net.Clients.HyperLiquidSocketClient">
+            <inheritdoc cref="T:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidSocketClient" />
+        </member>
+        <member name="P:HyperLiquid.Net.Clients.HyperLiquidSocketClient.Api">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.HyperLiquidSocketClient.#ctor(System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidSocketOptions})">
+            <summary>
+            Create a new instance of HyperLiquidSocketClient
+            </summary>
+            <param name="optionsDelegate">Option configuration delegate</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.HyperLiquidSocketClient.#ctor(Microsoft.Extensions.Options.IOptions{HyperLiquid.Net.Objects.Options.HyperLiquidSocketOptions},Microsoft.Extensions.Logging.ILoggerFactory)">
+            <summary>
+            Create a new instance of HyperLiquidSocketClient
+            </summary>
+            <param name="loggerFactory">The logger factory</param>
+            <param name="options">Option configuration</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.HyperLiquidSocketClient.SetOptions(CryptoExchange.Net.Objects.Options.UpdateOptions)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.HyperLiquidSocketClient.SetDefaultOptions(System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidSocketOptions})">
+            <summary>
+            Set the default options to be used when creating new clients
+            </summary>
+            <param name="optionsDelegate">Option configuration delegate</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.HyperLiquidSocketClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
+            <inheritdoc />
+        </member>
+        <member name="T:HyperLiquid.Net.Enums.Direction">
+            <summary>
+            Direction
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Enums.KlineInterval">
+            <summary>
+            Interval
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.KlineInterval.FifteenMinutes">
+            <summary>
+            15 min
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Enums.OrderSide">
+            <summary>
+            Order side
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.OrderSide.Buy">
+            <summary>
+            Buy
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.OrderSide.Sell">
+            <summary>
+            Sell
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Enums.OrderStatus">
+            <summary>
+            Order status
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.OrderStatus.Filled">
+            <summary>
+            Filled
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.OrderStatus.Open">
+            <summary>
+            Open
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.OrderStatus.Canceled">
+            <summary>
+            Canceled
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.OrderStatus.Triggered">
+            <summary>
+            Trigger
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.OrderStatus.Rejected">
+            <summary>
+            Rejected
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.OrderStatus.MarginCanceled">
+            <summary>
+            Margin canceled
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Enums.OrderType">
+            <summary>
+            Order type
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.OrderType.Limit">
+            <summary>
+            Limit
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.OrderType.Market">
+            <summary>
+            Market
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.OrderType.StopMarket">
+            <summary>
+            Stop Market
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.OrderType.StopLimit">
+            <summary>
+            Stop Limit
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.ExtensionMethods.HyperLiquidExtensionMethods">
+            <summary>
+            Extension methods specific to using the HyperLiquid API
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.HyperLiquidEnvironment">
+            <summary>
+            HyperLiquid environments
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.HyperLiquidEnvironment.RestClientAddress">
+            <summary>
+            Rest API address
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.HyperLiquidEnvironment.SocketClientAddress">
+            <summary>
+            Socket API address
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.HyperLiquidEnvironment.#ctor">
+            <summary>
+            ctor for DI, use <see cref="M:HyperLiquid.Net.HyperLiquidEnvironment.CreateCustom(System.String,System.String,System.String)"/> for creating a custom environment
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.HyperLiquidEnvironment.GetEnvironmentByName(System.String)">
+            <summary>
+            Get the HyperLiquid environment by name
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.HyperLiquidEnvironment.Live">
+            <summary>
+            Live environment
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.HyperLiquidEnvironment.Testnet">
+            <summary>
+            Testnet environment
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.HyperLiquidEnvironment.CreateCustom(System.String,System.String,System.String)">
+            <summary>
+            Create a custom environment
+            </summary>
+            <param name="name"></param>
+            <param name="spotRestAddress"></param>
+            <param name="spotSocketStreamsAddress"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HyperLiquid.Net.HyperLiquidExchange">
+            <summary>
+            HyperLiquid exchange information and configuration
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.HyperLiquidExchange.ExchangeName">
+            <summary>
+            Exchange name
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.HyperLiquidExchange.Url">
+            <summary>
+            Url to the main website
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.HyperLiquidExchange.ApiDocsUrl">
+            <summary>
+            Urls to the API documentation
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.HyperLiquidExchange.Type">
+            <summary>
+            Type of exchange
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.HyperLiquidExchange.FormatSymbol(System.String,System.String,CryptoExchange.Net.SharedApis.TradingMode,System.Nullable{System.DateTime})">
+            <summary>
+            Format a base and quote asset to an HyperLiquid recognized symbol 
+            </summary>
+            <param name="baseAsset">Base asset</param>
+            <param name="quoteAsset">Quote asset</param>
+            <param name="tradingMode">Trading mode</param>
+            <param name="deliverTime">Delivery time for delivery futures</param>
+            <returns></returns>
+        </member>
+        <member name="P:HyperLiquid.Net.HyperLiquidExchange.RateLimiter">
+            <summary>
+            Rate limiter configuration for the HyperLiquid API
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.HyperLiquidRateLimiters">
+            <summary>
+            Rate limiter configuration for the HyperLiquid API
+            </summary>
+        </member>
+        <member name="E:HyperLiquid.Net.HyperLiquidRateLimiters.RateLimitTriggered">
+            <summary>
+            Event for when a rate limit is triggered
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.HyperLiquidTrackerFactory">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.HyperLiquidTrackerFactory.#ctor">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.HyperLiquidTrackerFactory.#ctor(System.IServiceProvider)">
+            <summary>
+            ctor
+            </summary>
+            <param name="serviceProvider">Service provider for resolving logging and clients</param>
+        </member>
+        <member name="M:HyperLiquid.Net.HyperLiquidTrackerFactory.CreateKlineTracker(CryptoExchange.Net.SharedApis.SharedSymbol,CryptoExchange.Net.SharedApis.SharedKlineInterval,System.Nullable{System.Int32},System.Nullable{System.TimeSpan})">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.HyperLiquidTrackerFactory.CreateTradeTracker(CryptoExchange.Net.SharedApis.SharedSymbol,System.Nullable{System.Int32},System.Nullable{System.TimeSpan})">
+            <inheritdoc />
+        </member>
+        <member name="T:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApi">
+            <summary>
+            HyperLiquid  API endpoints
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApi.Account">
+            <summary>
+            Endpoints related to account settings, info or actions
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApi.ExchangeData">
+            <summary>
+            Endpoints related to retrieving market and system data
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApi.Trading">
+            <summary>
+            Endpoints related to orders and trades
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApi.SharedClient">
+            <summary>
+            Get the shared rest requests client. This interface is shared with other exhanges to allow for a common implementation for different exchanges.
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount">
+            <summary>
+            HyperLiquid  account endpoints. Account endpoints include balance info, withdraw/deposit info and requesting and account settings
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiExchangeData">
+            <summary>
+            HyperLiquid  exchange data endpoints. Exchange data includes market data (tickers, order books, etc) and system status.
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiExchangeData.GetMidsAsync(System.Threading.CancellationToken)">
+            <summary>
+            Get mid prices for all assets
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#retrieve-mids-for-all-actively-traded-coins" /></para>
+            </summary>
+            <param name="ct">Cancellation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiExchangeData.GetOrderBookAsync(System.String,System.Nullable{System.Int32},System.Nullable{System.Int32},System.Threading.CancellationToken)">
+            <summary>
+            Get order book
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#l2-book-snapshot" /></para>
+            </summary>
+            <param name="asset">Asset name</param>
+            <param name="numberSignificantFigures">Asset name</param>
+            <param name="mantissa">Mantissa</param>
+            <param name="ct">Cancellation token</param>
+            <returns></returns>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiExchangeData.GetKlinesAsync(System.String,HyperLiquid.Net.Enums.KlineInterval,System.Nullable{System.DateTime},System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            
+            </summary>
+            <param name="asset"></param>
+            <param name="interval"></param>
+            <param name="startTime"></param>
+            <param name="endTime"></param>
+            <param name="ct"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiShared">
+            <summary>
+            Shared interface for  rest API usage
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiTrading">
+            <summary>
+            HyperLiquid  trading endpoints, placing and managing orders.
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi">
+            <summary>
+            HyperLiquid  streams
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SubscribeToXXXUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{HyperLiquid.Net.Objects.Models.HyperLiquidModel}},System.Threading.CancellationToken)">
+            <summary>
+            
+            <para><a href="XXX" /></para>
+            </summary>
+            <param name="onMessage">The event handler for the received data</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
+        </member>
+        <member name="P:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SharedClient">
+            <summary>
+            Get the shared socket requests client. This interface is shared with other exhanges to allow for a common implementation for different exchanges.
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApiShared">
+            <summary>
+            Shared interface for  socket API usage
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidRestClient">
+            <summary>
+            Client for accessing the HyperLiquid Rest API. 
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidRestClient.Api">
+            <summary>
+             API endpoints
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidRestClient.SetOptions(CryptoExchange.Net.Objects.Options.UpdateOptions)">
+            <summary>
+            Update specific options
+            </summary>
+            <param name="options">Options to update. Only specific options are changable after the client has been created</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidRestClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
+            <summary>
+            Set the API credentials for this client. All Api clients in this client will use the new credentials, regardless of earlier set options.
+            </summary>
+            <param name="credentials">The credentials to set</param>
+        </member>
+        <member name="T:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidSocketClient">
+            <summary>
+            Client for accessing the HyperLiquid websocket API
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidSocketClient.Api">
+            <summary>
+             API endpoints
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidSocketClient.SetOptions(CryptoExchange.Net.Objects.Options.UpdateOptions)">
+            <summary>
+            Update specific options
+            </summary>
+            <param name="options">Options to update. Only specific options are changable after the client has been created</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidSocketClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
+            <summary>
+            Set the API credentials for this client. All Api clients in this client will use the new credentials, regardless of earlier set options.
+            </summary>
+            <param name="credentials">The credentials to set</param>
+        </member>
+        <member name="T:HyperLiquid.Net.Interfaces.IHyperLiquidOrderBookFactory">
+            <summary>
+            HyperLiquid local order book factory
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Interfaces.IHyperLiquidOrderBookFactory.Api">
+            <summary>
+             order book factory methods
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.IHyperLiquidOrderBookFactory.Create(CryptoExchange.Net.SharedApis.SharedSymbol,System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions})">
+            <summary>
+            Create a SymbolOrderBook for the symbol
+            </summary>
+            <param name="symbol">The symbol</param>
+            <param name="options">Book options</param>
+            <returns></returns>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.IHyperLiquidOrderBookFactory.Create(System.String,System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions})">
+            <summary>
+            Create a new  local order book instance
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Interfaces.IHyperLiquidTrackerFactory">
+            <summary>
+            Tracker factory
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.IHyperLiquidTrackerFactory.CreateKlineTracker(CryptoExchange.Net.SharedApis.SharedSymbol,CryptoExchange.Net.SharedApis.SharedKlineInterval,System.Nullable{System.Int32},System.Nullable{System.TimeSpan})">
+            <summary>
+            Create a new kline tracker
+            </summary>
+            <param name="symbol">The symbol</param>
+            <param name="interval">Kline interval</param>
+            <param name="limit">The max amount of klines to retain</param>
+            <param name="period">The max period the data should be retained</param>
+            <returns></returns>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.IHyperLiquidTrackerFactory.CreateTradeTracker(CryptoExchange.Net.SharedApis.SharedSymbol,System.Nullable{System.Int32},System.Nullable{System.TimeSpan})">
+            <summary>
+            Create a new trade tracker for a symbol
+            </summary>
+            <param name="symbol">The symbol</param>
+            <param name="limit">The max amount of klines to retain</param>
+            <param name="period">The max period the data should be retained</param>
+            <returns></returns>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.HyperLiquidApiAddresses">
+            <summary>
+            Api addresses
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.HyperLiquidApiAddresses.RestClientAddress">
+            <summary>
+            The address used by the HyperLiquidRestClient for the API
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.HyperLiquidApiAddresses.SocketClientAddress">
+            <summary>
+            The address used by the HyperLiquidSocketClient for the websocket API
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Objects.HyperLiquidApiAddresses.Default">
+            <summary>
+            The default addresses to connect to the HyperLiquid API
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Objects.HyperLiquidApiAddresses.Testnet">
+            <summary>
+            The addresses to connect to the HyperLiquid Testnet API
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidAssetInfo">
+            <summary>
+            Asset info
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAssetInfo.Name">
+            <summary>
+            Name
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAssetInfo.MaxSupply">
+            <summary>
+            Max supply
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAssetInfo.TotalSupply">
+            <summary>
+            Total supply
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAssetInfo.CirculatingSupply">
+            <summary>
+            Circulating supply
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAssetInfo.QuantityDecimals">
+            <summary>
+            Quantity decimals
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAssetInfo.WeiDecimals">
+            <summary>
+            Wei decimals
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAssetInfo.MidPrice">
+            <summary>
+            Mid price
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAssetInfo.MarkPrice">
+            <summary>
+            Mark price
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAssetInfo.PreviousDayPrice">
+            <summary>
+            Previous day price
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAssetInfo.Genesis">
+            <summary>
+            Genesis
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAssetInfo.Deployer">
+            <summary>
+            Deployer
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAssetInfo.DeployGas">
+            <summary>
+            Deploy gas
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAssetInfo.DeployTime">
+            <summary>
+            Deploy time
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAssetInfo.SeededUsdc">
+            <summary>
+            Seeded usdc
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAssetInfo.FutureEmissions">
+            <summary>
+            Future emissions
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidAssetGenesis">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.ClosedPnl">
+            <summary>
+            Closed pnl
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.Asset">
+            <summary>
+            Asset
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.Crossed">
+            <summary>
+            Crossed
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.Direction">
+            <summary>
+            Direction
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.Hash">
+            <summary>
+            Hash
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.OrderId">
+            <summary>
+            Order id
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.Price">
+            <summary>
+            Price
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.OrderSide">
+            <summary>
+            Side
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.StartPosition">
+            <summary>
+            Start position
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.Quantity">
+            <summary>
+            Quantity
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.Timestamp">
+            <summary>
+            Timestamp
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.Fee">
+            <summary>
+            Fee
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.FeeToken">
+            <summary>
+            Fee token
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.BuilderFee">
+            <summary>
+            Builder fee
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.TradeId">
+            <summary>
+            Trade id
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Options.HyperLiquidOptions">
+            <summary>
+            HyperLiquid options
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidOptions.Rest">
+            <summary>
+            Rest client options
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidOptions.Socket">
+            <summary>
+            Socket client options
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidOptions.Environment">
+            <summary>
+            Trade environment. Contains info about URL's to use to connect to the API. Use `HyperLiquidEnvironment` to swap environment, for example `Environment = HyperLiquidEnvironment.Live`
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidOptions.ApiCredentials">
+            <summary>
+            The api credentials used for signing requests.
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidOptions.SocketClientLifeTime">
+            <summary>
+            The DI service lifetime for the IHyperLiquidSocketClient
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions">
+            <summary>
+            Options for the HyperLiquid SymbolOrderBook
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions.Default">
+            <summary>
+            Default options for new clients
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions.Limit">
+            <summary>
+            The top amount of results to keep in sync. If for example limit=10 is used, the order book will contain the 10 best bids and 10 best asks. Leaving this null will sync the full order book
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions.InitialDataTimeout">
+            <summary>
+            After how much time we should consider the connection dropped if no data is received for this time after the initial subscriptions
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Options.HyperLiquidRestOptions">
+            <summary>
+            Options for the HyperLiquidRestClient
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidRestOptions.Default">
+            <summary>
+            Default options for new clients
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.Objects.Options.HyperLiquidRestOptions.#ctor">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidRestOptions.Options">
+            <summary>
+             API options
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Options.HyperLiquidSocketOptions">
+            <summary>
+            Options for the HyperLiquidSocketClient
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidSocketOptions.Default">
+            <summary>
+            Default options for new clients
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.Objects.Options.HyperLiquidSocketOptions.#ctor">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidSocketOptions.Options">
+            <summary>
+             API options
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Sockets.Subscriptions.HyperLiquidSubscription`1">
+            <inheritdoc />
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Sockets.Subscriptions.HyperLiquidSubscription`1.ListenerIdentifiers">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Objects.Sockets.Subscriptions.HyperLiquidSubscription`1.GetMessageType(CryptoExchange.Net.Interfaces.IMessageAccessor)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Objects.Sockets.Subscriptions.HyperLiquidSubscription`1.#ctor(Microsoft.Extensions.Logging.ILogger,System.String[],System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{`0}},System.Boolean)">
+            <summary>
+            ctor
+            </summary>
+            <param name="logger"></param>
+            <param name="topics"></param>
+            <param name="handler"></param>
+            <param name="auth"></param>
+        </member>
+        <member name="M:HyperLiquid.Net.Objects.Sockets.Subscriptions.HyperLiquidSubscription`1.GetSubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Objects.Sockets.Subscriptions.HyperLiquidSubscription`1.GetUnsubQuery">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Objects.Sockets.Subscriptions.HyperLiquidSubscription`1.DoHandleMessage(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{System.Object})">
+            <inheritdoc />
+        </member>
+        <member name="T:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidOrderBookFactory">
+            <summary>
+            HyperLiquid order book factory
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidOrderBookFactory.#ctor(System.IServiceProvider)">
+            <summary>
+            ctor
+            </summary>
+            <param name="serviceProvider">Service provider for resolving logging and clients</param>
+        </member>
+        <member name="P:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidOrderBookFactory.Api">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidOrderBookFactory.Create(CryptoExchange.Net.SharedApis.SharedSymbol,System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions})">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidOrderBookFactory.Create(System.String,System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions})">
+            <inheritdoc />
+        </member>
+        <member name="T:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidSymbolOrderBook">
+            <summary>
+            Implementation for a synchronized order book. After calling Start the order book will sync itself and keep up to date with new data. It will automatically try to reconnect and resync in case of a lost/interrupted connection.
+            Make sure to check the State property to see if the order book is synced.
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidSymbolOrderBook.#ctor(System.String,System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions})">
+            <summary>
+            Create a new order book instance
+            </summary>
+            <param name="symbol">The symbol the order book is for</param>
+            <param name="optionsDelegate">Option configuration delegate</param>
+        </member>
+        <member name="M:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidSymbolOrderBook.#ctor(System.String,System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions},Microsoft.Extensions.Logging.ILoggerFactory,HyperLiquid.Net.Interfaces.Clients.IHyperLiquidRestClient,HyperLiquid.Net.Interfaces.Clients.IHyperLiquidSocketClient)">
+            <summary>
+            Create a new order book instance
+            </summary>
+            <param name="symbol">The symbol the order book is for</param>
+            <param name="optionsDelegate">Option configuration delegate</param>
+            <param name="logger">Logger</param>
+            <param name="restClient">Rest client instance</param>
+            <param name="socketClient">Socket client instance</param>
+        </member>
+        <member name="M:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidSymbolOrderBook.DoStartAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidSymbolOrderBook.DoReset">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidSymbolOrderBook.DoResyncAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidSymbolOrderBook.Dispose(System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="T:CryptoExchange.Net.Interfaces.CryptoClientExtensions">
+            <summary>
+            Extensions for the ICryptoRestClient and ICryptoSocketClient interfaces
+            </summary>
+        </member>
+        <member name="M:CryptoExchange.Net.Interfaces.CryptoClientExtensions.HyperLiquid(CryptoExchange.Net.Interfaces.ICryptoRestClient)">
+            <summary>
+            Get the HyperLiquid REST Api client
+            </summary>
+            <param name="baseClient"></param>
+            <returns></returns>
+        </member>
+        <member name="M:CryptoExchange.Net.Interfaces.CryptoClientExtensions.HyperLiquid(CryptoExchange.Net.Interfaces.ICryptoSocketClient)">
+            <summary>
+            Get the HyperLiquid Websocket Api client
+            </summary>
+            <param name="baseClient"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtensions">
+            <summary>
+            Extensions for DI
+            </summary>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtensions.AddHyperLiquid(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Add services such as the IHyperLiquidRestClient and IHyperLiquidSocketClient. Configures the services based on the provided configuration.
+            </summary>
+            <param name="services">The service collection</param>
+            <param name="configuration">The configuration(section) containing the options</param>
+            <returns></returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.ServiceCollectionExtensions.AddHyperLiquid(Microsoft.Extensions.DependencyInjection.IServiceCollection,System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOptions})">
+            <summary>
+            Add services such as the IHyperLiquidRestClient and IHyperLiquidSocketClient. Services will be configured based on the provided options.
+            </summary>
+            <param name="services">The service collection</param>
+            <param name="optionsDelegate">Set options for the HyperLiquid services</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
