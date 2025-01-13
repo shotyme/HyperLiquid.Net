@@ -903,6 +903,21 @@
         <member name="M:HyperLiquid.Net.Objects.Sockets.Subscriptions.HyperLiquidSubscription`1.DoHandleMessage(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{System.Object})">
             <inheritdoc />
         </member>
+        <member name="T:HyperLiquid.Net.PackConverter">
+            <summary>
+            Message pack converter
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.PackConverter.Pack(System.Object)">
+            <summary>
+            Convert an object to byte array
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.PackConverter.Pack(System.IO.Stream,System.Object)">
+            <summary>
+            Convert an object to byte array
+            </summary>
+        </member>
         <member name="T:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidOrderBookFactory">
             <summary>
             HyperLiquid order book factory
