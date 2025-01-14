@@ -10,6 +10,7 @@ using Nethereum.Signer.EIP712;
 using Nethereum.Util;
 using Nethereum.Signer;
 using Nethereum.ABI.EIP712;
+using HyperLiquid.Net.Utils;
 
 namespace HyperLiquid.Net
 {
@@ -75,15 +76,14 @@ namespace HyperLiquid.Net
             bodyParameters!.Add("nonce", nonce);
             var action = bodyParameters["action"];
 
-            var hash = this.actionHash(action, nonce);
+            var hash = GenerateActionHash(action, nonce);
             var phantomAgent = new Dictionary<string, object>()
             {
                 { "source", "a" },
                 { "connectionId", hash },
             };
 
-            var msg = ethEncodeStructuredData(_domain, _messageTypes, phantomAgent);
-
+            var msg = EncodeEip721(_domain, _messageTypes, phantomAgent);
             var keccakSigned = BytesToHexString(SignKeccak(msg));
             var signature = SignRequest(keccakSigned, ApiKey);
 
@@ -100,11 +100,11 @@ namespace HyperLiquid.Net
             {
                 { "r", "0x" + BytesToHexString(sign.R).ToLowerInvariant() },
                 { "s", "0x" + BytesToHexString(sign.S).ToLowerInvariant() },
-                { "v", ((int)sign.V[0]) - 27 },
+                { "v", ((int)sign.V[0]) - 27 }
             };
         }
 
-        public byte[] ethEncodeStructuredData(
+        public byte[] EncodeEip721(
             Dictionary<string, object> domain, 
             Dictionary<string, object> messageTypes,
             Dictionary<string, object> messageData)
@@ -186,7 +186,7 @@ namespace HyperLiquid.Net
             return Eip712TypedDataSigner.Current.EncodeTypedDataRaw(typeRaw);
         }
 
-        private byte[] actionHash(object action, long nonce)
+        private byte[] GenerateActionHash(object action, long nonce)
         {
             var packer = new PackConverter();
             var dataHex = BytesToHexString(packer.Pack(action));

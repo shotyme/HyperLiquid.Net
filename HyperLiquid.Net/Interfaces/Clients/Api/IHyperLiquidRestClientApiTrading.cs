@@ -4,6 +4,7 @@ using System.Threading;
 using CryptoExchange.Net.Objects;
 using HyperLiquid.Net.Objects.Models;
 using System;
+using HyperLiquid.Net.Enums;
 
 namespace HyperLiquid.Net.Interfaces.Clients.Api
 {
@@ -27,6 +28,10 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
 
         Task<WebCallResult<IEnumerable<HyperLiquidOrderStatus>>> GetClosedOrdersAsync(string address, CancellationToken ct = default);
 
-        Task<WebCallResult<IEnumerable<HyperLiquidOrderStatus>>> CancelOrderAsync(string symbol, long orderId, CancellationToken ct = default);
+        Task<WebCallResult> CancelOrderAsync(SymbolType symbolType, string symbol, long orderId, CancellationToken ct = default);
+
+        Task<WebCallResult<IEnumerable<CallResult<HyperLiquidOrderResult>>>> PlaceMultipleOrdersAsync(
+            IEnumerable<HyperLiquidOrderRequest> orders,
+            CancellationToken ct = default);
     }
 }

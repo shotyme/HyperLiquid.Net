@@ -97,7 +97,10 @@
         <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.GetClosedOrdersAsync(System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.CancelOrderAsync(System.String,System.Int64,System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.PlaceMultipleOrdersAsync(System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidOrderRequest},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.CancelOrderAsync(HyperLiquid.Net.Enums.SymbolType,System.String,System.Int64,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi">
@@ -285,6 +288,41 @@
         <member name="F:HyperLiquid.Net.Enums.OrderType.StopLimit">
             <summary>
             Stop Limit
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Enums.TimeInForce">
+            <summary>
+            Time in force
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.TimeInForce.PostOnly">
+            <summary>
+            Post only
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.TimeInForce.ImmediateOrCancel">
+            <summary>
+            Immediate or cancel
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.TimeInForce.GoodTillCanceled">
+            <summary>
+            Good till canceled
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Enums.TpSlGrouping">
+            <summary>
+            TakeProfit/StopLoss grouping
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.TpSlGrouping.NormalTpSl">
+            <summary>
+            Normal TakeProfit/StopLoss
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.TpSlGrouping.PositionTpSl">
+            <summary>
+            Position TakeProfit/StopLoss
             </summary>
         </member>
         <member name="T:HyperLiquid.Net.ExtensionMethods.HyperLiquidExtensionMethods">
@@ -903,21 +941,6 @@
         <member name="M:HyperLiquid.Net.Objects.Sockets.Subscriptions.HyperLiquidSubscription`1.DoHandleMessage(CryptoExchange.Net.Sockets.SocketConnection,CryptoExchange.Net.Objects.Sockets.DataEvent{System.Object})">
             <inheritdoc />
         </member>
-        <member name="T:HyperLiquid.Net.PackConverter">
-            <summary>
-            Message pack converter
-            </summary>
-        </member>
-        <member name="M:HyperLiquid.Net.PackConverter.Pack(System.Object)">
-            <summary>
-            Convert an object to byte array
-            </summary>
-        </member>
-        <member name="M:HyperLiquid.Net.PackConverter.Pack(System.IO.Stream,System.Object)">
-            <summary>
-            Convert an object to byte array
-            </summary>
-        </member>
         <member name="T:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidOrderBookFactory">
             <summary>
             HyperLiquid order book factory
@@ -972,6 +995,21 @@
         </member>
         <member name="M:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidSymbolOrderBook.Dispose(System.Boolean)">
             <inheritdoc />
+        </member>
+        <member name="T:HyperLiquid.Net.Utils.PackConverter">
+            <summary>
+            Message pack converter
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.Utils.PackConverter.Pack(System.Object)">
+            <summary>
+            Convert an object to byte array
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.Utils.PackConverter.Pack(System.IO.Stream,System.Object)">
+            <summary>
+            Convert an object to byte array
+            </summary>
         </member>
         <member name="T:CryptoExchange.Net.Interfaces.CryptoClientExtensions">
             <summary>

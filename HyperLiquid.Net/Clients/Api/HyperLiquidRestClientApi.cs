@@ -16,6 +16,7 @@ using CryptoExchange.Net.Converters.SystemTextJson;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.SharedApis;
 using CryptoExchange.Net.Converters.MessageParsing;
+using HyperLiquid.Net.Objects.Models;
 
 namespace HyperLiquid.Net.Clients.Api
 {
@@ -79,6 +80,16 @@ namespace HyperLiquid.Net.Clients.Api
 
             return result;
         }
+
+        internal async Task<WebCallResult<T>> SendAuthAsync<T>(RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null)
+        {
+            var result = await SendToAddressAsync<HyperLiquidAuthResponse<T>>(BaseAddress, definition, parameters, cancellationToken, weight).ConfigureAwait(false);
+            if (!result)
+                return result.As<T>(default);
+
+            return result.As<T>(result.Data.Data);
+        }
+
 
         protected override Error? TryParseError(IEnumerable<KeyValuePair<string, IEnumerable<string>>> responseHeaders, IMessageAccessor accessor)
         {

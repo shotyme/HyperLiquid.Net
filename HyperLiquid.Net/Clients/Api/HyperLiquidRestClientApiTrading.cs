@@ -7,6 +7,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using HyperLiquid.Net.Utils;
+using HyperLiquid.Net.Enums;
 
 namespace HyperLiquid.Net.Clients.Api
 {
@@ -140,12 +142,94 @@ namespace HyperLiquid.Net.Clients.Api
 
         #endregion
 
+        #region Place Multiple Orders
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<IEnumerable<CallResult<HyperLiquidOrderResult>>>> PlaceMultipleOrdersAsync(
+            IEnumerable<HyperLiquidOrderRequest> orders,
+            CancellationToken ct = default)
+        {
+            var orderRequests = new List<ParameterCollection>();
+            foreach(var order in orders)
+            {
+                var symbolId = await HyperLiquidUtils.GetSymbolIdFromName(order.SymbolType, order.Symbol).ConfigureAwait(false);
+                if (!symbolId)
+                    return new WebCallResult<IEnumerable<CallResult<HyperLiquidOrderResult>>>(symbolId.Error);
+
+                var orderParameters = new ParameterCollection();
+                orderParameters.Add("a", symbolId.Data);
+                orderParameters.AddString("s", order.Quantity);
+
+                var orderTypeParameters = new ParameterCollection();
+                if (order.OrderType == OrderType.Limit)
+                {
+                    var limitParameters = new ParameterCollection();
+                    limitParameters.AddEnum("tif", order.TimeInForce);
+                    orderTypeParameters.Add("limit", limitParameters);
+                }
+                else if(order.OrderType == OrderType.StopMarket || order.OrderType == OrderType.StopLimit)
+                {
+                    var triggerParameters = new ParameterCollection();
+                    triggerParameters.Add("isMarket", order.TimeInForce);
+                    triggerParameters.Add("triggerPx", order.TriggerPrice);
+                    triggerParameters.AddEnum("tpsl", order.TpSlType);
+                    orderTypeParameters.Add("trigger", triggerParameters);
+                }
+
+                orderParameters.Add("t", orderTypeParameters);
+
+                orderParameters.AddOptional("b", order.Side == OrderSide.Buy);
+                orderParameters.AddOptionalString("p", order.Price);
+                orderParameters.AddOptional("r", order.ReduceOnly);
+                orderParameters.AddOptional("c", order.ClientOrderId);
+#warning TODO builder
+                if (order.TpSlGrouping != null)
+                    orderParameters.AddEnum("grouping", order.TpSlGrouping);
+                else
+                    orderParameters.Add("grouping", "na");
+
+                orderRequests.Add(orderParameters);
+            }
+
+            var parameters = new ParameterCollection()
+            {
+                {
+                    "action", new ParameterCollection
+                    {
+                        { "type", "order" },
+                        { "orders", orderRequests }
+                    }
+                }
+            };
+
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "exchange", HyperLiquidExchange.RateLimiter.HyperLiquid, 1, true);
+            var intResult = await _baseClient.SendAuthAsync<IEnumerable<HyperLiquidOrderResultInt>>(request, parameters, ct).ConfigureAwait(false);
+            if(!intResult)
+                return intResult.As<IEnumerable<CallResult<HyperLiquidOrderResult>>>(default);
+
+            var result = new List<CallResult<HyperLiquidOrderResult>>();
+            foreach (var order in intResult.Data)
+            {
+                if (order.Error != null)
+                    result.Add(new CallResult<HyperLiquidOrderResult>(new ServerError(order.Error)));
+                else
+                    result.Add(new CallResult<HyperLiquidOrderResult>(order.ResultResting ?? order.ResultFilled!));                
+            }
+
+            return intResult.As<IEnumerable<CallResult<HyperLiquidOrderResult>>>(result);
+        }
+
+        #endregion
+
         #region Cancel Order
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<HyperLiquidOrderStatus>>> CancelOrderAsync(string symbol, long orderId, CancellationToken ct = default)
+        public async Task<WebCallResult> CancelOrderAsync(SymbolType symbolType, string symbol, long orderId, CancellationToken ct = default)
         {
-            var symbolId = 1; // TODO
+            var symbolId = await HyperLiquidUtils.GetSymbolIdFromName(symbolType, symbol).ConfigureAwait(false);
+            if (!symbolId)
+                return new WebCallResult(symbolId.Error!);
+
             var parameters = new ParameterCollection()
             {
                 { 
@@ -157,7 +241,7 @@ namespace HyperLiquid.Net.Clients.Api
                             {
                                 new ParameterCollection
                                 {
-                                    { "a", symbolId },
+                                    { "a", symbolId.Data },
                                     { "o", orderId }
                                 }
                             }
@@ -167,7 +251,13 @@ namespace HyperLiquid.Net.Clients.Api
             };
 
             var request = _definitions.GetOrCreate(HttpMethod.Post, "exchange", HyperLiquidExchange.RateLimiter.HyperLiquid, 1, true);
-            return await _baseClient.SendAsync<IEnumerable<HyperLiquidOrderStatus>>(request, parameters, ct).ConfigureAwait(false);
+            var result = await _baseClient.SendAuthAsync<HyperLiquidOrderStatusResult>(request, parameters, ct).ConfigureAwait(false);
+            if (!result)
+                return result.AsDatalessError(result.Error!);
+
+#warning check responses
+
+            return result.AsDataless();
         }
 
         #endregion

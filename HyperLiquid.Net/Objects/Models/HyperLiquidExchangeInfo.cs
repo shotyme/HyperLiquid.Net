@@ -21,14 +21,18 @@ namespace HyperLiquid.Net.Objects.Models
             {
                 if (_symbols == null)
                 {
-                    _symbols = SymbolsInt.Select(x =>                    
-                        new HyperLiquidSymbol
+                    _symbols = SymbolsInt.Select(x => {
+                        var baseAsset = Assets.ElementAt(x.BaseAssetIndex);
+                        var quoteAsset = Assets.ElementAt(x.QuoteAssetIndex);
+                        return new HyperLiquidSymbol
                         {
                             Index = x.Index,
                             IsCanonical = x.IsCanonical,
-                            Name = x.Name,
-                            BaseAsset = Assets.ElementAt(x.BaseAssetIndex),
-                            QuoteAsset = Assets.ElementAt(x.QuoteAssetIndex),
+                            Name = baseAsset.Name + "/" + quoteAsset.Name,
+                            ExchangeName = x.Name,
+                            BaseAsset = baseAsset,
+                            QuoteAsset = quoteAsset,
+                        };
                         }
                     ).ToList();
                 }
@@ -41,6 +45,7 @@ namespace HyperLiquid.Net.Objects.Models
     public record HyperLiquidSymbol
     {
         public string Name { get; set; }
+        public string ExchangeName { get; set; }
         public HyperLiquidAsset BaseAsset { get; set; }
         public HyperLiquidAsset QuoteAsset { get; set; }
         public int Index { get; set; }

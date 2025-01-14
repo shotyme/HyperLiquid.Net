@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace HyperLiquid.Net
+namespace HyperLiquid.Net.Utils
 {
     /// <summary>
     /// Message pack converter
@@ -74,9 +74,7 @@ namespace HyperLiquid.Net
         {
             int count = list.Count;
             if (count < 16)
-            {
                 s.WriteByte((byte)(0x90 + count));
-            }
             else if (count < 0x10000)
             {
                 s.WriteByte(0xdc);
@@ -97,9 +95,7 @@ namespace HyperLiquid.Net
         {
             int count = dict.Count;
             if (count < 16)
-            {
                 s.WriteByte((byte)(0x80 + count));
-            }
             else if (count < 0x10000)
             {
                 s.WriteByte(0xde);
@@ -127,9 +123,7 @@ namespace HyperLiquid.Net
             unchecked
             {
                 if (val >= -32)
-                {
                     s.WriteByte((byte)val);
-                }
                 else
                 {
                     tmp0[0] = 0xd0;
@@ -142,9 +136,7 @@ namespace HyperLiquid.Net
         private void Pack(Stream s, byte val)
         {
             if (val <= 0x7f)
-            {
                 s.WriteByte(val);
-            }
             else
             {
                 tmp0[0] = 0xcc;
@@ -158,9 +150,7 @@ namespace HyperLiquid.Net
             unchecked
             {
                 if (val >= 0)
-                {
                     Pack(s, (ushort)val);
-                }
                 else if (val >= -128)
                 {
                     Pack(s, (sbyte)val);
@@ -178,9 +168,7 @@ namespace HyperLiquid.Net
             unchecked
             {
                 if (val < 0x100)
-                {
                     Pack(s, (byte)val);
-                }
                 else
                 {
                     s.WriteByte(0xcd);
@@ -194,9 +182,7 @@ namespace HyperLiquid.Net
             unchecked
             {
                 if (val >= 0)
-                {
                     Pack(s, (uint)val);
-                }
                 else if (val >= -128)
                 {
                     Pack(s, (sbyte)val);
@@ -219,9 +205,7 @@ namespace HyperLiquid.Net
             unchecked
             {
                 if (val < 0x100)
-                {
                     Pack(s, (byte)val);
-                }
                 else if (val < 0x10000)
                 {
                     s.WriteByte(0xcd);
@@ -240,9 +224,7 @@ namespace HyperLiquid.Net
             unchecked
             {
                 if (val >= 0)
-                {
                     Pack(s, (ulong)val);
-                }
                 else if (val >= -128)
                 {
                     Pack(s, (sbyte)val);
@@ -270,9 +252,7 @@ namespace HyperLiquid.Net
             unchecked
             {
                 if (val < 0x100)
-                {
                     Pack(s, (byte)val);
-                }
                 else if (val < 0x10000)
                 {
                     s.WriteByte(0xcd);
@@ -335,23 +315,21 @@ namespace HyperLiquid.Net
         {
             var bytes = encoder.GetBytes(val);
             if (bytes.Length < 0x20)
-            {
                 s.WriteByte((byte)(0xa0 + bytes.Length));
-            }
             else if (bytes.Length < 0x100)
             {
                 s.WriteByte(0xd9);
-                s.WriteByte((byte)(bytes.Length));
+                s.WriteByte((byte)bytes.Length);
             }
             else if (bytes.Length < 0x10000)
             {
                 s.WriteByte(0xda);
-                Write(s, (ushort)(bytes.Length));
+                Write(s, (ushort)bytes.Length);
             }
             else
             {
                 s.WriteByte(0xdb);
-                Write(s, (uint)(bytes.Length));
+                Write(s, (uint)bytes.Length);
             }
             s.Write(bytes, 0, bytes.Length);
         }
