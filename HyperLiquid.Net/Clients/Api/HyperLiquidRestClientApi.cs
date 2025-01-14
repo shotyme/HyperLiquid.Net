@@ -83,11 +83,14 @@ namespace HyperLiquid.Net.Clients.Api
 
         internal async Task<WebCallResult<T>> SendAuthAsync<T>(RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null)
         {
-            var result = await SendToAddressAsync<HyperLiquidAuthResponse<T>>(BaseAddress, definition, parameters, cancellationToken, weight).ConfigureAwait(false);
+            var result = await SendToAddressAsync<HyperLiquidResponse<T>>(BaseAddress, definition, parameters, cancellationToken, weight).ConfigureAwait(false);
             if (!result)
                 return result.As<T>(default);
 
-            return result.As<T>(result.Data.Data);
+            if (!result.Data.Status.Equals("ok"))
+                return result.AsError<T>(new ServerError(result.Data.Status));
+
+            return result.As<T>(result.Data.Data.Data);
         }
 
 

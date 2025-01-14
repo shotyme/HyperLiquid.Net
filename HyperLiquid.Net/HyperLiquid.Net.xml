@@ -61,6 +61,9 @@
         <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiExchangeData.GetSpotExchangeInfoAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiExchangeData.GetFuturesExchangeInfoAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
         <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiExchangeData.GetSpotExchangeInfoAndTickersAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
@@ -94,13 +97,19 @@
         <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.GetOrderAsync(System.String,System.Nullable{System.Int64},System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.GetClosedOrdersAsync(System.String,System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.GetOrderHistoryAsync(System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.PlaceMultipleOrdersAsync(System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidOrderRequest},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.CancelOrderAsync(HyperLiquid.Net.Enums.SymbolType,System.String,System.Int64,System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.CancelOrdersAsync(System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidCancelRequest},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.CancelOrdersByClientOrderIdAsync(System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidCancelByClientOrderIdRequest},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.CancelAfterAsync(System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi">
@@ -323,6 +332,16 @@
         <member name="F:HyperLiquid.Net.Enums.TpSlGrouping.PositionTpSl">
             <summary>
             Position TakeProfit/StopLoss
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Enums.TriggerCondition">
+            <summary>
+            Trigger condition
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.TriggerCondition.NA">
+            <summary>
+            Not applicable
             </summary>
         </member>
         <member name="T:HyperLiquid.Net.ExtensionMethods.HyperLiquidExtensionMethods">

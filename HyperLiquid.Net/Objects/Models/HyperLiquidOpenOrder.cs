@@ -8,8 +8,12 @@ namespace HyperLiquid.Net.Objects.Models
 {
     public record HyperLiquidOpenOrder
     {
+        [JsonIgnore]
+        public string? Symbol { get; set; }
+        [JsonIgnore]
+        public SymbolType SymbolType { get; set; }
         [JsonPropertyName("coin")]
-        public string Asset { get; set; }
+        public string ExchangeSymbol { get; set; }
 
         [JsonPropertyName("limitPx")]
         public decimal Price { get; set; }

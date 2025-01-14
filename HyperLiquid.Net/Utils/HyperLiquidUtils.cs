@@ -14,49 +14,51 @@ namespace HyperLiquid.Net.Utils
     public static class HyperLiquidUtils
     {
         private static IEnumerable<HyperLiquidSymbol>? _spotSymbolInfo;
-        private static IEnumerable<HyperLiquidSymbol>? _futuresSymbolInfo;
+        private static IEnumerable<HyperLiquidFuturesSymbol>? _futuresSymbolInfo;
 
-        private static DateTime _lastUpdateTime;
+        private static DateTime _lastSpotUpdateTime;
+        private static DateTime _lastFuturesUpdateTime;
 
         private static readonly SemaphoreSlim _semaphoreSpot = new SemaphoreSlim(1, 1);
         private static readonly SemaphoreSlim _semaphoreFutures = new SemaphoreSlim(1, 1);
 
-        //public static async Task<CallResult> UpdateFuturesSymbolInfoAsync()
-        //{
-        //    await _semaphoreFutures.WaitAsync().ConfigureAwait(false);
-        //    if (DateTime.UtcNow - _lastUpdateTime < TimeSpan.FromHours(1))
-        //        return new CallResult(null);
+        public static async Task<CallResult> UpdateFuturesSymbolInfoAsync()
+        {
+            await _semaphoreFutures.WaitAsync().ConfigureAwait(false);
 
-        //    try
-        //    {
-        //        var symbolInfo = await new HyperLiquidRestClient().Api.ExchangeData.Get().ConfigureAwait(false);
-        //        if (!symbolInfo)
-        //            return symbolInfo.AsDataless();
+            try
+            {
+                if (DateTime.UtcNow - _lastFuturesUpdateTime < TimeSpan.FromHours(1))
+                    return new CallResult(null);
 
-        //        _symbolInfo = symbolInfo.Data.Symbols;
-        //        _lastUpdateTime = DateTime.UtcNow;
-        //        return new CallResult(null);
-        //    }
-        //    finally
-        //    {
-        //        _semaphoreFutures.Release();
-        //    }
-        //}
+                var symbolInfo = await new HyperLiquidRestClient().Api.ExchangeData.GetFuturesExchangeInfoAsync().ConfigureAwait(false);
+                if (!symbolInfo)
+                    return symbolInfo.AsDataless();
+
+                _futuresSymbolInfo = symbolInfo.Data;
+                _lastFuturesUpdateTime = DateTime.UtcNow;
+                return new CallResult(null);
+            }
+            finally
+            {
+                _semaphoreFutures.Release();
+            }
+        }
 
         public static async Task<CallResult> UpdateSpotSymbolInfoAsync()
         {
             await _semaphoreSpot.WaitAsync().ConfigureAwait(false);
-            if (DateTime.UtcNow - _lastUpdateTime < TimeSpan.FromHours(1))
-                return new CallResult(null);
-
             try
             {
+                if (DateTime.UtcNow - _lastSpotUpdateTime < TimeSpan.FromHours(1))
+                    return new CallResult(null);
+
                 var symbolInfo = await new HyperLiquidRestClient().Api.ExchangeData.GetSpotExchangeInfoAsync().ConfigureAwait(false);
                 if (!symbolInfo)
                     return symbolInfo.AsDataless();
 
                 _spotSymbolInfo = symbolInfo.Data.Symbols;
-                _lastUpdateTime = DateTime.UtcNow;
+                _lastSpotUpdateTime = DateTime.UtcNow;
                 return new CallResult(null);
             }
             finally
@@ -65,24 +67,41 @@ namespace HyperLiquid.Net.Utils
             }
         }
 
-        public static async Task<CallResult<int>> GetSymbolIdFromName(SymbolType type, string symbolName)
+        public static async Task<CallResult<int>> GetSymbolIdFromNameAsync(SymbolType type, string symbolName)
         {
             if (type == SymbolType.Spot)
             {
                 var update = await UpdateSpotSymbolInfoAsync().ConfigureAwait(false);
                 if (!update)
                     return new CallResult<int>(update.Error!);
+
+                var symbol = _spotSymbolInfo.SingleOrDefault(x => x.Name == symbolName);
+                if (symbol == null)
+                    return new CallResult<int>(new ServerError("Symbol not found"));
+
+                return new CallResult<int>(symbol.Index + 10000);
             }
             else
             {
+                var update = await UpdateFuturesSymbolInfoAsync().ConfigureAwait(false);
+                if (!update)
+                    return new CallResult<int>(update.Error!);
 
+                var symbol = _futuresSymbolInfo.SingleOrDefault(x => x.Name == symbolName);
+                if (symbol == null)
+                    return new CallResult<int>(new ServerError("Symbol not found"));
+
+                return new CallResult<int>(symbol.Index);
             }
+        }
 
-            var symbol = _spotSymbolInfo.SingleOrDefault(x => x.Name == symbolName);
+        public static async Task<CallResult<string>> GetSymbolNameFromExchangeNameAsync(string id)
+        {
+            var symbol = _spotSymbolInfo.SingleOrDefault(x => x.ExchangeName == id);
             if (symbol == null)
-                return new CallResult<int>(new ServerError("Symbol not found"));
+                return new CallResult<string>(new ServerError("Symbol not found"));
 
-            return new CallResult<int>(symbol.Index + (type == SymbolType.Spot ? 10000 : 0));
+            return new CallResult<string>(symbol.Name);
         }
     }
 }

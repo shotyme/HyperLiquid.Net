@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using HyperLiquid.Net.Interfaces.Clients.Api;
 using HyperLiquid.Net.Objects.Models;
 using HyperLiquid.Net.Enums;
+using System.Linq;
 
 namespace HyperLiquid.Net.Clients.Api
 {
@@ -34,6 +35,28 @@ namespace HyperLiquid.Net.Clients.Api
             };
             var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquid, 1, false);
             return await _baseClient.SendAsync<HyperLiquidExchangeInfo>(request, parameters, ct).ConfigureAwait(false);
+        }
+
+        #endregion
+
+        #region Get Futures Exchange Info
+
+        /// <inheritdoc />
+        public async Task<WebCallResult<IEnumerable<HyperLiquidFuturesSymbol>>> GetFuturesExchangeInfoAsync(CancellationToken ct = default)
+        {
+            var parameters = new ParameterCollection()
+            {
+                { "type", "meta" }
+            };
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquid, 1, false);
+            var result = await _baseClient.SendAsync<HyperLiquidFuturesExchangeInfo>(request, parameters, ct).ConfigureAwait(false);
+            if (!result)
+                return result.As<IEnumerable<HyperLiquidFuturesSymbol>>(default);
+
+            for (var i = 0; i < result.Data.Symbols.Count(); i++)
+                result.Data.Symbols.ElementAt(i).Index = i;
+
+            return result.As<IEnumerable<HyperLiquidFuturesSymbol>>(result.Data?.Symbols);
         }
 
         #endregion

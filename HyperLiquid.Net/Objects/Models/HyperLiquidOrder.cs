@@ -8,8 +8,12 @@ namespace HyperLiquid.Net.Objects.Models
 {
     public record HyperLiquidOrder
     {
+        [JsonIgnore]
+        public string? Symbol { get; set; }
+        [JsonIgnore]
+        public SymbolType SymbolType { get; set; }
         [JsonPropertyName("coin")]
-        public string Asset { get; set; }
+        public string ExchangeSymbol { get; set; }
 
         [JsonPropertyName("isPositionTpsl")]
         public bool IsPositionTpSl { get; set; }
@@ -41,8 +45,8 @@ namespace HyperLiquid.Net.Objects.Models
         [JsonPropertyName("timestamp")]
         public DateTime Timestamp { get; set; }
 
-#warning TODO
-        public string TriggerCondition { get; set; }
+        [JsonPropertyName("triggerCondition")]
+        public TriggerCondition TriggerCondition { get; set; }
 
         [JsonPropertyName("triggerPx")]
         public decimal? TriggerPrice { get; set; }

@@ -5,6 +5,14 @@ using System.Text.Json.Serialization;
 
 namespace HyperLiquid.Net.Objects.Models
 {
+    internal class HyperLiquidResponse<T>
+    {
+        [JsonPropertyName("status")]
+        public string Status { get; set; }
+        [JsonPropertyName("response")]
+        public HyperLiquidAuthResponse<T> Data { get; set; }
+    }
+
     internal class HyperLiquidAuthResponse<T>
     {
         [JsonPropertyName("type")]

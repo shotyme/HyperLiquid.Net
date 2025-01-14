@@ -44,7 +44,7 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         Task<WebCallResult<IEnumerable<HyperLiquidKline>>> GetKlinesAsync(string asset, KlineInterval interval, DateTime? startTime = null, DateTime? endTime = null, CancellationToken ct = default);
 
         Task<WebCallResult<HyperLiquidExchangeInfo>> GetSpotExchangeInfoAsync(CancellationToken ct = default);
-
+        Task<WebCallResult<IEnumerable<HyperLiquidFuturesSymbol>>> GetFuturesExchangeInfoAsync(CancellationToken ct = default);
         Task<WebCallResult<HyperLiquidExchangeInfoAndTickers>> GetSpotExchangeInfoAndTickersAsync(CancellationToken ct = default);
 
         Task<WebCallResult<HyperLiquidAssetInfo>> GetAssetInfoAsync(string assetId, CancellationToken ct = default);

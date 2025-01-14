@@ -6,6 +6,12 @@ using System.Text.Json.Serialization;
 
 namespace HyperLiquid.Net.Objects.Models
 {
+    internal record HyperLiquidOrderResultIntWrapper
+    {
+        [JsonPropertyName("statuses")]
+        public IEnumerable<HyperLiquidOrderResultInt> Statuses { get; set; } = [];
+    }
+
     internal record HyperLiquidOrderResultInt
     {
         [JsonPropertyName("resting")]
