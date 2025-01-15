@@ -18,11 +18,9 @@ namespace HyperLiquid.Net.Clients
         #endregion
 
         #region Api clients
-
-        
+                
          /// <inheritdoc />
         public IHyperLiquidSocketClientApi Api { get; }
-
 
         #endregion
 
@@ -68,9 +66,7 @@ namespace HyperLiquid.Net.Clients
         /// <inheritdoc />
         public void SetApiCredentials(ApiCredentials credentials)
         {
-            
             Api.SetApiCredentials(credentials);
-
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -10,22 +9,20 @@ namespace HyperLiquid.Net.Converters
     {
         public override IEnumerable<string>? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-#warning check, seems weird
-
             var resultList = new List<string>();
-            reader.Read(); // Read start array
+            reader.Read();
             while (reader.TokenType == JsonTokenType.StartObject || reader.TokenType == JsonTokenType.String)
             {
                 if (reader.TokenType == JsonTokenType.String)
                 {
-                    resultList.Add(JsonSerializer.Deserialize<string>(ref reader, options));
+                    resultList.Add(JsonSerializer.Deserialize<string>(ref reader, options)!);
                     reader.Read();
                     continue;
                 }
 
                 var result = JsonSerializer.Deserialize<ErrorMessage>(ref reader, options);
-                resultList.Add(result.Error);
-                reader.Read(); // Read end array
+                resultList.Add(result!.Error);
+                reader.Read();
             }
 
             return resultList;
@@ -39,7 +36,7 @@ namespace HyperLiquid.Net.Converters
         class ErrorMessage
         {
             [JsonPropertyName("error")]
-            public string Error { get; set; }
+            public string Error { get; set; } = string.Empty;
         }
     }
 }

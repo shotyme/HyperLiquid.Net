@@ -7,6 +7,7 @@ using System;
 using HyperLiquid.Net.Interfaces;
 using HyperLiquid.Net.Interfaces.Clients;
 using HyperLiquid.Net.Objects.Options;
+using HyperLiquid.Net.Enums;
 
 namespace HyperLiquid.Net.SymbolOrderBooks
 {
@@ -25,31 +26,29 @@ namespace HyperLiquid.Net.SymbolOrderBooks
         {
             _serviceProvider = serviceProvider;
 
-            Api = new OrderBookFactory<HyperLiquidOrderBookOptions>(Create, Create);
+            Spot = new OrderBookFactory<HyperLiquidOrderBookOptions>((symbol, opts) => Create(SymbolType.Spot, symbol, opts), Create);
+            Futures = new OrderBookFactory<HyperLiquidOrderBookOptions>((symbol, opts) => Create(SymbolType.Futures, symbol, opts), Create);
         }
 
         
          /// <inheritdoc />
-        public IOrderBookFactory<HyperLiquidOrderBookOptions> Api { get; }
+        public IOrderBookFactory<HyperLiquidOrderBookOptions> Spot { get; }
+        /// <inheritdoc />
+        public IOrderBookFactory<HyperLiquidOrderBookOptions> Futures { get; }
 
 
         /// <inheritdoc />
         public ISymbolOrderBook Create(SharedSymbol symbol, Action<HyperLiquidOrderBookOptions>? options = null)
         {
             var symbolName = HyperLiquidExchange.FormatSymbol(symbol.BaseAsset, symbol.QuoteAsset, symbol.TradingMode, symbol.DeliverTime);
-#warning TODO
-            //if (symbol.TradingMode == TradingMode.Spot)
-            //    return CreateSpot(symbolName, options);
-
-            return Create(symbolName, options);
+            return Create(symbol.TradingMode == TradingMode.Spot ? SymbolType.Spot : SymbolType.Futures, symbolName, options);
         }
 
         
          /// <inheritdoc />
-        public ISymbolOrderBook Create(string symbol, Action<HyperLiquidOrderBookOptions>? options = null)
-            => new HyperLiquidSymbolOrderBook(symbol, options, 
+        public ISymbolOrderBook Create(SymbolType symbolType, string symbol, Action<HyperLiquidOrderBookOptions>? options = null)
+            => new HyperLiquidSymbolOrderBook(symbolType, symbol, options, 
                                                           _serviceProvider.GetRequiredService<ILoggerFactory>(),
-                                                          _serviceProvider.GetRequiredService<IHyperLiquidRestClient>(),
                                                           _serviceProvider.GetRequiredService<IHyperLiquidSocketClient>());
 
 

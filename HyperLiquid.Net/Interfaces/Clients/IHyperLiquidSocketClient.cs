@@ -10,7 +10,6 @@ namespace HyperLiquid.Net.Interfaces.Clients
     /// </summary>
     public interface IHyperLiquidSocketClient : ISocketClient
     {
-        
         /// <summary>
         ///  API endpoints
         /// </summary>

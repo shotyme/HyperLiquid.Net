@@ -11,8 +11,12 @@ using System.Threading.Tasks;
 
 namespace HyperLiquid.Net.Utils
 {
+    /// <summary>
+    /// Util methods for the HyperLiquid API
+    /// </summary>
     public static class HyperLiquidUtils
     {
+        private static IEnumerable<HyperLiquidAsset>? _spotAssetInfo;
         private static IEnumerable<HyperLiquidSymbol>? _spotSymbolInfo;
         private static IEnumerable<HyperLiquidFuturesSymbol>? _futuresSymbolInfo;
 
@@ -22,6 +26,9 @@ namespace HyperLiquid.Net.Utils
         private static readonly SemaphoreSlim _semaphoreSpot = new SemaphoreSlim(1, 1);
         private static readonly SemaphoreSlim _semaphoreFutures = new SemaphoreSlim(1, 1);
 
+        /// <summary>
+        /// Update the internal futures symbol info
+        /// </summary>
         public static async Task<CallResult> UpdateFuturesSymbolInfoAsync()
         {
             await _semaphoreFutures.WaitAsync().ConfigureAwait(false);
@@ -45,6 +52,9 @@ namespace HyperLiquid.Net.Utils
             }
         }
 
+        /// <summary>
+        /// Update the internal spot symbol info
+        /// </summary>
         public static async Task<CallResult> UpdateSpotSymbolInfoAsync()
         {
             await _semaphoreSpot.WaitAsync().ConfigureAwait(false);
@@ -58,6 +68,7 @@ namespace HyperLiquid.Net.Utils
                     return symbolInfo.AsDataless();
 
                 _spotSymbolInfo = symbolInfo.Data.Symbols;
+                _spotAssetInfo = symbolInfo.Data.Assets;
                 _lastSpotUpdateTime = DateTime.UtcNow;
                 return new CallResult(null);
             }
@@ -67,6 +78,12 @@ namespace HyperLiquid.Net.Utils
             }
         }
 
+        /// <summary>
+        /// Get symbol id from a symbol name
+        /// </summary>
+        /// <param name="type">Symbol type</param>
+        /// <param name="symbolName">Symbol name</param>
+        /// <returns></returns>
         public static async Task<CallResult<int>> GetSymbolIdFromNameAsync(SymbolType type, string symbolName)
         {
             if (type == SymbolType.Spot)
@@ -95,13 +112,106 @@ namespace HyperLiquid.Net.Utils
             }
         }
 
-        public static async Task<CallResult<string>> GetSymbolNameFromExchangeNameAsync(string id)
+        /// <summary>
+        /// Get a symbol name from an exchange symbol name
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static CallResult<string> GetSymbolNameFromExchangeName(string id)
         {
             var symbol = _spotSymbolInfo.SingleOrDefault(x => x.ExchangeName == id);
             if (symbol == null)
                 return new CallResult<string>(new ServerError("Symbol not found"));
 
             return new CallResult<string>(symbol.Name);
+        }
+
+        /// <summary>
+        /// Get a symbol name from an exchange symbol name
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static async Task<CallResult<string>> GetSymbolNameFromExchangeNameAsync(string id)
+        {
+            var update = await UpdateSpotSymbolInfoAsync().ConfigureAwait(false);
+            if (!update)
+                return new CallResult<string>(update.Error!);
+
+            var symbol = _spotSymbolInfo.SingleOrDefault(x => x.ExchangeName == id);
+            if (symbol == null)
+                return new CallResult<string>(new ServerError("Symbol not found"));
+
+            return new CallResult<string>(symbol.Name);
+        }
+
+        /// <summary>
+        /// Get an exchange symbol name from a symbol name
+        /// </summary>
+        /// <returns></returns>
+        public static async Task<CallResult<string>> GetExchangeNameFromSymbolNameAsync(SymbolType symbolType, string name)
+        {
+            if (symbolType == SymbolType.Spot)
+            {
+                var update = await UpdateSpotSymbolInfoAsync().ConfigureAwait(false);
+                if (!update)
+                    return new CallResult<string>(update.Error!);
+
+                var symbol = _spotSymbolInfo.SingleOrDefault(x => x.Name == name);
+                if (symbol == null)
+                    return new CallResult<string>(new ServerError("Symbol not found"));
+
+                return new CallResult<string>(symbol.ExchangeName);
+            }
+            else
+            {
+                var update = await UpdateFuturesSymbolInfoAsync().ConfigureAwait(false);
+                if (!update)
+                    return new CallResult<string>(update.Error!);
+
+                var symbol = _futuresSymbolInfo.SingleOrDefault(x => x.Name == name);
+                if (symbol == null)
+                    return new CallResult<string>(new ServerError("Symbol not found"));
+
+                return new CallResult<string>(symbol.ExchangeName);
+            }
+        }
+
+        /// <summary>
+        /// Get a symbol name from an exchange symbol name
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> GetSymbolNameFromExchangeName(IEnumerable<string> ids)
+        {
+            var result = new Dictionary<string, string>();
+            foreach (var id in ids)
+            {
+                var symbol = _spotSymbolInfo.SingleOrDefault(x => x.ExchangeName == id);
+                if (symbol == null)
+                    continue;
+
+                result[id] = symbol.Name;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Get an asset name and id from an exchange asset name
+        /// </summary>
+        /// <param name="asset">Exchange asset name</param>
+        /// <returns></returns>
+        public static async Task<CallResult<string>> GetAssetNameAndIdAsync(string asset)
+        {
+            var update = await UpdateSpotSymbolInfoAsync().ConfigureAwait(false);
+            if (!update)
+                return new CallResult<string>(update.Error!);
+
+            var assetInfo = _spotAssetInfo.SingleOrDefault(x => x.Name == asset);
+            if (assetInfo == null)
+                return new CallResult<string>(new ServerError("Asset not found"));
+
+            return new CallResult<string>(assetInfo.Name + ":" + assetInfo.AssetId);
         }
     }
 }

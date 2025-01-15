@@ -5,17 +5,17 @@ using System.Text;
 namespace HyperLiquid.Net.Enums
 {
     /// <summary>
-    /// TakeProfit/StopLoss type
+    /// Transfer direction
     /// </summary>
-    public enum TpSlType
+    public enum TransferDirection
     {
         /// <summary>
-        /// Take profit
+        /// Spot to futures
         /// </summary>
-        TakeProfit,
+        SpotToFutures,
         /// <summary>
-        /// Stop loss
+        /// Futures to spot
         /// </summary>
-        StopLoss
+        FuturesToSpot
     }
 }

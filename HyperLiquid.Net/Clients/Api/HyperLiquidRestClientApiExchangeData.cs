@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using CryptoExchange.Net.Objects;
@@ -27,14 +26,14 @@ namespace HyperLiquid.Net.Clients.Api
         #region Get Spot Exchange Info
 
         /// <inheritdoc />
-        public async Task<WebCallResult<HyperLiquidExchangeInfo>> GetSpotExchangeInfoAsync(CancellationToken ct = default)
+        public async Task<WebCallResult<HyperLiquidSpotExchangeInfo>> GetSpotExchangeInfoAsync(CancellationToken ct = default)
         {
             var parameters = new ParameterCollection()
             {
                 { "type", "spotMeta" }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquid, 1, false);
-            return await _baseClient.SendAsync<HyperLiquidExchangeInfo>(request, parameters, ct).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            return await _baseClient.SendAsync<HyperLiquidSpotExchangeInfo>(request, parameters, ct).ConfigureAwait(false);
         }
 
         #endregion
@@ -48,7 +47,7 @@ namespace HyperLiquid.Net.Clients.Api
             {
                 { "type", "meta" }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquid, 1, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
             var result = await _baseClient.SendAsync<HyperLiquidFuturesExchangeInfo>(request, parameters, ct).ConfigureAwait(false);
             if (!result)
                 return result.As<IEnumerable<HyperLiquidFuturesSymbol>>(default);
@@ -70,7 +69,7 @@ namespace HyperLiquid.Net.Clients.Api
             {
                 { "type", "spotMetaAndAssetCtxs" }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquid, 1, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
             return await _baseClient.SendAsync<HyperLiquidExchangeInfoAndTickers>(request, parameters, ct).ConfigureAwait(false);
         }
 
@@ -86,22 +85,22 @@ namespace HyperLiquid.Net.Clients.Api
                 { "type", "tokenDetails" },
                 { "tokenId", assetId }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquid, 1, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
             return await _baseClient.SendAsync<HyperLiquidAssetInfo>(request, parameters, ct).ConfigureAwait(false);
         }
 
         #endregion
 
-        #region Get Mids
+        #region Get Prices
 
         /// <inheritdoc />
-        public async Task<WebCallResult<Dictionary<string, decimal>>> GetMidsAsync(CancellationToken ct = default)
+        public async Task<WebCallResult<Dictionary<string, decimal>>> GetPricesAsync(CancellationToken ct = default)
         {
             var parameters = new ParameterCollection()
             {
                 { "type", "allMids" }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquid, 1, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 2, false);
             return await _baseClient.SendAsync<Dictionary<string, decimal>>(request, parameters, ct).ConfigureAwait(false);
         }
 
@@ -120,19 +119,19 @@ namespace HyperLiquid.Net.Clients.Api
 
             parameters.AddOptional("nSigFigs", numberSignificantFigures);
             parameters.AddOptional("mantissa", mantissa);
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquid, 1, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 2, false);
             return await _baseClient.SendAsync<HyperLiquidOrderBook>(request, parameters, ct).ConfigureAwait(false);
         }
 
         #endregion
 
-        #region Get Order Book
+        #region Get Klines
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<HyperLiquidKline>>> GetKlinesAsync(string asset, KlineInterval interval, DateTime? startTime = null, DateTime? endTime = null, CancellationToken ct = default)
+        public async Task<WebCallResult<IEnumerable<HyperLiquidKline>>> GetKlinesAsync(string symbol, KlineInterval interval, DateTime startTime, DateTime endTime, CancellationToken ct = default)
         {
             var innerParameters = new ParameterCollection();
-            innerParameters.Add("coin", asset);
+            innerParameters.Add("coin", symbol);
             innerParameters.AddEnum("interval", interval);
             innerParameters.AddOptionalMilliseconds("startTime", startTime);
             innerParameters.AddOptionalMilliseconds("endTime", endTime);
@@ -143,7 +142,7 @@ namespace HyperLiquid.Net.Clients.Api
                 { "req", innerParameters }
             };
 
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquid, 1, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
             return await _baseClient.SendAsync<IEnumerable<HyperLiquidKline>>(request, parameters, ct).ConfigureAwait(false);
         }
 

@@ -13,33 +13,117 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
     /// </summary>
     public interface IHyperLiquidRestClientApiTrading
     {
-        Task<WebCallResult<IEnumerable<HyperLiquidOpenOrder>>> GetOpenOrdersAsync(string address, CancellationToken ct = default);
+        /// <summary>
+        /// Get open orders
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#retrieve-a-users-open-orders" /></para>
+        /// </summary>
+        /// <param name="address">Address to request open orders for. If not provided will use the address provided in the API credentials</param>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult<IEnumerable<HyperLiquidOpenOrder>>> GetOpenOrdersAsync(string? address = null, CancellationToken ct = default);
 
-        Task<WebCallResult<IEnumerable<HyperLiquidOrder>>> GetOpenOrdersExtendedAsync(string address, CancellationToken ct = default);
+        /// <summary>
+        /// Get open orders including with additional info
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#retrieve-a-users-open-orders-with-additional-frontend-info" /></para>
+        /// </summary>
+        /// <param name="address">Address to request open orders for. If not provided will use the address provided in the API credentials</param>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult<IEnumerable<HyperLiquidOrder>>> GetOpenOrdersExtendedAsync(string? address = null, CancellationToken ct = default);
 
+        /// <summary>
+        /// Get user trades
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#retrieve-a-users-fills" /></para>
+        /// </summary>
+        /// <param name="address">Address to request user trades for. If not provided will use the address provided in the API credentials</param>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult<IEnumerable<HyperLiquidUserTrade>>> GetUserTradesAsync(string? address = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get user trades by time filter
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#retrieve-a-users-fills-by-time" /></para>
+        /// </summary>
+        /// <param name="startTime">Filter by start time</param>
+        /// <param name="endTime">Filter by end time</param>
+        /// <param name="aggregateByTime">Aggregate by time</param>
+        /// <param name="address">Address to request user trades for. If not provided will use the address provided in the API credentials</param>
+        /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<IEnumerable<HyperLiquidUserTrade>>> GetUserTradesByTimeAsync(
-            string address,
             DateTime startTime,
             DateTime? endTime = null,
             bool? aggregateByTime = null,
+            string? address = null,
             CancellationToken ct = default);
 
-        Task<WebCallResult<HyperLiquidOrderStatus>> GetOrderAsync(string address, long? orderId = null, string? clientOrderId = null, CancellationToken ct = default);
+        /// <summary>
+        /// Get order info by id
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#query-order-status-by-oid-or-cloid" /></para>
+        /// </summary>
+        /// <param name="orderId">Get order by order id. Either this or clientOrderId should be provided</param>
+        /// <param name="clientOrderId">Get order by client order id. Either this or orderId should be provided</param>
+        /// <param name="address">Address to request order for. If not provided will use the address provided in the API credentials</param>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult<HyperLiquidOrderStatus>> GetOrderAsync(long? orderId = null, string? clientOrderId = null, string? address = null, CancellationToken ct = default);
 
-        Task<WebCallResult<IEnumerable<HyperLiquidOrderStatus>>> GetOrderHistoryAsync(string address, CancellationToken ct = default);
+        /// <summary>
+        /// Get user order history
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#retrieve-a-users-historical-orders" /></para>
+        /// </summary>
+        /// <param name="address">Address to request order for. If not provided will use the address provided in the API credentials</param>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult<IEnumerable<HyperLiquidOrderStatus>>> GetOrderHistoryAsync(string? address = null, CancellationToken ct = default);
 
+        /// <summary>
+        /// Cancel an order
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#cancel-order-s" /></para>
+        /// </summary>
+        /// <param name="symbolType">Type of symbol</param>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="orderId">Order id</param>
+        /// <param name="ct">Cancellation token</param>
         Task<WebCallResult> CancelOrderAsync(SymbolType symbolType, string symbol, long orderId, CancellationToken ct = default);
 
+        /// <summary>
+        /// Cancel multiple orders
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#cancel-order-s" /></para>
+        /// </summary>
+        /// <param name="requests">Cancel requests</param>
+        /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<IEnumerable<CallResult>>> CancelOrdersAsync(IEnumerable<HyperLiquidCancelRequest> requests, CancellationToken ct = default);
 
+        /// <summary>
+        /// Cancel order by client order id
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#cancel-order-s-by-cloid" /></para>
+        /// </summary>
+        /// <param name="symbolType">Type of symbol</param>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="clientOrderId">Client rder id</param>
+        /// <param name="ct">Cancellation token</param>
         Task<WebCallResult> CancelOrderByClientOrderIdAsync(SymbolType symbolType, string symbol, string clientOrderId, CancellationToken ct = default);
 
+        /// <summary>
+        /// Cancel multiple orders by client order id
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#cancel-order-s-by-cloid" /></para>
+        /// </summary>
+        /// <param name="requests">Cancel requests</param>
+        /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<IEnumerable<CallResult>>> CancelOrdersByClientOrderIdAsync(IEnumerable<HyperLiquidCancelByClientOrderIdRequest> requests, CancellationToken ct = default);
 
-        Task<WebCallResult<IEnumerable<CallResult<HyperLiquidOrderResult>>>> PlaceMultipleOrdersAsync(
-            IEnumerable<HyperLiquidOrderRequest> orders,
-            CancellationToken ct = default);
-
+        /// <summary>
+        /// Place a new order
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#place-an-order" /></para>
+        /// </summary>
+        /// <param name="symbolType">Symbol type</param>
+        /// <param name="symbol">Symbol name</param>
+        /// <param name="side">Order side</param>
+        /// <param name="orderType">Order type</param>
+        /// <param name="quantity">Quantity</param>
+        /// <param name="price">Limit price</param>
+        /// <param name="timeInForce">Time in force</param>
+        /// <param name="reduceOnly">Reduce only</param>
+        /// <param name="clientOrderId">Client order id, an optional 128 bit hex string, e.g. 0x1234567890abcdef1234567890abcdef</param>
+        /// <param name="triggerPrice">Trigger order trigger price</param>
+        /// <param name="tpSlType">Trigger order type</param>
+        /// <param name="tpSlGrouping">Trigger order grouping</param>
+        /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<HyperLiquidOrderResult>> PlaceOrderAsync(
             SymbolType symbolType,
             string symbol,
@@ -52,9 +136,113 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
             string? clientOrderId = null,
             decimal? triggerPrice = null,
             TpSlType? tpSlType = null,
-            TpSlGrouping? tpSlGrouping = null
+            TpSlGrouping? tpSlGrouping = null,
+            CancellationToken ct = default
             );
 
+        /// <summary>
+        /// Place multiple new orders in a single call
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#place-an-order" /></para>
+        /// </summary>
+        /// <param name="orders">Orders to place</param>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult<IEnumerable<CallResult<HyperLiquidOrderResult>>>> PlaceMultipleOrdersAsync(
+            IEnumerable<HyperLiquidOrderRequest> orders,
+            CancellationToken ct = default);
+
+        /// <summary>
+        /// Cancel all orders after the provided timeout has passed. Can be called at an interval to act as deadman switch. Pass null to cancel an existing timeout. This functionality is only available after achieving a certain trading volume.
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#schedule-cancel-dead-mans-switch" /></para>
+        /// </summary>
+        /// <param name="timeout">Timeout after which to cancel all order, or null to cancel the countdown</param>
+        /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<IEnumerable<HyperLiquidOrderStatus>>> CancelAfterAsync(TimeSpan? timeout, CancellationToken ct = default);
+
+        /// <summary>
+        /// Edit an existing order
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#modify-an-order" /></para>
+        /// </summary>
+        /// <param name="orderId">Edit order by order id, either this or clientOrderId should be provided</param>
+        /// <param name="clientOrderId">Edit order by client order id, either this or orderId should be provided</param>
+        /// <param name="symbolType">Symbol type</param>
+        /// <param name="symbol">Symbol name</param>
+        /// <param name="side">Order side</param>
+        /// <param name="orderType">Order type</param>
+        /// <param name="quantity">Quantity</param>
+        /// <param name="price">Limit price</param>
+        /// <param name="timeInForce">Time in force</param>
+        /// <param name="reduceOnly">Reduce only</param>
+        /// <param name="newClientOrderId">The new client order id, an optional 128 bit hex string, e.g. 0x1234567890abcdef1234567890abcdef</param>
+        /// <param name="triggerPrice">Trigger order trigger price</param>
+        /// <param name="tpSlType">Trigger order type</param>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult> EditOrderAsync(
+            SymbolType symbolType,
+            string symbol,
+            long? orderId,
+            string? clientOrderId,
+            OrderSide side,
+            OrderType orderType,
+            decimal quantity,
+            decimal? price = null,
+            TimeInForce? timeInForce = null,
+            bool? reduceOnly = null,
+            string? newClientOrderId = null,
+            decimal? triggerPrice = null,
+            TpSlType? tpSlType = null,
+            CancellationToken ct = default);
+
+        /// <summary>
+        /// Edit multiple orders in a single call
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#modify-multiple-orders" /></para>
+        /// </summary>
+        /// <param name="requests">Edit requests</param>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult<IEnumerable<CallResult<HyperLiquidOrderResult>>>> EditOrdersAsync(
+            IEnumerable<HyperLiquidEditOrderRequest> requests,
+            CancellationToken ct = default);
+
+        /// <summary>
+        /// Set leverage for a symbol
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#update-leverage" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol name</param>
+        /// <param name="leverage">New leverage</param>
+        /// <param name="marginType">Margin type</param>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult> SetLeverageAsync(string symbol, int leverage, MarginType marginType, CancellationToken ct = default);
+
+        /// <summary>
+        /// Add or remove margin from isolated position
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#update-isolated-margin" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol name</param>
+        /// <param name="updateValue">Change value</param>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult> UpdateIsolatedMarginAsync(string symbol, decimal updateValue, CancellationToken ct = default);
+
+        /// <summary>
+        /// Place a Time Weighted Average Price order
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#place-a-twap-order" /></para>
+        /// </summary>
+        /// <param name="symbolType">Symbol type</param>
+        /// <param name="symbol">Symbol name</param>
+        /// <param name="orderSide">Order side</param>
+        /// <param name="quantity">Order quantity</param>
+        /// <param name="reduceOnly">Reduce onyl</param>
+        /// <param name="minutes">Time of the TWAP in minutes</param>
+        /// <param name="randomize">Ranodmize</param>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult<HyperLiquidTwapOrderResult>> PlaceTwapOrderAsync(SymbolType symbolType, string symbol, OrderSide orderSide, decimal quantity, bool reduceOnly, int minutes, bool randomize, CancellationToken ct = default);
+
+        /// <summary>
+        /// Cancel a Time Weighted Average Price order
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#cancel-a-twap-order" /></para>
+        /// </summary>
+        /// <param name="symbolType">Symbol type</param>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="twapId">TWAP order id</param>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult<HyperLiquidTwapOrderResult>> CancelTwapOrderAsync(SymbolType symbolType, string symbol, long twapId, CancellationToken ct = default);
     }
 }

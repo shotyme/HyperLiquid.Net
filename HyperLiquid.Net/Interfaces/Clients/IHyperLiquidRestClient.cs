@@ -9,8 +9,7 @@ namespace HyperLiquid.Net.Interfaces.Clients
     /// Client for accessing the HyperLiquid Rest API. 
     /// </summary>
     public interface IHyperLiquidRestClient : IRestClient
-    {
-        
+    {        
         /// <summary>
         ///  API endpoints
         /// </summary>

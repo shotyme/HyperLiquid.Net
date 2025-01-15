@@ -88,35 +88,62 @@ namespace HyperLiquid.Net.Objects.Models
         [JsonPropertyName("futureEmissions")]
         public decimal FutureEmissions { get; set; }
 
+        /// <summary>
+        /// Non-circulating user balances
+        /// </summary>
         [JsonPropertyName("nonCirculatingUserBalances")]
-        public IEnumerable<AddressBalance> NonCirculatingUserBalances { get; set; }
+        public IEnumerable<AddressBalance> NonCirculatingUserBalances { get; set; } = [];
     }
 
     /// <summary>
-    /// 
+    /// Genesis balances
     /// </summary>
     public record HyperLiquidAssetGenesis
     {
+        /// <summary>
+        /// User balances
+        /// </summary>
         [JsonPropertyName("userBalances")]
-        public IEnumerable<AddressBalance> UserBalances { get; set; }
+        public IEnumerable<AddressBalance> UserBalances { get; set; } = [];
+        /// <summary>
+        /// Existing token balances
+        /// </summary>
         [JsonPropertyName("existingTokenBalances")]
-        public IEnumerable<AddressIndexBalance> ExistingAssetBalances { get; set; }
+        public IEnumerable<AddressIndexBalance> ExistingAssetBalances { get; set; } = [];
     }
 
+    /// <summary>
+    /// Address balance
+    /// </summary>
     [JsonConverter(typeof(ArrayConverter))]
     public record AddressBalance
     {
+        /// <summary>
+        /// Address
+        /// </summary>
         [ArrayProperty(0)]
-        public string Address { get; set; }
+        public string Address { get; set; } = string.Empty;
+        /// <summary>
+        /// Balance
+        /// </summary>
         [ArrayProperty(1)]
         public decimal Balance { get; set; }
     }
 
+    /// <summary>
+    /// Address index balance reference
+    /// </summary>
     [JsonConverter(typeof(ArrayConverter))]
     public record AddressIndexBalance
     {
+        /// <summary>
+        /// Address index
+        /// </summary>
         [ArrayProperty(0)]
         public int Index { get; set; }
+        /// <summary>
+        /// Balance
+        /// </summary>
         [ArrayProperty(1)]
         public decimal Balance { get; set; }
     }

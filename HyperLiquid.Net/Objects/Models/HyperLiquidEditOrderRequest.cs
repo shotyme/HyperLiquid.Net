@@ -6,9 +6,9 @@ using System.Text;
 namespace HyperLiquid.Net.Objects.Models
 {
     /// <summary>
-    /// Place order request
+    /// Edit order request
     /// </summary>
-    public record HyperLiquidOrderRequest
+    public record HyperLiquidEditOrderRequest
     {
         /// <summary>
         /// Symbol type
@@ -17,7 +17,15 @@ namespace HyperLiquid.Net.Objects.Models
         /// <summary>
         /// Symbol name
         /// </summary>
-        public string Symbol { get; set; } = string.Empty;
+        public string Symbol { get; set; }
+        /// <summary>
+        /// Order id
+        /// </summary>
+        public long? OrderId { get; set; }
+        /// <summary>
+        /// Client order id
+        /// </summary>
+        public string? ClientOrderId { get; set; }
         /// <summary>
         /// Order side
         /// </summary>
@@ -31,7 +39,7 @@ namespace HyperLiquid.Net.Objects.Models
         /// </summary>
         public TimeInForce? TimeInForce { get; set; }
         /// <summary>
-        /// Order price
+        /// Price
         /// </summary>
         public decimal? Price { get; set; }
         /// <summary>
@@ -43,28 +51,39 @@ namespace HyperLiquid.Net.Objects.Models
         /// </summary>
         public bool? ReduceOnly { get; set; }
         /// <summary>
-        /// Client order id
+        /// New client order id
         /// </summary>
-        public string? ClientOrderId { get; set; }
+        public string? NewClientOrderId { get; set; }
         /// <summary>
         /// Trigger price
         /// </summary>
         public decimal? TriggerPrice { get; set; }
         /// <summary>
-        /// Take profit / stop loss type
+        /// Take profit / Stop loss type
         /// </summary>
         public TpSlType? TpSlType { get; set; }
-        /// <summary>
-        /// Take profit / stop loss grouping
-        /// </summary>
-        public TpSlGrouping? TpSlGrouping { get; set; }
 
         /// <summary>
         /// ctor
         /// </summary>
-        public HyperLiquidOrderRequest(
+        /// <param name="symbolType">Symbol type</param>
+        /// <param name="symbol">Symbol</param>
+        /// <param name="orderId">Order id of the order to edit, either this or clientOrderId should be provided</param>
+        /// <param name="clientOrderId">Client order id of the order to edit, either this or orderId should be provided</param>
+        /// <param name="side">Order side</param>
+        /// <param name="orderType">Order type</param>
+        /// <param name="quantity">Quantity</param>
+        /// <param name="price">Price</param>
+        /// <param name="timeInForce">Time in force</param>
+        /// <param name="reduceOnly">Reduce only</param>
+        /// <param name="triggerPrice">Trigger price</param>
+        /// <param name="tpSlType">Take profit / Stop loss type</param>
+        /// <param name="newClientOrderId">New client order id</param>
+        public HyperLiquidEditOrderRequest(
             SymbolType symbolType,
             string symbol,
+            long? orderId,
+            string? clientOrderId,
             OrderSide side,
             OrderType orderType,
             decimal quantity,
@@ -73,11 +92,13 @@ namespace HyperLiquid.Net.Objects.Models
             bool? reduceOnly = null,
             decimal? triggerPrice = null,
             TpSlType? tpSlType = null,
-            string? clientOrderId = null
+            string? newClientOrderId = null
             )
         {
             SymbolType = symbolType;
             Symbol = symbol;
+            OrderId = orderId;
+            ClientOrderId = clientOrderId;
             Side = side;
             OrderType = orderType;
             Quantity = quantity;
@@ -85,7 +106,7 @@ namespace HyperLiquid.Net.Objects.Models
             ReduceOnly = reduceOnly;
             TriggerPrice = triggerPrice;
             TpSlType = tpSlType;
-            ClientOrderId = clientOrderId;
+            NewClientOrderId = newClientOrderId;
             TimeInForce = timeInForce;
         }
     }

@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 namespace HyperLiquid.Net.Objects.Models
 {
     /// <summary>
-    /// 
+    /// User trade
     /// </summary>
     public record HyperLiquidUserTrade
     {

@@ -1,4 +1,3 @@
-using CryptoExchange.Net;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Objects;
 using Microsoft.Extensions.Logging;
@@ -7,8 +6,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using CryptoExchange.Net.CommonObjects;
-using CryptoExchange.Net.Interfaces.CommonClients;
 using HyperLiquid.Net.Interfaces.Clients.Api;
 using HyperLiquid.Net.Objects.Options;
 using CryptoExchange.Net.Clients;
@@ -24,7 +21,9 @@ namespace HyperLiquid.Net.Clients.Api
     internal partial class HyperLiquidRestClientApi : RestApiClient, IHyperLiquidRestClientApi
     {
         #region fields 
-        internal static TimeSyncState _timeSyncState = new TimeSyncState(" Api");
+        internal static TimeSyncState _timeSyncState = new TimeSyncState("Api");
+
+        internal new HyperLiquidRestOptions ClientOptions => (HyperLiquidRestOptions)base.ClientOptions;
         #endregion
 
         #region Api clients
@@ -62,11 +61,7 @@ namespace HyperLiquid.Net.Clients.Api
 
         internal async Task<WebCallResult> SendToAddressAsync(string baseAddress, RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null)
         {
-            var result = await base.SendAsync(baseAddress, definition, parameters, cancellationToken, null, weight).ConfigureAwait(false);
-
-            // Optional response checking
-
-            return result;
+            return await base.SendAsync(baseAddress, definition, parameters, cancellationToken, null, weight).ConfigureAwait(false);
         }
 
         internal Task<WebCallResult<T>> SendAsync<T>(RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null)
@@ -74,11 +69,7 @@ namespace HyperLiquid.Net.Clients.Api
 
         internal async Task<WebCallResult<T>> SendToAddressAsync<T>(string baseAddress, RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null)
         {
-            var result = await base.SendAsync<T>(baseAddress, definition, parameters, cancellationToken, null, weight).ConfigureAwait(false);
-
-            // Optional response checking
-
-            return result;
+            return await base.SendAsync<T>(baseAddress, definition, parameters, cancellationToken, null, weight).ConfigureAwait(false);
         }
 
         internal async Task<WebCallResult<T>> SendAuthAsync<T>(RequestDefinition definition, ParameterCollection? parameters, CancellationToken cancellationToken, int? weight = null)
@@ -90,9 +81,8 @@ namespace HyperLiquid.Net.Clients.Api
             if (!result.Data.Status.Equals("ok"))
                 return result.AsError<T>(new ServerError(result.Data.Status));
 
-            return result.As<T>(result.Data.Data.Data);
+            return result.As(result.Data.Data!.Data);
         }
-
 
         protected override Error? TryParseError(IEnumerable<KeyValuePair<string, IEnumerable<string>>> responseHeaders, IMessageAccessor accessor)
         {

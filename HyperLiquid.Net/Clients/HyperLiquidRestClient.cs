@@ -16,11 +16,9 @@ namespace HyperLiquid.Net.Clients
     public class HyperLiquidRestClient : BaseRestClient, IHyperLiquidRestClient
     {
         #region Api clients
-
-        
+                
          /// <inheritdoc />
         public IHyperLiquidRestClientApi Api { get; }
-
 
         #endregion
 
@@ -67,10 +65,8 @@ namespace HyperLiquid.Net.Clients
 
         /// <inheritdoc />
         public void SetApiCredentials(ApiCredentials credentials)
-        {
-            
+        {            
             Api.SetApiCredentials(credentials);
-
         }
     }
 }

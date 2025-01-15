@@ -1,7 +1,4 @@
 using CryptoExchange.Net.SharedApis;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using HyperLiquid.Net.Interfaces.Clients.Api;
 
 namespace HyperLiquid.Net.Clients.Api

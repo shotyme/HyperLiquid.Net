@@ -18,35 +18,56 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#retrieve-mids-for-all-actively-traded-coins" /></para>
         /// </summary>
         /// <param name="ct">Cancellation token</param>
-        /// <returns></returns>
-        Task<WebCallResult<Dictionary<string, decimal>>> GetMidsAsync(CancellationToken ct = default);
+        Task<WebCallResult<Dictionary<string, decimal>>> GetPricesAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Get order book
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#l2-book-snapshot" /></para>
         /// </summary>
-        /// <param name="asset">Asset name</param>
+        /// <param name="symbol">Asset name</param>
         /// <param name="numberSignificantFigures">Asset name</param>
         /// <param name="mantissa">Mantissa</param>
         /// <param name="ct">Cancellation token</param>
-        /// <returns></returns>
-        Task<WebCallResult<HyperLiquidOrderBook>> GetOrderBookAsync(string asset, int? numberSignificantFigures = null, int? mantissa = null, CancellationToken ct = default);
+        Task<WebCallResult<HyperLiquidOrderBook>> GetOrderBookAsync(string symbol, int? numberSignificantFigures = null, int? mantissa = null, CancellationToken ct = default);
 
         /// <summary>
-        /// 
+        /// Get klines
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#candle-snapshot" /></para>
         /// </summary>
-        /// <param name="asset"></param>
-        /// <param name="interval"></param>
-        /// <param name="startTime"></param>
-        /// <param name="endTime"></param>
-        /// <param name="ct"></param>
-        /// <returns></returns>
-        Task<WebCallResult<IEnumerable<HyperLiquidKline>>> GetKlinesAsync(string asset, KlineInterval interval, DateTime? startTime = null, DateTime? endTime = null, CancellationToken ct = default);
+        /// <param name="symbol">Symbol</param>
+        /// <param name="interval">Kline interval</param>
+        /// <param name="startTime">Data start time</param>
+        /// <param name="endTime">Data end time</param>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult<IEnumerable<HyperLiquidKline>>> GetKlinesAsync(string symbol, KlineInterval interval, DateTime startTime, DateTime endTime, CancellationToken ct = default);
 
-        Task<WebCallResult<HyperLiquidExchangeInfo>> GetSpotExchangeInfoAsync(CancellationToken ct = default);
+        /// <summary>
+        /// Get spot exchange info
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/spot#retrieve-spot-metadata" /></para>
+        /// </summary>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult<HyperLiquidSpotExchangeInfo>> GetSpotExchangeInfoAsync(CancellationToken ct = default);
+
+        /// <summary>
+        /// Get futures exchange info
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/perpetuals" /></para>
+        /// </summary>
+        /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<IEnumerable<HyperLiquidFuturesSymbol>>> GetFuturesExchangeInfoAsync(CancellationToken ct = default);
+
+        /// <summary>
+        /// Get spot exchange info and ticker info
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/spot#retrieve-spot-asset-contexts" /></para>
+        /// </summary>
+        /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<HyperLiquidExchangeInfoAndTickers>> GetSpotExchangeInfoAndTickersAsync(CancellationToken ct = default);
 
+        /// <summary>
+        /// Get information on an asset
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/spot#retrieve-information-about-a-token" /></para>
+        /// </summary>
+        /// <param name="assetId">The asset id</param>
+        /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<HyperLiquidAssetInfo>> GetAssetInfoAsync(string assetId, CancellationToken ct = default);
     }
 }

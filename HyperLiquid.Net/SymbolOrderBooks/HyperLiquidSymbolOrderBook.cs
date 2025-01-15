@@ -8,6 +8,9 @@ using Microsoft.Extensions.Logging;
 using HyperLiquid.Net.Clients;
 using HyperLiquid.Net.Interfaces.Clients;
 using HyperLiquid.Net.Objects.Options;
+using HyperLiquid.Net.Enums;
+using HyperLiquid.Net.Objects.Models;
+using Nethereum.ABI.Util;
 
 namespace HyperLiquid.Net.SymbolOrderBooks
 {
@@ -18,17 +21,18 @@ namespace HyperLiquid.Net.SymbolOrderBooks
     public class HyperLiquidSymbolOrderBook : SymbolOrderBook
     {
         private readonly bool _clientOwner;
-        private readonly IHyperLiquidRestClient _restClient;
         private readonly IHyperLiquidSocketClient _socketClient;
         private readonly TimeSpan _initialDataTimeout;
+        private readonly SymbolType _symbolType;
 
         /// <summary>
         /// Create a new order book instance
         /// </summary>
+        /// <param name="symbolType">The symbol type</param>
         /// <param name="symbol">The symbol the order book is for</param>
         /// <param name="optionsDelegate">Option configuration delegate</param>
-        public HyperLiquidSymbolOrderBook(string symbol, Action<HyperLiquidOrderBookOptions>? optionsDelegate = null)
-            : this(symbol, optionsDelegate, null, null, null)
+        public HyperLiquidSymbolOrderBook(SymbolType symbolType, string symbol, Action<HyperLiquidOrderBookOptions>? optionsDelegate = null)
+            : this(symbolType, symbol, optionsDelegate, null, null)
         {
             _clientOwner = true;
         }
@@ -36,23 +40,24 @@ namespace HyperLiquid.Net.SymbolOrderBooks
         /// <summary>
         /// Create a new order book instance
         /// </summary>
+        /// <param name="symbolType">The symbol type</param>
         /// <param name="symbol">The symbol the order book is for</param>
         /// <param name="optionsDelegate">Option configuration delegate</param>
         /// <param name="logger">Logger</param>
-        /// <param name="restClient">Rest client instance</param>
         /// <param name="socketClient">Socket client instance</param>
         public HyperLiquidSymbolOrderBook(
+            SymbolType symbolType,
             string symbol,
             Action<HyperLiquidOrderBookOptions>? optionsDelegate,
             ILoggerFactory? logger,
-            IHyperLiquidRestClient? restClient,
-            IHyperLiquidSocketClient? socketClient) : base(logger, "HyperLiquid", "", symbol)
+            IHyperLiquidSocketClient? socketClient) : base(logger, "HyperLiquid", "Api", symbol)
         {
             var options = HyperLiquidOrderBookOptions.Default.Copy();
             if (optionsDelegate != null)
                 optionsDelegate(options);
             Initialize(options);
 
+            _symbolType = symbolType;
             _strictLevels = false;
             _sequencesAreConsecutive = options?.Limit == null;
 
@@ -60,14 +65,28 @@ namespace HyperLiquid.Net.SymbolOrderBooks
             _initialDataTimeout = options?.InitialDataTimeout ?? TimeSpan.FromSeconds(30);
             _clientOwner = socketClient == null;
             _socketClient = socketClient ?? new HyperLiquidSocketClient();
-            _restClient = restClient ?? new HyperLiquidRestClient();
         }
 
         /// <inheritdoc />
         protected override async Task<CallResult<UpdateSubscription>> DoStartAsync(CancellationToken ct)
         {
-            // XXX
-            throw new NotImplementedException();
+            var sub = await _socketClient.Api.SubscribeToOrderBookUpdatesAsync(_symbolType, Symbol, HandleUpdate, ct).ConfigureAwait(false);
+            if (!sub)
+                return sub;
+
+            var set = await WaitForSetOrderBookAsync(_initialDataTimeout, ct).ConfigureAwait(false);
+            if (!set)
+            {
+                _ = sub.Data.CloseAsync();
+                return new CallResult<UpdateSubscription>(set.Error!);
+            }
+
+            return sub;
+        }
+
+        private void HandleUpdate(DataEvent<HyperLiquidOrderBook> @event)
+        {
+            SetInitialOrderBook(@event.Data.Timestamp.Ticks, @event.Data.Levels.Bids, @event.Data.Levels.Asks);
         }
 
         /// <inheritdoc />
@@ -78,18 +97,14 @@ namespace HyperLiquid.Net.SymbolOrderBooks
         /// <inheritdoc />
         protected override async Task<CallResult<bool>> DoResyncAsync(CancellationToken ct)
         {
-            // XXX
-            throw new NotImplementedException();
+            return await WaitForSetOrderBookAsync(_initialDataTimeout, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
         protected override void Dispose(bool disposing)
         {
             if (_clientOwner)
-            {
-                _restClient?.Dispose();
                 _socketClient?.Dispose();
-            }
 
             base.Dispose(disposing);
         }

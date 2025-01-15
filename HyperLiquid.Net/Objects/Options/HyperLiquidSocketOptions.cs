@@ -16,7 +16,6 @@ namespace HyperLiquid.Net.Objects.Options
             SocketSubscriptionsCombineTarget = 10
         };
 
-
         /// <summary>
         /// ctor
         /// </summary>
@@ -25,20 +24,18 @@ namespace HyperLiquid.Net.Objects.Options
             Default?.Set(this);
         }
 
-
-        
-         /// <summary>
+        /// <summary>
         ///  API options
         /// </summary>
-        public SocketApiOptions Options { get; private set; } = new SocketApiOptions();
-
+        public SocketApiOptions Options { get; private set; } = new SocketApiOptions()
+        {
+            MaxSocketConnections = 100
+        };
 
         internal HyperLiquidSocketOptions Set(HyperLiquidSocketOptions targetOptions)
         {
-            targetOptions = base.Set<HyperLiquidSocketOptions>(targetOptions);
-            
+            targetOptions = base.Set<HyperLiquidSocketOptions>(targetOptions);            
             targetOptions.Options = Options.Set(targetOptions.Options);
-
             return targetOptions;
         }
     }

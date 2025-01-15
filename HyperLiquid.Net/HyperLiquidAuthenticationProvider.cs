@@ -72,9 +72,9 @@ namespace HyperLiquid.Net
             if (!auth)
                 return;
 
-            var nonce = DateTimeConverter.ConvertToMilliseconds(DateTime.UtcNow).Value;
+            var action = (Dictionary<string, object>)bodyParameters!["action"];
+            var nonce = action.TryGetValue("time", out var time) ? (long)time : action.TryGetValue("nonce", out var n) ? (long)n: DateTimeConverter.ConvertToMilliseconds(DateTime.UtcNow).Value;
             bodyParameters!.Add("nonce", nonce);
-            var action = bodyParameters["action"];
 
             var hash = GenerateActionHash(action, nonce);
             var phantomAgent = new Dictionary<string, object>()
@@ -85,7 +85,7 @@ namespace HyperLiquid.Net
 
             var msg = EncodeEip721(_domain, _messageTypes, phantomAgent);
             var keccakSigned = BytesToHexString(SignKeccak(msg));
-            var signature = SignRequest(keccakSigned, ApiKey);
+            var signature = SignRequest(keccakSigned, _credentials.Secret);
 
             bodyParameters["signature"] = signature;
         }

@@ -6,52 +6,72 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using HyperLiquid.Net.Objects.Models;
+using HyperLiquid.Net.Objects.Internal;
 
 namespace HyperLiquid.Net.Objects.Sockets.Subscriptions
 {
     /// <inheritdoc />
-    internal class HyperLiquidSubscription<T> : Subscription<HyperLiquidModel, HyperLiquidModel>
+    internal class HyperLiquidSubscription<T> : Subscription<HyperLiquidSocketUpdate<HyperLiquidSubscribeRequest>, HyperLiquidSocketUpdate<HyperLiquidUnsubscribeRequest>>
     {
         /// <inheritdoc />
         public override HashSet<string> ListenerIdentifiers { get; set; }
 
+        private readonly string _topic;
+        private readonly Dictionary<string, object> _parameters;
         private readonly Action<DataEvent<T>> _handler;
 
         /// <inheritdoc />
         public override Type? GetMessageType(IMessageAccessor message)
         {
-            return typeof(T);
+            return typeof(HyperLiquidSocketUpdate<T>);
         }
 
         /// <summary>
         /// ctor
         /// </summary>
         /// <param name="logger"></param>
-        /// <param name="topics"></param>
+        /// <param name="topic"></param>
         /// <param name="handler"></param>
         /// <param name="auth"></param>
-        public HyperLiquidSubscription(ILogger logger, string[] topics, Action<DataEvent<T>> handler, bool auth) : base(logger, auth)
+        public HyperLiquidSubscription(ILogger logger, string topic, string listenId, Dictionary<string, object>? parameters, Action<DataEvent<T>> handler, bool auth) : base(logger, auth)
         {
             _handler = handler;
-            ListenerIdentifiers = new HashSet<string>(topics);
+            _topic = topic;
+            _parameters = parameters ?? new();
+            ListenerIdentifiers = new HashSet<string>([listenId]);
         }
 
         /// <inheritdoc />
         public override Query? GetSubQuery(SocketConnection connection)
         {
-            throw new NotImplementedException();
+            var subscription = new Dictionary<string, object>{ { "type", _topic } };
+            foreach(var kvp in _parameters)
+                subscription.Add(kvp.Key, kvp.Value);
+
+            return new HyperLiquidQuery<HyperLiquidSubscribeRequest>(new HyperLiquidSubscribeRequest
+            {
+                Subscription = subscription
+            }, "subscriptionResponse-" + _topic, false);
         }
 
         /// <inheritdoc />
         public override Query? GetUnsubQuery()
         {
-            throw new NotImplementedException();
+            var subscription = new Dictionary<string, object> { { "type", _topic } };
+            foreach (var kvp in _parameters)
+                subscription.Add(kvp.Key, kvp.Value);
+
+            return new HyperLiquidQuery<HyperLiquidSubscribeRequest>(new HyperLiquidUnsubscribeRequest
+            {
+                Subscription = subscription
+            }, "subscriptionResponse-" + _topic, false);
         }
 
         /// <inheritdoc />
         public override CallResult DoHandleMessage(SocketConnection connection, DataEvent<object> message)
         {
-            _handler.Invoke(message.As((T)message.Data!, null, null, SocketUpdateType.Update));
+            var update = (HyperLiquidSocketUpdate<T>)message.Data;
+            _handler.Invoke(message.As(update.Data!, _topic, null, SocketUpdateType.Update));
             return new CallResult(null);
         }
     }

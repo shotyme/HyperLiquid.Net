@@ -5,17 +5,17 @@ using System.Text;
 namespace HyperLiquid.Net.Enums
 {
     /// <summary>
-    /// TakeProfit/StopLoss type
+    /// Margin type
     /// </summary>
-    public enum TpSlType
+    public enum MarginType
     {
         /// <summary>
-        /// Take profit
+        /// Cross margin
         /// </summary>
-        TakeProfit,
+        Cross,
         /// <summary>
-        /// Stop loss
+        /// Isolated margin
         /// </summary>
-        StopLoss
+        Isolated
     }
 }

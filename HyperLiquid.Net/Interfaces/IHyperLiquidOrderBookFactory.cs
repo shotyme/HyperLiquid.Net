@@ -2,6 +2,7 @@ using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.SharedApis;
 using System;
 using HyperLiquid.Net.Objects.Options;
+using HyperLiquid.Net.Enums;
 
 namespace HyperLiquid.Net.Interfaces
 {
@@ -11,10 +12,13 @@ namespace HyperLiquid.Net.Interfaces
     public interface IHyperLiquidOrderBookFactory
     {
         /// <summary>
-        ///  order book factory methods
+        ///  order book Spot factory methods
         /// </summary>
-        IOrderBookFactory<HyperLiquidOrderBookOptions> Api { get; }
-
+        IOrderBookFactory<HyperLiquidOrderBookOptions> Spot { get; }
+        /// <summary>
+        ///  order book Futures factory methods
+        /// </summary>
+        IOrderBookFactory<HyperLiquidOrderBookOptions> Futures { get; }
 
         /// <summary>
         /// Create a SymbolOrderBook for the symbol
@@ -23,12 +27,10 @@ namespace HyperLiquid.Net.Interfaces
         /// <param name="options">Book options</param>
         /// <returns></returns>
         ISymbolOrderBook Create(SharedSymbol symbol, Action<HyperLiquidOrderBookOptions>? options = null);
-
         
         /// <summary>
         /// Create a new  local order book instance
         /// </summary>
-        ISymbolOrderBook Create(string symbol, Action<HyperLiquidOrderBookOptions>? options = null);
-
+        ISymbolOrderBook Create(SymbolType symbolType, string symbol, Action<HyperLiquidOrderBookOptions>? options = null);
     }
 }

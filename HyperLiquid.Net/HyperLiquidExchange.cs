@@ -23,13 +23,13 @@ namespace HyperLiquid.Net
         /// <summary>
         /// Url to the main website
         /// </summary>
-        public static string Url { get; } = "https://www.XXX.com";
+        public static string Url { get; } = "https://app.hyperliquid.xyz/";
 
         /// <summary>
         /// Urls to the API documentation
         /// </summary>
         public static string[] ApiDocsUrl { get; } = new[] {
-            "XXX"
+            "https://hyperliquid.gitbook.io/hyperliquid-docs"
             };
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace HyperLiquid.Net
         /// <returns></returns>
         public static string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverTime = null)
         {
-            throw new NotImplementedException();
+            return baseAsset + "/" + quoteAsset;
         }
 
         /// <summary>
@@ -75,12 +75,17 @@ namespace HyperLiquid.Net
 
         private void Initialize()
         {
-            HyperLiquid = new RateLimitGate("HyperLiquid");
-            HyperLiquid.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
+            HyperLiquidRest = new RateLimitGate("HyperLiquid REST")
+                .AddGuard(new RateLimitGuard(RateLimitGuard.PerHost, [], 1200, TimeSpan.FromSeconds(60), RateLimitWindowType.Sliding)); // Limit of 1200 weight per minute
+            HyperLiquidSocket = new RateLimitGate("HyperLiquid WebSocket")
+                .AddGuard(new RateLimitGuard(RateLimitGuard.PerHost, new LimitItemTypeFilter(RateLimitItemType.Request), 2000, TimeSpan.FromSeconds(60), RateLimitWindowType.Sliding)); // Limit of 2000 weight per minute
+            HyperLiquidRest.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
+            HyperLiquidSocket.RateLimitTriggered += (x) => RateLimitTriggered?.Invoke(x);
         }
 
 
-        internal IRateLimitGate HyperLiquid { get; private set; }
+        internal IRateLimitGate HyperLiquidRest { get; private set; }
+        internal IRateLimitGate HyperLiquidSocket { get; private set; }
 
     }
 }

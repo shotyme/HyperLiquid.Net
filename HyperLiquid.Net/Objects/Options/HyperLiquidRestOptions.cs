@@ -23,20 +23,16 @@ namespace HyperLiquid.Net.Objects.Options
         {
             Default?.Set(this);
         }
-
         
          /// <summary>
         ///  API options
         /// </summary>
         public RestApiOptions Options { get; private set; } = new RestApiOptions();
 
-
         internal HyperLiquidRestOptions Set(HyperLiquidRestOptions targetOptions)
         {
-            targetOptions = base.Set<HyperLiquidRestOptions>(targetOptions);
-            
+            targetOptions = base.Set<HyperLiquidRestOptions>(targetOptions);            
             targetOptions.Options = Options.Set(targetOptions.Options);
-
             return targetOptions;
         }
     }
