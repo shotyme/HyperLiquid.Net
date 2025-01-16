@@ -88,55 +88,144 @@ namespace HyperLiquid.Net.Clients.Api
                     if (x.Key.StartsWith("@"))
                         return mappingResult.TryGetValue(x.Key, out var name) ? name : x.Key;
 
-                    return x.Key + "/USD";
+                    return x.Key;
                 }, x => x.Value)));
             }, false);
             return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToKlineUpdatesAsync(SymbolType symbolType, string symbol, KlineInterval interval, Action<DataEvent<HyperLiquidKline>> onMessage, CancellationToken ct = default)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToKlineUpdatesAsync(string symbol, KlineInterval interval, Action<DataEvent<HyperLiquidKline>> onMessage, CancellationToken ct = default)
         {
-            var result = await HyperLiquidUtils.GetExchangeNameFromSymbolNameAsync(symbolType, symbol).ConfigureAwait(false);
-            if (!result)
-                return result.As<UpdateSubscription>(default);
-
-            var subscription = new HyperLiquidSubscription<HyperLiquidKline>(_logger, "candle", "candle-" + result.Data, new Dictionary<string, object>
+            var coin = symbol;
+            if (symbol.Contains("/"))
             {
-                { "coin", result.Data },
+                // Spot symbol
+                var spotName = await HyperLiquidUtils.GetExchangeNameFromSymbolNameAsync(symbol).ConfigureAwait(false);
+                if (!spotName)
+                    return new WebCallResult<UpdateSubscription>(spotName.Error);
+
+                coin = spotName.Data;
+            }
+
+            var subscription = new HyperLiquidSubscription<HyperLiquidKline>(_logger, "candle", "candle-" + coin, new Dictionary<string, object>
+            {
+                { "coin", coin },
                 { "interval", EnumConverter.GetString(interval) }
             },
-            onMessage, false);
+            x => {
+                x.Data.Symbol = coin;
+                onMessage(x.WithSymbol(coin));
+            }, false);
             return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(SymbolType symbolType, string symbol, Action<DataEvent<HyperLiquidOrderBook>> onMessage, CancellationToken ct = default)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookUpdatesAsync(string symbol, Action<DataEvent<HyperLiquidOrderBook>> onMessage, CancellationToken ct = default)
         {
-            var result = await HyperLiquidUtils.GetExchangeNameFromSymbolNameAsync(symbolType, symbol).ConfigureAwait(false);
-            if (!result)
-                return result.As<UpdateSubscription>(default);
-
-            var subscription = new HyperLiquidSubscription<HyperLiquidOrderBook>(_logger, "l2Book", "l2Book-" + result.Data, new Dictionary<string, object>
+            var coin = symbol;
+            if (symbol.Contains("/"))
             {
-                { "coin", result.Data }
+                // Spot symbol
+                var spotName = await HyperLiquidUtils.GetExchangeNameFromSymbolNameAsync(symbol).ConfigureAwait(false);
+                if (!spotName)
+                    return new WebCallResult<UpdateSubscription>(spotName.Error);
+
+                coin = spotName.Data;
+            }
+
+            var subscription = new HyperLiquidSubscription<HyperLiquidOrderBook>(_logger, "l2Book", "l2Book-" + coin, new Dictionary<string, object>
+            {
+                { "coin", coin }
             },
-            onMessage, false);
+            x => {
+                x.Data.Symbol = coin;
+                onMessage(x.WithSymbol(coin));
+            }, false);
             return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
         }
 
         /// <inheritdoc />
-        public async Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(SymbolType symbolType, string symbol, Action<DataEvent<IEnumerable<HyperLiquidTrade>>> onMessage, CancellationToken ct = default)
+        public async Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<IEnumerable<HyperLiquidTrade>>> onMessage, CancellationToken ct = default)
         {
-            var result = await HyperLiquidUtils.GetExchangeNameFromSymbolNameAsync(symbolType, symbol).ConfigureAwait(false);
-            if (!result)
-                return result.As<UpdateSubscription>(default);
-
-            var subscription = new HyperLiquidSubscription<IEnumerable<HyperLiquidTrade>>(_logger, "trades", "trades-" + result.Data, new Dictionary<string, object>
+            var coin = symbol;
+            if (symbol.Contains("/"))
             {
-                { "coin", result.Data },
+                // Spot symbol
+                var spotName = await HyperLiquidUtils.GetExchangeNameFromSymbolNameAsync(symbol).ConfigureAwait(false);
+                if (!spotName)
+                    return new WebCallResult<UpdateSubscription>(spotName.Error);
+
+                coin = spotName.Data;
+            }
+
+            var subscription = new HyperLiquidSubscription<IEnumerable<HyperLiquidTrade>>(_logger, "trades", "trades-" + coin, new Dictionary<string, object>
+            {
+                { "coin", coin },
             },
-            onMessage, false);
+            x => {
+                foreach(var trade in x.Data)
+                    trade.Symbol = coin;
+                onMessage(x.WithSymbol(coin));
+            }, false);
+            return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToSpotSymbolUpdatesAsync(string symbol, Action<DataEvent<HyperLiquidTicker>> onMessage, CancellationToken ct = default)
+        {
+            var coin = symbol;
+            if (symbol.Contains("/"))
+            {
+                // Spot symbol
+                var spotName = await HyperLiquidUtils.GetExchangeNameFromSymbolNameAsync(symbol).ConfigureAwait(false);
+                if (!spotName)
+                    return new WebCallResult<UpdateSubscription>(spotName.Error);
+
+                coin = spotName.Data;
+            }
+
+            var subscription = new HyperLiquidSubscription<HyperLiquidTickerUpdate>(_logger, "activeAssetCtx", "activeSpotAssetCtx-" + coin, new Dictionary<string, object>
+            {
+                { "coin", coin },
+            },
+            x =>
+            {
+                onMessage(x.As(x.Data.Ticker).WithSymbol(coin));
+            }, false);
+            return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeFuturesSymbolUpdatesAsync(string symbol, Action<DataEvent<HyperLiquidFuturesTicker>> onMessage, CancellationToken ct = default)
+        {
+            var subscription = new HyperLiquidSubscription<HyperLiquidFuturesTickerUpdate>(_logger, "activeAssetCtx", "activeAssetCtx-" + symbol, new Dictionary<string, object>
+            {
+                { "coin", symbol },
+            },
+            x =>
+            {
+                onMessage(x.As(x.Data.Ticker).WithSymbol(symbol));
+            }, false);
+            return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeFuturesUserSymbolUpdatesAsync(string? address, string symbol, Action<DataEvent<HyperLiquidFuturesUserSymbolUpdate>> onMessage, CancellationToken ct = default)
+        {
+            if (address == null && AuthenticationProvider == null)
+                throw new ArgumentNullException(nameof(address), "Address needs to be provided if API credentials not set");
+
+            var addressSub = address ?? AuthenticationProvider!.ApiKey;
+            var subscription = new HyperLiquidSubscription<HyperLiquidFuturesUserSymbolUpdate>(_logger, "activeAssetData", "activeAssetData-" + symbol, new Dictionary<string, object>
+            {
+                { "coin", symbol },
+                { "user", addressSub },
+            },
+            x =>
+            {
+                onMessage(x.WithSymbol(symbol));
+            }, false);
             return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
         }
 
@@ -231,7 +320,23 @@ namespace HyperLiquid.Net.Clients.Api
             },
             x =>
             {
+                foreach (var order in x.Data.Trades)
+                {
+                    if (order.ExchangeSymbol.StartsWith("@"))
+                    {
+                        var symbolName = HyperLiquidUtils.GetSymbolNameFromExchangeName(order.ExchangeSymbol);
+                        if (symbolName == null)
+                            continue;
 
+                        order.Symbol = symbolName.Data;
+                        order.SymbolType = SymbolType.Spot;
+                    }
+                    else
+                    {
+                        order.Symbol = order.ExchangeSymbol;
+                        order.SymbolType = SymbolType.Futures;
+                    }
+                }
 
                 onMessage(x.As(x.Data.Trades).WithUpdateType(x.Data.IsSnapshot ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             }, false);
@@ -255,8 +360,87 @@ namespace HyperLiquid.Net.Clients.Api
             },
             x =>
             {
-
                 onMessage(x.As(x.Data.Fundings).WithUpdateType(x.Data.IsSnapshot ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
+            }, false);
+            return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToTwapTradeUpdatesAsync(string? address, Action<DataEvent<IEnumerable<HyperLiquidTwapStatus>>> onMessage, CancellationToken ct = default)
+        {
+            if (address == null && AuthenticationProvider == null)
+                throw new ArgumentNullException(nameof(address), "Address needs to be provided if API credentials not set");
+
+            var result = await HyperLiquidUtils.UpdateSpotSymbolInfoAsync().ConfigureAwait(false);
+            if (!result)
+                return new CallResult<UpdateSubscription>(result.Error!);
+
+            var addressSub = address ?? AuthenticationProvider!.ApiKey;
+            var subscription = new HyperLiquidSubscription<HyperLiquidTwapTradeUpdate>(_logger, "userTwapSliceFills", "userTwapSliceFills", new Dictionary<string, object>
+            {
+                { "user", addressSub },
+            },
+            x =>
+            {
+                foreach (var order in x.Data.Trades)
+                {
+                    if (order.ExchangeSymbol.StartsWith("@"))
+                    {
+                        var symbolName = HyperLiquidUtils.GetSymbolNameFromExchangeName(order.ExchangeSymbol);
+                        if (symbolName == null)
+                            continue;
+
+                        order.Symbol = symbolName.Data;
+                        order.SymbolType = SymbolType.Spot;
+                    }
+                    else
+                    {
+                        order.Symbol = order.ExchangeSymbol;
+                        order.SymbolType = SymbolType.Futures;
+                    }
+                }
+
+                onMessage(x.As(x.Data.Trades).WithUpdateType(x.Data.IsSnapshot ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
+            }, false);
+            return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
+        }
+
+        /// <inheritdoc />
+        public async Task<CallResult<UpdateSubscription>> SubscribeToTwapOrderUpdatesAsync(string? address, Action<DataEvent<IEnumerable<HyperLiquidTwapOrderStatus>>> onMessage, CancellationToken ct = default)
+        {
+            if (address == null && AuthenticationProvider == null)
+                throw new ArgumentNullException(nameof(address), "Address needs to be provided if API credentials not set");
+
+            var result = await HyperLiquidUtils.UpdateSpotSymbolInfoAsync().ConfigureAwait(false);
+            if (!result)
+                return new CallResult<UpdateSubscription>(result.Error!);
+
+            var addressSub = address ?? AuthenticationProvider!.ApiKey;
+            var subscription = new HyperLiquidSubscription<HyperLiquidTwapOrderUpdate>(_logger, "userTwapHistory", "userTwapHistory", new Dictionary<string, object>
+            {
+                { "user", addressSub },
+            },
+            x =>
+            {
+                foreach (var order in x.Data.History)
+                {
+                    if (order.TwapInfo.ExchangeSymbol.StartsWith("@"))
+                    {
+                        var symbolName = HyperLiquidUtils.GetSymbolNameFromExchangeName(order.TwapInfo.ExchangeSymbol);
+                        if (symbolName == null)
+                            continue;
+
+                        order.TwapInfo.Symbol = symbolName.Data;
+                        order.TwapInfo.SymbolType = SymbolType.Spot;
+                    }
+                    else
+                    {
+                        order.TwapInfo.Symbol = order.TwapInfo.ExchangeSymbol;
+                        order.TwapInfo.SymbolType = SymbolType.Futures;
+                    }
+                }
+
+                onMessage(x.As(x.Data.History).WithUpdateType(x.Data.IsSnapshot ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
             }, false);
             return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
         }
@@ -274,7 +458,7 @@ namespace HyperLiquid.Net.Clients.Api
             if (channel == "trades")
                 return channel + "-" + message.GetValue<string>(_itemSymbolPath);
 
-            if (channel == "l2Book")
+            if (channel == "l2Book" || channel == "activeSpotAssetCtx" || channel == "activeAssetCtx" || channel == "activeAssetData")
                 return channel + "-" + message.GetValue<string>(_bookSymbolPath);
 
             var symbol = message.GetValue<string>(_symbolPath);

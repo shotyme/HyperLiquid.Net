@@ -29,10 +29,6 @@ namespace HyperLiquid.Net.Objects.Sockets.Subscriptions
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="logger"></param>
-        /// <param name="topic"></param>
-        /// <param name="handler"></param>
-        /// <param name="auth"></param>
         public HyperLiquidSubscription(ILogger logger, string topic, string listenId, Dictionary<string, object>? parameters, Action<DataEvent<T>> handler, bool auth) : base(logger, auth)
         {
             _handler = handler;

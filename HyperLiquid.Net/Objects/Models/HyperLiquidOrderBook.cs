@@ -15,10 +15,10 @@ namespace HyperLiquid.Net.Objects.Models
     public record HyperLiquidOrderBook
     {
         /// <summary>
-        /// Asset 
+        /// Symbol 
         /// </summary>
         [JsonPropertyName("coin")]
-        public string Asset { get; set; } = string.Empty;
+        public string Symbol { get; set; } = string.Empty;
         /// <summary>
         /// Data timestamp
         /// </summary>

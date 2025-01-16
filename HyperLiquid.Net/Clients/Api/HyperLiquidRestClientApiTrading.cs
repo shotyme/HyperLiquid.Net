@@ -10,8 +10,6 @@ using System;
 using HyperLiquid.Net.Utils;
 using HyperLiquid.Net.Enums;
 using System.Linq;
-using CryptoExchange.Net.Converters.SystemTextJson;
-using System.Globalization;
 
 namespace HyperLiquid.Net.Clients.Api
 {
@@ -124,7 +122,29 @@ namespace HyperLiquid.Net.Clients.Api
                 { "user", address ?? _baseClient.AuthenticationProvider!.ApiKey }
             };
             var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
-            return await _baseClient.SendAsync<IEnumerable<HyperLiquidUserTrade>>(request, parameters, ct).ConfigureAwait(false);
+            var result = await _baseClient.SendAsync<IEnumerable<HyperLiquidUserTrade>>(request, parameters, ct).ConfigureAwait(false);
+            if (!result)
+                return result;
+
+            foreach (var order in result.Data)
+            {
+                if (order.ExchangeSymbol.StartsWith("@"))
+                {
+                    var symbolName = await HyperLiquidUtils.GetSymbolNameFromExchangeNameAsync(order.ExchangeSymbol).ConfigureAwait(false);
+                    if (symbolName == null)
+                        continue;
+
+                    order.Symbol = symbolName.Data;
+                    order.SymbolType = SymbolType.Spot;
+                }
+                else
+                {
+                    order.Symbol = order.ExchangeSymbol;
+                    order.SymbolType = SymbolType.Futures;
+                }
+            }
+
+            return result;
         }
 
         #endregion
@@ -152,7 +172,29 @@ namespace HyperLiquid.Net.Clients.Api
             parameters.AddOptional("aggregateByTime", aggregateByTime);
 
             var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
-            return await _baseClient.SendAsync<IEnumerable<HyperLiquidUserTrade>>(request, parameters, ct).ConfigureAwait(false);
+            var result = await _baseClient.SendAsync<IEnumerable<HyperLiquidUserTrade>>(request, parameters, ct).ConfigureAwait(false);
+            if (!result)
+                return result;
+
+            foreach (var order in result.Data)
+            {
+                if (order.ExchangeSymbol.StartsWith("@"))
+                {
+                    var symbolName = await HyperLiquidUtils.GetSymbolNameFromExchangeNameAsync(order.ExchangeSymbol).ConfigureAwait(false);
+                    if (symbolName == null)
+                        continue;
+
+                    order.Symbol = symbolName.Data;
+                    order.SymbolType = SymbolType.Spot;
+                }
+                else
+                {
+                    order.Symbol = order.ExchangeSymbol;
+                    order.SymbolType = SymbolType.Futures;
+                }
+            }
+
+            return result;
         }
 
         #endregion
@@ -182,7 +224,22 @@ namespace HyperLiquid.Net.Clients.Api
             if (result.Data.Status != "order")
                 return result.AsError<HyperLiquidOrderStatus>(new ServerError(result.Data.Status));
 
-            return result.As<HyperLiquidOrderStatus>(result.Data.Order);
+            if (result.Data.Order!.Order.ExchangeSymbol.StartsWith("@"))
+            {
+                var symbolName = await HyperLiquidUtils.GetSymbolNameFromExchangeNameAsync(result.Data.Order!.Order.ExchangeSymbol).ConfigureAwait(false);
+                if (symbolName != null)
+                {
+                    result.Data.Order!.Order.Symbol = symbolName.Data;
+                    result.Data.Order!.Order.SymbolType = SymbolType.Spot;
+                }
+            }
+            else
+            {
+                result.Data.Order!.Order.Symbol = result.Data.Order!.Order.ExchangeSymbol;
+                result.Data.Order!.Order.SymbolType = SymbolType.Futures;
+            }
+
+            return result.As(result.Data.Order);
         }
 
         #endregion
@@ -288,6 +345,7 @@ namespace HyperLiquid.Net.Clients.Api
                 var orderTypeParameters = new ParameterCollection();
                 if (order.OrderType == OrderType.Limit)
                 {
+#warning check market order
                     var limitParameters = new ParameterCollection();
                     limitParameters.AddEnum("tif", order.TimeInForce);
                     orderTypeParameters.Add("limit", limitParameters);
@@ -594,6 +652,9 @@ namespace HyperLiquid.Net.Clients.Api
             var orderRequests = new List<ParameterCollection>();
             foreach (var order in requests)
             {
+                if ((order.OrderId == null) == (order.ClientOrderId == null))
+                    throw new ArgumentException("Either OrderId or ClientOrderId should be provided per order");
+
                 var symbolId = await HyperLiquidUtils.GetSymbolIdFromNameAsync(order.SymbolType, order.Symbol).ConfigureAwait(false);
                 if (!symbolId)
                     return new WebCallResult<IEnumerable<CallResult<HyperLiquidOrderResult>>>(symbolId.Error!);
@@ -744,15 +805,18 @@ namespace HyperLiquid.Net.Clients.Api
             orderParameters.Add("m", minutes);
             orderParameters.Add("t", randomize);
 
-            var parameters = new ParameterCollection()
+            var actionParameters = new ParameterCollection()
             {
                 { "type", "twapOrder" },
                 { "twap", orderParameters }
             };
-            parameters.AddMilliseconds("nonce", DateTime.UtcNow);
+            var parameters = new ParameterCollection
+            {
+                { "action", actionParameters }
+            };
 
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "exchange", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 1, false);
-            var result = await _baseClient.SendAsync<HyperLiquidTwapOrderResultIntWrapper>(request, parameters, ct).ConfigureAwait(false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "exchange", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 1, true);
+            var result = await _baseClient.SendAuthAsync<HyperLiquidTwapOrderResultIntWrapper>(request, parameters, ct).ConfigureAwait(false);
             if (!result)
                 return result.As<HyperLiquidTwapOrderResult>(default);
 
@@ -767,29 +831,33 @@ namespace HyperLiquid.Net.Clients.Api
         #region Cancel Twap Order
 
         /// <inheritdoc />
-        public async Task<WebCallResult<HyperLiquidTwapOrderResult>> CancelTwapOrderAsync(SymbolType symbolType, string symbol, long twapId, CancellationToken ct = default)
+        public async Task<WebCallResult> CancelTwapOrderAsync(SymbolType symbolType, string symbol, long twapId, CancellationToken ct = default)
         {
             var symbolId = await HyperLiquidUtils.GetSymbolIdFromNameAsync(symbolType, symbol).ConfigureAwait(false);
             if (!symbolId)
-                return new WebCallResult<HyperLiquidTwapOrderResult>(symbolId.Error);
+                return new WebCallResult(symbolId.Error!);
 
-            var parameters = new ParameterCollection()
+            var actionParameters = new ParameterCollection()
             {
                 { "type", "twapCancel" },
                 { "a", symbolId.Data },
                 { "t", twapId }
             };
-            parameters.AddMilliseconds("nonce", DateTime.UtcNow);
 
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "exchange", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 1, false);
-            var result = await _baseClient.SendAsync<HyperLiquidTwapOrderResultIntWrapper>(request, parameters, ct).ConfigureAwait(false);
+            var parameters = new ParameterCollection
+            {
+                { "action", actionParameters }
+            };
+
+            var request = _definitions.GetOrCreate(HttpMethod.Post, "exchange", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 1, true);
+            var result = await _baseClient.SendAuthAsync<HyperLiquidTwapCancelResult>(request, parameters, ct).ConfigureAwait(false);
             if (!result)
-                return result.As<HyperLiquidTwapOrderResult>(default);
+                return result.AsDataless();
 
-            if (result.Data.Status.Error != null)
-                return result.AsError<HyperLiquidTwapOrderResult>(new ServerError(result.Data.Status.Error));
+            if (result.Data.Status != "success")
+                return result.AsDatalessError(new ServerError(result.Data.Status));
 
-            return result.As(result.Data.Status.ResultRunning!);
+            return result.AsDataless();
         }
 
         #endregion

@@ -26,28 +26,25 @@ namespace HyperLiquid.Net.SymbolOrderBooks
         {
             _serviceProvider = serviceProvider;
 
-            Spot = new OrderBookFactory<HyperLiquidOrderBookOptions>((symbol, opts) => Create(SymbolType.Spot, symbol, opts), Create);
-            Futures = new OrderBookFactory<HyperLiquidOrderBookOptions>((symbol, opts) => Create(SymbolType.Futures, symbol, opts), Create);
+            Api = new OrderBookFactory<HyperLiquidOrderBookOptions>(Create, Create);
         }
 
         
          /// <inheritdoc />
-        public IOrderBookFactory<HyperLiquidOrderBookOptions> Spot { get; }
-        /// <inheritdoc />
-        public IOrderBookFactory<HyperLiquidOrderBookOptions> Futures { get; }
+        public IOrderBookFactory<HyperLiquidOrderBookOptions> Api { get; }
 
 
         /// <inheritdoc />
         public ISymbolOrderBook Create(SharedSymbol symbol, Action<HyperLiquidOrderBookOptions>? options = null)
         {
             var symbolName = HyperLiquidExchange.FormatSymbol(symbol.BaseAsset, symbol.QuoteAsset, symbol.TradingMode, symbol.DeliverTime);
-            return Create(symbol.TradingMode == TradingMode.Spot ? SymbolType.Spot : SymbolType.Futures, symbolName, options);
+            return Create(symbolName, options);
         }
 
         
          /// <inheritdoc />
-        public ISymbolOrderBook Create(SymbolType symbolType, string symbol, Action<HyperLiquidOrderBookOptions>? options = null)
-            => new HyperLiquidSymbolOrderBook(symbolType, symbol, options, 
+        public ISymbolOrderBook Create(string symbol, Action<HyperLiquidOrderBookOptions>? options = null)
+            => new HyperLiquidSymbolOrderBook(symbol, options, 
                                                           _serviceProvider.GetRequiredService<ILoggerFactory>(),
                                                           _serviceProvider.GetRequiredService<IHyperLiquidSocketClient>());
 

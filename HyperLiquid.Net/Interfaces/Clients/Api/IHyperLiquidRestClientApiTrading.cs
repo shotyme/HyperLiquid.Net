@@ -76,7 +76,7 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#cancel-order-s" /></para>
         /// </summary>
         /// <param name="symbolType">Type of symbol</param>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
         /// <param name="orderId">Order id</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult> CancelOrderAsync(SymbolType symbolType, string symbol, long orderId, CancellationToken ct = default);
@@ -94,7 +94,7 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#cancel-order-s-by-cloid" /></para>
         /// </summary>
         /// <param name="symbolType">Type of symbol</param>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
         /// <param name="clientOrderId">Client rder id</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult> CancelOrderByClientOrderIdAsync(SymbolType symbolType, string symbol, string clientOrderId, CancellationToken ct = default);
@@ -112,7 +112,7 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#place-an-order" /></para>
         /// </summary>
         /// <param name="symbolType">Symbol type</param>
-        /// <param name="symbol">Symbol name</param>
+        /// <param name="symbol">Symbol name, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
         /// <param name="side">Order side</param>
         /// <param name="orderType">Order type</param>
         /// <param name="quantity">Quantity</param>
@@ -165,7 +165,7 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         /// <param name="orderId">Edit order by order id, either this or clientOrderId should be provided</param>
         /// <param name="clientOrderId">Edit order by client order id, either this or orderId should be provided</param>
         /// <param name="symbolType">Symbol type</param>
-        /// <param name="symbol">Symbol name</param>
+        /// <param name="symbol">Symbol name, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
         /// <param name="side">Order side</param>
         /// <param name="orderType">Order type</param>
         /// <param name="quantity">Quantity</param>
@@ -206,7 +206,7 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         /// Set leverage for a symbol
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#update-leverage" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol name</param>
+        /// <param name="symbol">Symbol name, for example "ETH"</param>
         /// <param name="leverage">New leverage</param>
         /// <param name="marginType">Margin type</param>
         /// <param name="ct">Cancellation token</param>
@@ -216,7 +216,7 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         /// Add or remove margin from isolated position
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#update-isolated-margin" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol name</param>
+        /// <param name="symbol">Symbol name, for example "ETH"</param>
         /// <param name="updateValue">Change value</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult> UpdateIsolatedMarginAsync(string symbol, decimal updateValue, CancellationToken ct = default);
@@ -226,7 +226,7 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#place-a-twap-order" /></para>
         /// </summary>
         /// <param name="symbolType">Symbol type</param>
-        /// <param name="symbol">Symbol name</param>
+        /// <param name="symbol">Symbol name, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
         /// <param name="orderSide">Order side</param>
         /// <param name="quantity">Order quantity</param>
         /// <param name="reduceOnly">Reduce onyl</param>
@@ -240,9 +240,9 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#cancel-a-twap-order" /></para>
         /// </summary>
         /// <param name="symbolType">Symbol type</param>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
         /// <param name="twapId">TWAP order id</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<HyperLiquidTwapOrderResult>> CancelTwapOrderAsync(SymbolType symbolType, string symbol, long twapId, CancellationToken ct = default);
+        Task<WebCallResult> CancelTwapOrderAsync(SymbolType symbolType, string symbol, long twapId, CancellationToken ct = default);
     }
 }

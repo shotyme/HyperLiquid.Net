@@ -51,9 +51,9 @@ namespace HyperLiquid.Net.Objects.Models
         [JsonPropertyName("n")]
         public int TradeCount { get; set; }
         /// <summary>
-        /// Asset
+        /// Symbol
         /// </summary>
         [JsonPropertyName("s")]
-        public string Asset { get; set; } = string.Empty;
+        public string Symbol { get; set; } = string.Empty;
     }
 }

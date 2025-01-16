@@ -24,15 +24,11 @@ namespace HyperLiquid.Net.Objects.Models
     public record HyperLiquidFuturesSymbol
     {
         /// <summary>
-        /// Symbol name as returned by the API
-        /// </summary>
-        [JsonPropertyName("name")]
-        public string ExchangeName { get; set; } = string.Empty;
-        /// <summary>
         /// Symbol name
         /// </summary>
         [JsonIgnore]
-        public string Name => ExchangeName + "/USD";
+        [JsonPropertyName("name")]
+        public string Name { get; set; } = string.Empty;
         /// <summary>
         /// Decimal places for quantities
         /// </summary>

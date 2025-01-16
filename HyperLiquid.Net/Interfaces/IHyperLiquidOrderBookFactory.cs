@@ -12,13 +12,9 @@ namespace HyperLiquid.Net.Interfaces
     public interface IHyperLiquidOrderBookFactory
     {
         /// <summary>
-        ///  order book Spot factory methods
+        /// Order book factory methods
         /// </summary>
-        IOrderBookFactory<HyperLiquidOrderBookOptions> Spot { get; }
-        /// <summary>
-        ///  order book Futures factory methods
-        /// </summary>
-        IOrderBookFactory<HyperLiquidOrderBookOptions> Futures { get; }
+        IOrderBookFactory<HyperLiquidOrderBookOptions> Api { get; }
 
         /// <summary>
         /// Create a SymbolOrderBook for the symbol
@@ -29,8 +25,8 @@ namespace HyperLiquid.Net.Interfaces
         ISymbolOrderBook Create(SharedSymbol symbol, Action<HyperLiquidOrderBookOptions>? options = null);
         
         /// <summary>
-        /// Create a new  local order book instance
+        /// Create a new local order book instance
         /// </summary>
-        ISymbolOrderBook Create(SymbolType symbolType, string symbol, Action<HyperLiquidOrderBookOptions>? options = null);
+        ISymbolOrderBook Create(string symbol, Action<HyperLiquidOrderBookOptions>? options = null);
     }
 }

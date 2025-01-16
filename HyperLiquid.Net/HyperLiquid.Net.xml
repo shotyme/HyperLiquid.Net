@@ -46,7 +46,16 @@
         <member name="T:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount">
             <inheritdoc />
         </member>
-        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.GetBalancesAsync(System.String,System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.GetSpotBalancesAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.GetFuturesAccountAsync(System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.GetFundingHistoryAsync(System.DateTime,System.Nullable{System.DateTime},System.String,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.GetAccountLedgerAsync(System.DateTime,System.Nullable{System.DateTime},System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.GetRateLimitsAsync(System.String,System.Threading.CancellationToken)">
@@ -55,16 +64,31 @@
         <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.GetApprovedBuilderFeeAsync(System.String,System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.TransferUsdAsync(System.String,System.String,System.Decimal,System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.TransferUsdAsync(System.String,System.Decimal,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.TransferSpotAsync(System.String,System.String,System.String,System.Decimal,System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.TransferSpotAsync(System.String,System.String,System.Decimal,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.WithdrawAsync(System.String,System.String,System.Decimal,System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.WithdrawAsync(System.String,System.Decimal,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.TransferInternalAsync(System.String,HyperLiquid.Net.Enums.TransferDirection,System.Decimal,System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.TransferInternalAsync(HyperLiquid.Net.Enums.TransferDirection,System.Decimal,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.DepositIntoStakingAsync(System.Int64,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.WithdrawFromStakingAsync(System.Int64,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.DelegateOrUndelegateStakeFromValidatorAsync(HyperLiquid.Net.Enums.DelegateDirection,System.String,System.Int64,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.DepositOrWithdrawFromVaultAsync(HyperLiquid.Net.Enums.DepositWithdrawDirection,System.String,System.Int64,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiAccount.ApproveBuilderFeeAsync(System.String,System.Decimal,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiExchangeData">
@@ -79,6 +103,9 @@
         <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiExchangeData.GetSpotExchangeInfoAndTickersAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiExchangeData.GetFuturesExchangeInfoAndTickersAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
         <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiExchangeData.GetAssetInfoAsync(System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
@@ -89,6 +116,12 @@
             <inheritdoc />
         </member>
         <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiExchangeData.GetKlinesAsync(System.String,HyperLiquid.Net.Enums.KlineInterval,System.DateTime,System.DateTime,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiExchangeData.GetFundingRateHistoryAsync(System.String,System.DateTime,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiExchangeData.GetFuturesSymbolsAtMaxOpenInterestAsync(System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="T:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading">
@@ -136,6 +169,12 @@
         <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.UpdateIsolatedMarginAsync(System.String,System.Decimal,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.PlaceTwapOrderAsync(HyperLiquid.Net.Enums.SymbolType,System.String,HyperLiquid.Net.Enums.OrderSide,System.Decimal,System.Boolean,System.Int32,System.Boolean,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidRestClientApiTrading.CancelTwapOrderAsync(HyperLiquid.Net.Enums.SymbolType,System.String,System.Int64,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
         <member name="T:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi">
             <summary>
             Client providing access to the HyperLiquid  websocket Api
@@ -158,13 +197,22 @@
         <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.SubscribeToPriceUpdatesAsync(System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.Dictionary{System.String,System.Decimal}}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.SubscribeToKlineUpdatesAsync(HyperLiquid.Net.Enums.SymbolType,System.String,HyperLiquid.Net.Enums.KlineInterval,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{HyperLiquid.Net.Objects.Models.HyperLiquidKline}},System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.SubscribeToKlineUpdatesAsync(System.String,HyperLiquid.Net.Enums.KlineInterval,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{HyperLiquid.Net.Objects.Models.HyperLiquidKline}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.SubscribeToOrderBookUpdatesAsync(HyperLiquid.Net.Enums.SymbolType,System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{HyperLiquid.Net.Objects.Models.HyperLiquidOrderBook}},System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.SubscribeToOrderBookUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{HyperLiquid.Net.Objects.Models.HyperLiquidOrderBook}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.SubscribeToTradeUpdatesAsync(HyperLiquid.Net.Enums.SymbolType,System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidTrade}}},System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidTrade}}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.SubscribeToSpotSymbolUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{HyperLiquid.Net.Objects.Models.HyperLiquidTicker}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.SubscribeFuturesSymbolUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{HyperLiquid.Net.Objects.Models.HyperLiquidFuturesTicker}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.SubscribeFuturesUserSymbolUpdatesAsync(System.String,System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{HyperLiquid.Net.Objects.Models.HyperLiquidFuturesUserSymbolUpdate}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.SubscribeToNotificationUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidTrade}}},System.Threading.CancellationToken)">
@@ -180,6 +228,12 @@
             <inheritdoc />
         </member>
         <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.SubscribeToUserFundingUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidUserFunding}}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.SubscribeToTwapTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidTwapStatus}}},System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.SubscribeToTwapOrderUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidTwapOrderStatus}}},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:HyperLiquid.Net.Clients.Api.HyperLiquidSocketClientApi.GetListenerIdentifier(CryptoExchange.Net.Interfaces.IMessageAccessor)">
@@ -256,6 +310,36 @@
         </member>
         <member name="M:HyperLiquid.Net.Clients.HyperLiquidSocketClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
+        </member>
+        <member name="T:HyperLiquid.Net.Enums.DelegateDirection">
+            <summary>
+            Direction
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.DelegateDirection.Delegate">
+            <summary>
+            Delegate
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.DelegateDirection.Undelegate">
+            <summary>
+            Undelegate
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Enums.DepositWithdrawDirection">
+            <summary>
+            Direction
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.DepositWithdrawDirection.Deposit">
+            <summary>
+            Deposit
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.DepositWithdrawDirection.Withdraw">
+            <summary>
+            Withdraw
+            </summary>
         </member>
         <member name="T:HyperLiquid.Net.Enums.Direction">
             <summary>
@@ -447,6 +531,16 @@
             Stop Limit
             </summary>
         </member>
+        <member name="T:HyperLiquid.Net.Enums.PositionType">
+            <summary>
+            Position type
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.PositionType.OneWay">
+            <summary>
+            One way
+            </summary>
+        </member>
         <member name="T:HyperLiquid.Net.Enums.SymbolType">
             <summary>
             Type of symbol
@@ -535,6 +629,31 @@
         <member name="F:HyperLiquid.Net.Enums.TriggerCondition.NA">
             <summary>
             Not applicable
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Enums.TwapStatus">
+            <summary>
+            TWAP order status
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.TwapStatus.Activated">
+            <summary>
+            Activated
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.TwapStatus.Terminated">
+            <summary>
+            Terminated
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.TwapStatus.Finished">
+            <summary>
+            Finished
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.TwapStatus.Error">
+            <summary>
+            Error
             </summary>
         </member>
         <member name="T:HyperLiquid.Net.ExtensionMethods.HyperLiquidExtensionMethods">
@@ -686,12 +805,40 @@
             HyperLiquid  account endpoints. Account endpoints include balance info, withdraw/deposit info and requesting and account settings
             </summary>
         </member>
-        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.GetBalancesAsync(System.String,System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.GetSpotBalancesAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Get user asset balances
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/spot#retrieve-a-users-token-balances" /></para>
             </summary>
             <param name="address">Address to request balances for. If not provided will use the address provided in the API credentials</param>
+            <param name="ct">Cancellation token</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.GetFuturesAccountAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get futures account info
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/perpetuals#retrieve-users-perpetuals-account-summary" /></para>
+            </summary>
+            <param name="address">Address to request balances for. If not provided will use the address provided in the API credentials</param>
+            <param name="ct">Cancellation token</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.GetFundingHistoryAsync(System.DateTime,System.Nullable{System.DateTime},System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get user funding history
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/perpetuals#retrieve-a-users-funding-history-or-non-funding-ledger-updates" /></para>
+            </summary>
+            <param name="startTime">Filter by start time</param>
+            <param name="endTime">Filter by end time</param>
+            <param name="address">Address to request funding history for. If not provided will use the address provided in the API credentials</param>
+            <param name="ct">Cancellation token</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.GetAccountLedgerAsync(System.DateTime,System.Nullable{System.DateTime},System.String,System.Threading.CancellationToken)">
+            <summary>
+            Get user account ledger
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/perpetuals#retrieve-a-users-funding-history-or-non-funding-ledger-updates" /></para>
+            </summary>
+            <param name="startTime">Filter by start time</param>
+            <param name="endTime">Filter by end time</param>
+            <param name="address">Address to request ledger for. If not provided will use the address provided in the API credentials</param>
             <param name="ct">Cancellation token</param>
         </member>
         <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.GetRateLimitsAsync(System.String,System.Threading.CancellationToken)">
@@ -711,45 +858,86 @@
             <param name="address">Address to request approved builder fee for. If not provided will use the address provided in the API credentials</param>
             <param name="ct">Cancellation token</param>
         </member>
-        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.TransferUsdAsync(System.String,System.String,System.Decimal,System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.TransferUsdAsync(System.String,System.Decimal,System.Threading.CancellationToken)">
             <summary>
             Send usd to another address. This transfer does not touch the EVM bridge.
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#l1-usdc-transfer" /></para>
             </summary>
-            <param name="signatureChainId">The id of the chain used when signing in hexadecimal format; e.g. "0xa4b1" for Arbitrum</param>
             <param name="destinationAddress">Address in 42-character hexadecimal format; e.g. 0x0000000000000000000000000000000000000000</param>
             <param name="quantity">Quantity of USD to send</param>
             <param name="ct">Cancellation token</param>
         </member>
-        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.TransferSpotAsync(System.String,System.String,System.String,System.Decimal,System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.TransferSpotAsync(System.String,System.String,System.Decimal,System.Threading.CancellationToken)">
             <summary>
             Send spot assets to another address. This transfer does not touch the EVM bridge.
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#l1-spot-transfer" /></para>
             </summary>
-            <param name="signatureChainId">The id of the chain used when signing in hexadecimal format; e.g. "0xa4b1" for Arbitrum</param>
             <param name="destinationAddress">Address in 42-character hexadecimal format; e.g. 0x0000000000000000000000000000000000000000</param>
-            <param name="asset">Asset name</param>
+            <param name="asset">Asset name, for example "HYPE"</param>
             <param name="quantity">Quantity to send</param>
             <param name="ct">Cancellation token</param>
         </member>
-        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.WithdrawAsync(System.String,System.String,System.Decimal,System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.WithdrawAsync(System.String,System.Decimal,System.Threading.CancellationToken)">
             <summary>
             Initiate the withdrawal flow. After making this request, the L1 validators will sign and send the withdrawal request to the bridge contract. There is a $1 fee for withdrawing at the time of this writing and withdrawals take approximately 5 minutes to finalize.
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#initiate-a-withdrawal-request" /></para>
             </summary>
-            <param name="signatureChainId">The id of the chain used when signing in hexadecimal format; e.g. "0xa4b1" for Arbitrum</param>
             <param name="destinationAddress">Address in 42-character hexadecimal format; e.g. 0x0000000000000000000000000000000000000000</param>
             <param name="quantity">Quantity of USD to send</param>
             <param name="ct">Cancellation token</param>
         </member>
-        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.TransferInternalAsync(System.String,HyperLiquid.Net.Enums.TransferDirection,System.Decimal,System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.TransferInternalAsync(HyperLiquid.Net.Enums.TransferDirection,System.Decimal,System.Threading.CancellationToken)">
             <summary>
             Transfer USD between Spot and Futures account
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#transfer-from-spot-account-to-perp-account-and-vice-versa" /></para>
             </summary>
-            <param name="signatureChainId">The id of the chain used when signing in hexadecimal format; e.g. "0xa4b1" for Arbitrum</param>
             <param name="direction">Transfer direction</param>
             <param name="quantity">Quantity of USD to send</param>
+            <param name="ct">Cancellation token</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.DepositIntoStakingAsync(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Deposit into staking
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#deposit-into-staking" /></para>
+            </summary>
+            <param name="wei">Quantity</param>
+            <param name="ct">Cancellation token</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.WithdrawFromStakingAsync(System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Withdraw from staking into the user's spot account. Note that transfers from staking to spot account go through a 7 day unstaking queue.
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#withdraw-from-staking" /></para>
+            </summary>
+            <param name="wei">Quantity</param>
+            <param name="ct">Cancellation token</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.DelegateOrUndelegateStakeFromValidatorAsync(HyperLiquid.Net.Enums.DelegateDirection,System.String,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Delegate or undelegate native tokens to or from a validator. Note that delegations to a particular validator have a lockup duration of 1 day.
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#delegate-or-undelegate-stake-from-validator" /></para>
+            </summary>
+            <param name="direction">Direction</param>
+            <param name="validator">Validator address in hex format, for example 0x0000000000000000000000000000000000000000</param>
+            <param name="wei">Quantity</param>
+            <param name="ct">Cancellation token</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.DepositOrWithdrawFromVaultAsync(HyperLiquid.Net.Enums.DepositWithdrawDirection,System.String,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Deposit or withdraw from vault
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#deposit-or-withdraw-from-a-vault" /></para>
+            </summary>
+            <param name="direction">Direction</param>
+            <param name="vaultAddress">Vault address</param>
+            <param name="usd">USD to withdraw or deposit</param>
+            <param name="ct">Cancellation token</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiAccount.ApproveBuilderFeeAsync(System.String,System.Decimal,System.Threading.CancellationToken)">
+            <summary>
+            Approve a builder address to charge a certain fee
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#approve-a-builder-fee" /></para>
+            </summary>
+            <param name="builderAddress">The address of the builder in hex format, for example 0x0000000000000000000000000000000000000000</param>
+            <param name="maxFeePercentage">Max fee percentage the builder can charge</param>
             <param name="ct">Cancellation token</param>
         </member>
         <member name="T:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiExchangeData">
@@ -769,7 +957,7 @@
             Get order book
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#l2-book-snapshot" /></para>
             </summary>
-            <param name="symbol">Asset name</param>
+            <param name="symbol">Symbol, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
             <param name="numberSignificantFigures">Asset name</param>
             <param name="mantissa">Mantissa</param>
             <param name="ct">Cancellation token</param>
@@ -779,7 +967,7 @@
             Get klines
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#candle-snapshot" /></para>
             </summary>
-            <param name="symbol">Symbol</param>
+            <param name="symbol">Symbol, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
             <param name="interval">Kline interval</param>
             <param name="startTime">Data start time</param>
             <param name="endTime">Data end time</param>
@@ -812,6 +1000,29 @@
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/spot#retrieve-information-about-a-token" /></para>
             </summary>
             <param name="assetId">The asset id</param>
+            <param name="ct">Cancellation token</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiExchangeData.GetFuturesExchangeInfoAndTickersAsync(System.Threading.CancellationToken)">
+            <summary>
+            Get futures exchange info and ticker info
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/perpetuals#retrieve-perpetuals-asset-contexts-includes-mark-price-current-funding-open-interest-etc" /></para>
+            </summary>
+            <param name="ct">Cancellation token</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiExchangeData.GetFundingRateHistoryAsync(System.String,System.DateTime,System.Nullable{System.DateTime},System.Threading.CancellationToken)">
+            <summary>
+            Get funding rate history
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/perpetuals#retrieve-historical-funding-rates" /></para>
+            </summary>
+            <param name="symbol">Symbol, for example "ETH"</param>
+            <param name="startTime">Filter by start time</param>
+            <param name="endTime">Filter by end time</param>
+            <param name="ct">Cancellation token</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiExchangeData.GetFuturesSymbolsAtMaxOpenInterestAsync(System.Threading.CancellationToken)">
+            <summary>
+            Get futures symbols at max open interest
+            </summary>
             <param name="ct">Cancellation token</param>
         </member>
         <member name="T:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiShared">
@@ -883,7 +1094,7 @@
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#cancel-order-s" /></para>
             </summary>
             <param name="symbolType">Type of symbol</param>
-            <param name="symbol">Symbol</param>
+            <param name="symbol">Symbol, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
             <param name="orderId">Order id</param>
             <param name="ct">Cancellation token</param>
         </member>
@@ -901,7 +1112,7 @@
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#cancel-order-s-by-cloid" /></para>
             </summary>
             <param name="symbolType">Type of symbol</param>
-            <param name="symbol">Symbol</param>
+            <param name="symbol">Symbol, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
             <param name="clientOrderId">Client rder id</param>
             <param name="ct">Cancellation token</param>
         </member>
@@ -919,7 +1130,7 @@
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#place-an-order" /></para>
             </summary>
             <param name="symbolType">Symbol type</param>
-            <param name="symbol">Symbol name</param>
+            <param name="symbol">Symbol name, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
             <param name="side">Order side</param>
             <param name="orderType">Order type</param>
             <param name="quantity">Quantity</param>
@@ -956,7 +1167,7 @@
             <param name="orderId">Edit order by order id, either this or clientOrderId should be provided</param>
             <param name="clientOrderId">Edit order by client order id, either this or orderId should be provided</param>
             <param name="symbolType">Symbol type</param>
-            <param name="symbol">Symbol name</param>
+            <param name="symbol">Symbol name, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
             <param name="side">Order side</param>
             <param name="orderType">Order type</param>
             <param name="quantity">Quantity</param>
@@ -981,7 +1192,7 @@
             Set leverage for a symbol
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#update-leverage" /></para>
             </summary>
-            <param name="symbol">Symbol name</param>
+            <param name="symbol">Symbol name, for example "ETH"</param>
             <param name="leverage">New leverage</param>
             <param name="marginType">Margin type</param>
             <param name="ct">Cancellation token</param>
@@ -991,8 +1202,32 @@
             Add or remove margin from isolated position
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#update-isolated-margin" /></para>
             </summary>
-            <param name="symbol">Symbol name</param>
+            <param name="symbol">Symbol name, for example "ETH"</param>
             <param name="updateValue">Change value</param>
+            <param name="ct">Cancellation token</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiTrading.PlaceTwapOrderAsync(HyperLiquid.Net.Enums.SymbolType,System.String,HyperLiquid.Net.Enums.OrderSide,System.Decimal,System.Boolean,System.Int32,System.Boolean,System.Threading.CancellationToken)">
+            <summary>
+            Place a Time Weighted Average Price order
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#place-a-twap-order" /></para>
+            </summary>
+            <param name="symbolType">Symbol type</param>
+            <param name="symbol">Symbol name, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
+            <param name="orderSide">Order side</param>
+            <param name="quantity">Order quantity</param>
+            <param name="reduceOnly">Reduce onyl</param>
+            <param name="minutes">Time of the TWAP in minutes</param>
+            <param name="randomize">Ranodmize</param>
+            <param name="ct">Cancellation token</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidRestClientApiTrading.CancelTwapOrderAsync(HyperLiquid.Net.Enums.SymbolType,System.String,System.Int64,System.Threading.CancellationToken)">
+            <summary>
+            Cancel a Time Weighted Average Price order
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#cancel-a-twap-order" /></para>
+            </summary>
+            <param name="symbolType">Symbol type</param>
+            <param name="symbol">Symbol, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
+            <param name="twapId">TWAP order id</param>
             <param name="ct">Cancellation token</param>
         </member>
         <member name="T:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi">
@@ -1009,36 +1244,134 @@
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected</returns>
         </member>
-        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SubscribeToKlineUpdatesAsync(HyperLiquid.Net.Enums.SymbolType,System.String,HyperLiquid.Net.Enums.KlineInterval,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{HyperLiquid.Net.Objects.Models.HyperLiquidKline}},System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SubscribeToKlineUpdatesAsync(System.String,HyperLiquid.Net.Enums.KlineInterval,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{HyperLiquid.Net.Objects.Models.HyperLiquidKline}},System.Threading.CancellationToken)">
             <summary>
             Interval of the klines/candles
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
             </summary>
-            <param name="symbolType">Symbol type</param>
-            <param name="symbol">Symbol name, for example "HYPE/USDT"</param>
+            <param name="symbol">Symbol name, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
             <param name="interval">Kline interval</param>
             <param name="onMessage">The data handler</param>
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
         </member>
-        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SubscribeToOrderBookUpdatesAsync(HyperLiquid.Net.Enums.SymbolType,System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{HyperLiquid.Net.Objects.Models.HyperLiquidOrderBook}},System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SubscribeToOrderBookUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{HyperLiquid.Net.Objects.Models.HyperLiquidOrderBook}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to order book updates
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
             </summary>
-            <param name="symbolType">Symbol type</param>
-            <param name="symbol">Symbol name, for example "HYPE/USDT"</param>
+            <param name="symbol">Symbol name, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
             <param name="onMessage">The data handler</param>
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
         </member>
-        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SubscribeToTradeUpdatesAsync(HyperLiquid.Net.Enums.SymbolType,System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidTrade}}},System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SubscribeToTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidTrade}}},System.Threading.CancellationToken)">
             <summary>
             Subscribe to trade updates
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
             </summary>
-            <param name="symbolType">Symbol type</param>
-            <param name="symbol">Symbol name, for example `HYPE/USDT`</param>
+            <param name="symbol">Symbol name, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
+            <param name="onMessage">The data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SubscribeToSpotSymbolUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{HyperLiquid.Net.Objects.Models.HyperLiquidTicker}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to spot symbol updates
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
+            </summary>
+            <param name="symbol">Symbol name, for example `HYPE/USDC`</param>
+            <param name="onMessage">The data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SubscribeFuturesSymbolUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{HyperLiquid.Net.Objects.Models.HyperLiquidFuturesTicker}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to futures symbol updates
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
+            </summary>
+            <param name="symbol">Symbol name, for example `ETH`</param>
+            <param name="onMessage">The data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SubscribeFuturesUserSymbolUpdatesAsync(System.String,System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{HyperLiquid.Net.Objects.Models.HyperLiquidFuturesUserSymbolUpdate}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to futures user symbol updates
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
+            </summary>
+            <param name="address">Address to subscribe for. If not provided will use the address provided in the API credentials</param>
+            <param name="symbol">Symbol name, for example `ETH`</param>
+            <param name="onMessage">The data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SubscribeToNotificationUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidTrade}}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to user notification updates
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
+            </summary>
+            <param name="address">Address to subscribe for. If not provided will use the address provided in the API credentials</param>
+            <param name="onMessage">The data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SubscribeToUserUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidTrade}}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to user data updates
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
+            </summary>
+            <param name="address">Address to subscribe for. If not provided will use the address provided in the API credentials</param>
+            <param name="onMessage">The data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SubscribeToOrderUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidOrderStatus}}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to order updates
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
+            </summary>
+            <param name="address">Address to subscribe for. If not provided will use the address provided in the API credentials</param>
+            <param name="onMessage">The data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SubscribeToUserTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade}}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to user trade updates
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
+            </summary>
+            <param name="address">Address to subscribe for. If not provided will use the address provided in the API credentials</param>
+            <param name="onMessage">The data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SubscribeToUserFundingUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidUserFunding}}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to user funding updates
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
+            </summary>
+            <param name="address">Address to subscribe for. If not provided will use the address provided in the API credentials</param>
+            <param name="onMessage">The data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SubscribeToTwapTradeUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidTwapStatus}}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to Time Weighted Average Price trade updates
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
+            </summary>
+            <param name="address">Address to subscribe for. If not provided will use the address provided in the API credentials</param>
+            <param name="onMessage">The data handler</param>
+            <param name="ct">Cancellation token for closing this subscription</param>
+            <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.Api.IHyperLiquidSocketClientApi.SubscribeToTwapOrderUpdatesAsync(System.String,System.Action{CryptoExchange.Net.Objects.Sockets.DataEvent{System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidTwapOrderStatus}}},System.Threading.CancellationToken)">
+            <summary>
+            Subscribe to Time Weighted Average Price order history updates
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
+            </summary>
+            <param name="address">Address to subscribe for. If not provided will use the address provided in the API credentials</param>
             <param name="onMessage">The data handler</param>
             <param name="ct">Cancellation token for closing this subscription</param>
             <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
@@ -1102,14 +1435,9 @@
             HyperLiquid local order book factory
             </summary>
         </member>
-        <member name="P:HyperLiquid.Net.Interfaces.IHyperLiquidOrderBookFactory.Spot">
+        <member name="P:HyperLiquid.Net.Interfaces.IHyperLiquidOrderBookFactory.Api">
             <summary>
-             order book Spot factory methods
-            </summary>
-        </member>
-        <member name="P:HyperLiquid.Net.Interfaces.IHyperLiquidOrderBookFactory.Futures">
-            <summary>
-             order book Futures factory methods
+            Order book factory methods
             </summary>
         </member>
         <member name="M:HyperLiquid.Net.Interfaces.IHyperLiquidOrderBookFactory.Create(CryptoExchange.Net.SharedApis.SharedSymbol,System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions})">
@@ -1120,9 +1448,9 @@
             <param name="options">Book options</param>
             <returns></returns>
         </member>
-        <member name="M:HyperLiquid.Net.Interfaces.IHyperLiquidOrderBookFactory.Create(HyperLiquid.Net.Enums.SymbolType,System.String,System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions})">
+        <member name="M:HyperLiquid.Net.Interfaces.IHyperLiquidOrderBookFactory.Create(System.String,System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions})">
             <summary>
-            Create a new  local order book instance
+            Create a new local order book instance
             </summary>
         </member>
         <member name="T:HyperLiquid.Net.Interfaces.IHyperLiquidTrackerFactory">
@@ -1172,6 +1500,151 @@
         <member name="F:HyperLiquid.Net.Objects.HyperLiquidApiAddresses.Testnet">
             <summary>
             The addresses to connect to the HyperLiquid Testnet API
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidAccountLedger">
+            <summary>
+            Account ledger
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAccountLedger.Deposits">
+            <summary>
+            Deposits
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAccountLedger.Withdrawals">
+            <summary>
+            Withdrawals
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAccountLedger.InternalTransfer">
+            <summary>
+            Internal transfers
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAccountLedger.Liquidations">
+            <summary>
+            Liquidations
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidAccountLedger.SpotTransfers">
+            <summary>
+            Spot transfers
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidDeposit">
+            <summary>
+            Deposit info
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidDeposit.Usdc">
+            <summary>
+            USDC
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidWithdrawal">
+            <summary>
+            Withdrawal info
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidWithdrawal.Usdc">
+            <summary>
+            USDC
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidWithdrawal.Nonce">
+            <summary>
+            Nonce
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidWithdrawal.Fee">
+            <summary>
+            Fee
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidInternalTransfer">
+            <summary>
+            Transfer
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidInternalTransfer.ToFutures">
+            <summary>
+            To futures
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidInternalTransfer.Usdc">
+            <summary>
+            USDC
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidLiquidation">
+            <summary>
+            Liquidation
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidLiquidation.MarginType">
+            <summary>
+            Margin type
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidLiquidation.AccountValue">
+            <summary>
+            Account value. For isolated positions this is the isolated account value
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidLiquidation.Positions">
+            <summary>
+            Liquidated positions
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidLiquidationPosition">
+            <summary>
+            Liquidation position
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidLiquidationPosition.Symbol">
+            <summary>
+            Symbol
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidLiquidationPosition.Quantity">
+            <summary>
+            Quantity
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidSpotTransfer">
+            <summary>
+            Spot transfer info
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidSpotTransfer.Token">
+            <summary>
+            Token
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidSpotTransfer.Quantity">
+            <summary>
+            Quantity
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidSpotTransfer.UsdcValue">
+            <summary>
+            USDC value
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidSpotTransfer.User">
+            <summary>
+            User
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidSpotTransfer.Destination">
+            <summary>
+            Destination
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidSpotTransfer.Fee">
+            <summary>
+            Fee
             </summary>
         </member>
         <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidAssetInfo">
@@ -1532,9 +2005,199 @@
             24h base volume
             </summary>
         </member>
-        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTicker.Symbol">
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidFundingRate">
+            <summary>
+            Funding rate
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFundingRate.Symbol">
             <summary>
             Symbol
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFundingRate.FundingRate">
+            <summary>
+            Funding rate
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFundingRate.Premium">
+            <summary>
+            Premium
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFundingRate.Timestamp">
+            <summary>
+            Timestamp
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesAccount">
+            <summary>
+            Futures account info
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesAccount.Positions">
+            <summary>
+            Position info
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesAccount.CrossMaintenanceMarginUsed">
+            <summary>
+            Cross margin maintenance margin used
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesAccount.Withdrawable">
+            <summary>
+            Withdrawable
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesAccount.Timestamp">
+            <summary>
+            Data timestamp
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesAccount.CrossMarginSummary">
+            <summary>
+            Cross margin summary
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesAccount.MarginSummary">
+            <summary>
+            Margin summary
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidMarginSummary">
+            <summary>
+            Margin info
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidMarginSummary.AccountValue">
+            <summary>
+            Total account value
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidMarginSummary.TotalMarginUsed">
+            <summary>
+            Total margin used
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidMarginSummary.TotalNotionalPosition">
+            <summary>
+            Total notional position
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidMarginSummary.TotalRawUsd">
+            <summary>
+            Total raw USD
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidPosition">
+            <summary>
+            Position info
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPosition.PositionType">
+            <summary>
+            Position type
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPosition.Position">
+            <summary>
+            Position info
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidPositionInfo">
+            <summary>
+            Position info
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPositionInfo.Symbol">
+            <summary>
+            Symbol name
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPositionInfo.Funding">
+            <summary>
+            Funding info
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPositionInfo.AverageEntryPrice">
+            <summary>
+            Average entry price
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPositionInfo.Leverage">
+            <summary>
+            Leverage info
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPositionInfo.LiquidationPrice">
+            <summary>
+            Liquidation price
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPositionInfo.MarginUsed">
+            <summary>
+            Margin used
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPositionInfo.MaxLeverage">
+            <summary>
+            Max leverage
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPositionInfo.PositionValue">
+            <summary>
+            Position value
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPositionInfo.ReturnOnEquity">
+            <summary>
+            Return on equity
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPositionInfo.szi">
+            <summary>
+            szi
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPositionInfo.UnrealizedPnl">
+            <summary>
+            Unrealized profit and loss
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidPositionLeverage">
+            <summary>
+            Position leverage
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPositionLeverage.MarginType">
+            <summary>
+            Margin type
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPositionLeverage.Value">
+            <summary>
+            Value
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidPositionFunding">
+            <summary>
+            Position funding
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPositionFunding.AllTime">
+            <summary>
+            All time funding
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPositionFunding.SinceChange">
+            <summary>
+            Since change
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidPositionFunding.SinceOpen">
+            <summary>
+            Since open
             </summary>
         </member>
         <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesExchangeInfo">
@@ -1550,11 +2213,6 @@
         <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesSymbol">
             <summary>
             Futures symbol info
-            </summary>
-        </member>
-        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesSymbol.ExchangeName">
-            <summary>
-            Symbol name as returned by the API
             </summary>
         </member>
         <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesSymbol.Name">
@@ -1575,6 +2233,121 @@
         <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesSymbol.Index">
             <summary>
             Index
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesExchangeInfoAndTickers">
+            <summary>
+            Exchange and ticker info
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesExchangeInfoAndTickers.ExchangeInfo">
+            <summary>
+            Exchange info
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesExchangeInfoAndTickers.Tickers">
+            <summary>
+            Tickers
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesTicker">
+            <summary>
+            Ticker info
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesTicker.ImpactPrices">
+            <summary>
+            Impact prices
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesTicker.FundingRate">
+            <summary>
+            Funding rate
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesTicker.OpenInterest">
+            <summary>
+            Open interest
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesTicker.OraclePrice">
+            <summary>
+            Oracle price
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesTicker.Premium">
+            <summary>
+            Premium
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesTicker.PreviousDayPrice">
+            <summary>
+            Previous day price
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesTicker.NotionalVolume">
+            <summary>
+            24h notional volume
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesTicker.MarkPrice">
+            <summary>
+            Mark price
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesTicker.MidPrice">
+            <summary>
+            Mid price
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesUserSymbolUpdate">
+            <summary>
+            User symbol update
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesUserSymbolUpdate.User">
+            <summary>
+            User address
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesUserSymbolUpdate.Symbol">
+            <summary>
+            Symbol
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesUserSymbolUpdate.Leverage">
+            <summary>
+            Leverage info
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesUserSymbolUpdate.MaxTradeQuantities">
+            <summary>
+            Max trade quantities
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesUserSymbolUpdate.AvailableToTrade">
+            <summary>
+            Available to trade
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidLeverage">
+            <summary>
+            Leverage
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidLeverage.RawUsd">
+            <summary>
+            Raw USD
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidLeverage.MarginType">
+            <summary>
+            Margin type
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidLeverage.Value">
+            <summary>
+            Value
             </summary>
         </member>
         <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidKline">
@@ -1622,9 +2395,9 @@
             Trade count
             </summary>
         </member>
-        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidKline.Asset">
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidKline.Symbol">
             <summary>
-            Asset
+            Symbol
             </summary>
         </member>
         <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidOpenOrder">
@@ -1757,9 +2530,9 @@
             Order book
             </summary>
         </member>
-        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidOrderBook.Asset">
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidOrderBook.Symbol">
             <summary>
-            Asset 
+            Symbol 
             </summary>
         </member>
         <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidOrderBook.Timestamp">
@@ -2082,6 +2855,116 @@
             Users
             </summary>
         </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidTwapOrderResult">
+            <summary>
+            Order result
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapOrderResult.TwapId">
+            <summary>
+            Order id
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidTwapOrderStatus">
+            <summary>
+            TWAP order status
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapOrderStatus.TwapInfo">
+            <summary>
+            TWAP status
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapOrderStatus.Timestamp">
+            <summary>
+            Timestamp
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapOrderStatus.Status">
+            <summary>
+            Statu
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidTwapOrderStatusDesc">
+            <summary>
+            TWAP order status
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapOrderStatusDesc.Status">
+            <summary>
+            Order status
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapOrderStatusDesc.Description">
+            <summary>
+            Description
+            </summary>
+        </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidTwapStatus">
+            <summary>
+            Twap status
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapStatus.ExchangeSymbol">
+            <summary>
+            Symbol as returned by the API
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapStatus.Symbol">
+            <summary>
+            Symbol
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapStatus.SymbolType">
+            <summary>
+            Symbol type
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapStatus.User">
+            <summary>
+            User
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapStatus.Side">
+            <summary>
+            Order side
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapStatus.Quantity">
+            <summary>
+            Quantity
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapStatus.ExecutedQuantity">
+            <summary>
+            Executed quantity
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapStatus.ExecutedValue">
+            <summary>
+            Executed value
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapStatus.Minutes">
+            <summary>
+            Minutes
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapStatus.ReduceOnly">
+            <summary>
+            Reduce only
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapStatus.Randomize">
+            <summary>
+            Randomize
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidTwapStatus.Timestamp">
+            <summary>
+            Timestamp
+            </summary>
+        </member>
         <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidUserFunding">
             <summary>
             User funding
@@ -2107,6 +2990,26 @@
             Funding rate
             </summary>
         </member>
+        <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidUserLedger`1">
+            <summary>
+            Funding history item
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserLedger`1.Data">
+            <summary>
+            Data
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserLedger`1.Hash">
+            <summary>
+            Hash
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserLedger`1.Timestamp">
+            <summary>
+            Timestamp
+            </summary>
+        </member>
         <member name="T:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade">
             <summary>
             User trade
@@ -2117,9 +3020,19 @@
             Closed pnl
             </summary>
         </member>
-        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.Asset">
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.ExchangeSymbol">
             <summary>
-            Asset
+            Symbol as returned by the exchange
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.Symbol">
+            <summary>
+            Symbol
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.SymbolType">
+            <summary>
+            Symbol type
             </summary>
         </member>
         <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.Crossed">
@@ -2290,10 +3203,6 @@
             <summary>
             ctor
             </summary>
-            <param name="logger"></param>
-            <param name="topic"></param>
-            <param name="handler"></param>
-            <param name="auth"></param>
         </member>
         <member name="M:HyperLiquid.Net.Objects.Sockets.Subscriptions.HyperLiquidSubscription`1.GetSubQuery(CryptoExchange.Net.Sockets.SocketConnection)">
             <inheritdoc />
@@ -2315,16 +3224,13 @@
             </summary>
             <param name="serviceProvider">Service provider for resolving logging and clients</param>
         </member>
-        <member name="P:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidOrderBookFactory.Spot">
-            <inheritdoc />
-        </member>
-        <member name="P:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidOrderBookFactory.Futures">
+        <member name="P:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidOrderBookFactory.Api">
             <inheritdoc />
         </member>
         <member name="M:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidOrderBookFactory.Create(CryptoExchange.Net.SharedApis.SharedSymbol,System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions})">
             <inheritdoc />
         </member>
-        <member name="M:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidOrderBookFactory.Create(HyperLiquid.Net.Enums.SymbolType,System.String,System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions})">
+        <member name="M:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidOrderBookFactory.Create(System.String,System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions})">
             <inheritdoc />
         </member>
         <member name="T:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidSymbolOrderBook">
@@ -2333,19 +3239,17 @@
             Make sure to check the State property to see if the order book is synced.
             </summary>
         </member>
-        <member name="M:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidSymbolOrderBook.#ctor(HyperLiquid.Net.Enums.SymbolType,System.String,System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions})">
+        <member name="M:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidSymbolOrderBook.#ctor(System.String,System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions})">
             <summary>
             Create a new order book instance
             </summary>
-            <param name="symbolType">The symbol type</param>
             <param name="symbol">The symbol the order book is for</param>
             <param name="optionsDelegate">Option configuration delegate</param>
         </member>
-        <member name="M:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidSymbolOrderBook.#ctor(HyperLiquid.Net.Enums.SymbolType,System.String,System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions},Microsoft.Extensions.Logging.ILoggerFactory,HyperLiquid.Net.Interfaces.Clients.IHyperLiquidSocketClient)">
+        <member name="M:HyperLiquid.Net.SymbolOrderBooks.HyperLiquidSymbolOrderBook.#ctor(System.String,System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions},Microsoft.Extensions.Logging.ILoggerFactory,HyperLiquid.Net.Interfaces.Clients.IHyperLiquidSocketClient)">
             <summary>
             Create a new order book instance
             </summary>
-            <param name="symbolType">The symbol type</param>
             <param name="symbol">The symbol the order book is for</param>
             <param name="optionsDelegate">Option configuration delegate</param>
             <param name="logger">Logger</param>
@@ -2400,7 +3304,7 @@
             <param name="id"></param>
             <returns></returns>
         </member>
-        <member name="M:HyperLiquid.Net.Utils.HyperLiquidUtils.GetExchangeNameFromSymbolNameAsync(HyperLiquid.Net.Enums.SymbolType,System.String)">
+        <member name="M:HyperLiquid.Net.Utils.HyperLiquidUtils.GetExchangeNameFromSymbolNameAsync(System.String)">
             <summary>
             Get an exchange symbol name from a symbol name
             </summary>

@@ -16,6 +16,13 @@ namespace HyperLiquid.Net
 {
     internal class HyperLiquidAuthenticationProvider : AuthenticationProvider
     {
+        private static readonly Dictionary<Type, string> _typeMapping = new Dictionary<Type, string>
+        {
+            { typeof(string), "string" },
+            { typeof(long), "uint64" },
+            { typeof(bool), "bool" },
+        };
+
         private static readonly List<string[]> _eip721Domain = new List<string[]>
         {
             new string[] { "name", "string" },
@@ -29,6 +36,14 @@ namespace HyperLiquid.Net
         {
             { "chainId", 1337 },
             { "name", "Exchange" },
+            { "verifyingContract", "0x0000000000000000000000000000000000000000" },
+            { "version", "1" },
+        };
+
+        private static readonly Dictionary<string, object> _userActionDomain = new Dictionary<string, object>()
+        {
+            { "chainId", 2748 },
+            { "name", "HyperliquidSignTransaction" },
             { "verifyingContract", "0x0000000000000000000000000000000000000000" },
             { "version", "1" },
         };
@@ -73,21 +88,58 @@ namespace HyperLiquid.Net
                 return;
 
             var action = (Dictionary<string, object>)bodyParameters!["action"];
-            var nonce = action.TryGetValue("time", out var time) ? (long)time : action.TryGetValue("nonce", out var n) ? (long)n: DateTimeConverter.ConvertToMilliseconds(DateTime.UtcNow).Value;
+            var nonce = action.TryGetValue("time", out var time) ? (long)time : action.TryGetValue("nonce", out var n) ? (long)n : DateTimeConverter.ConvertToMilliseconds(DateTime.UtcNow).Value;
             bodyParameters!.Add("nonce", nonce);
-
-            var hash = GenerateActionHash(action, nonce);
-            var phantomAgent = new Dictionary<string, object>()
+            if (action.TryGetValue("signatureChainId", out var chainId))
             {
-                { "source", "a" },
-                { "connectionId", hash },
+                // User action
+                var actionName = (string)action["type"];
+                if (actionName == "withdraw3")
+                    actionName = "withdraw";
+
+                var types = GetSignatureTypes(actionName.Substring(0, 1).ToUpperInvariant() + actionName.Substring(1), action);
+                var msg = EncodeEip721(_userActionDomain, types, action.Where(x => x.Key != "type" && x.Key != "signatureChainId").ToDictionary(x => x.Key, x => x.Value));
+                var keccakSigned = BytesToHexString(SignKeccak(msg));
+                var signature = SignRequest(keccakSigned, _credentials.Secret);
+
+                bodyParameters["signature"] = signature;
+            }
+            else
+            {
+                // Exchange action
+                var hash = GenerateActionHash(action, nonce);
+                var phantomAgent = new Dictionary<string, object>()
+                {
+                    { "source", "a" },
+                    { "connectionId", hash },
+                };
+
+                var msg = EncodeEip721(_domain, _messageTypes, phantomAgent);
+                var keccakSigned = BytesToHexString(SignKeccak(msg));
+                var signature = SignRequest(keccakSigned, _credentials.Secret);
+
+                bodyParameters["signature"] = signature;
+            }
+        }
+
+        private Dictionary<string, object> GetSignatureTypes(string name, Dictionary<string, object> parameters)
+        {
+            var props = new List<object>();
+            var result = new Dictionary<string, object>()
+            {
+                { "HyperliquidTransaction:" + name, props }
             };
 
-            var msg = EncodeEip721(_domain, _messageTypes, phantomAgent);
-            var keccakSigned = BytesToHexString(SignKeccak(msg));
-            var signature = SignRequest(keccakSigned, _credentials.Secret);
+            foreach(var item in parameters.Where(x => x.Key != "type" && x.Key != "signatureChainId"))
+            {
+                props.Add(new Dictionary<string, object>
+                {
+                    { "name", item.Key },
+                    { "type", item.Key == "builder" ? "address" : _typeMapping[item.Value.GetType()] }
+                });
+            }
 
-            bodyParameters["signature"] = signature;
+            return result;
         }
 
         public static Dictionary<string, object> SignRequest(string request, string secret)

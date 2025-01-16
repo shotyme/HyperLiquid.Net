@@ -13,26 +13,51 @@ namespace HyperLiquid.Net.Objects.Models
     /// Exchange and ticker info
     /// </summary>
     [JsonConverter(typeof(ArrayConverter))]
-    public record HyperLiquidExchangeInfoAndTickers
+    public record HyperLiquidFuturesExchangeInfoAndTickers
     {
         /// <summary>
         /// Exchange info
         /// </summary>
         [ArrayProperty(0), JsonConversion]
-        public HyperLiquidSpotExchangeInfo ExchangeInfo { get; set; } = default!;
+        public HyperLiquidFuturesExchangeInfo ExchangeInfo { get; set; } = default!;
 
         /// <summary>
         /// Tickers
         /// </summary>
         [ArrayProperty(1), JsonConversion]
-        public IEnumerable<HyperLiquidTicker> Tickers { get; set; } = [];
+        public IEnumerable<HyperLiquidFuturesTicker> Tickers { get; set; } = [];
     }
 
     /// <summary>
     /// Ticker info
     /// </summary>
-    public record HyperLiquidTicker
+    public record HyperLiquidFuturesTicker
     {
+        /// <summary>
+        /// Impact prices
+        /// </summary>
+        [JsonPropertyName("impactPxs")]
+        public decimal[] ImpactPrices { get; set; } = [];
+        /// <summary>
+        /// Funding rate
+        /// </summary>
+        [JsonPropertyName("funding")]
+        public decimal? FundingRate { get; set; }
+        /// <summary>
+        /// Open interest
+        /// </summary>
+        [JsonPropertyName("openInterest")]
+        public decimal? OpenInterest { get; set; }
+        /// <summary>
+        /// Oracle price
+        /// </summary>
+        [JsonPropertyName("oraclePx")]
+        public decimal? OraclePrice { get; set; }
+        /// <summary>
+        /// Premium
+        /// </summary>
+        [JsonPropertyName("premium")]
+        public decimal? Premium { get; set; }
         /// <summary>
         /// Previous day price
         /// </summary>
@@ -42,7 +67,7 @@ namespace HyperLiquid.Net.Objects.Models
         /// 24h notional volume
         /// </summary>
         [JsonPropertyName("dayNtlVlm")]
-        public decimal DayNotionalVlm { get; set; }
+        public decimal NotionalVolume { get; set; }
         /// <summary>
         /// Mark price
         /// </summary>
@@ -53,20 +78,5 @@ namespace HyperLiquid.Net.Objects.Models
         /// </summary>
         [JsonPropertyName("midPx")]
         public decimal? MidPrice { get; set; }
-        /// <summary>
-        /// Circulation supply
-        /// </summary>
-        [JsonPropertyName("circulatingSupply")]
-        public decimal CirculatingSupply { get; set; }
-        /// <summary>
-        /// Total supply
-        /// </summary>
-        [JsonPropertyName("totalSupply")]
-        public decimal TotalSupply { get; set; }
-        /// <summary>
-        /// 24h base volume
-        /// </summary>
-        [JsonPropertyName("dayBaseVlm")]
-        public decimal DayBaseVlm { get; set; }
     }
 }

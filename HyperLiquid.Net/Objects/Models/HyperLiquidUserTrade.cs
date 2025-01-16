@@ -17,10 +17,20 @@ namespace HyperLiquid.Net.Objects.Models
         [JsonPropertyName("closedPnl")]
         public decimal? ClosedPnl { get; set; }
         /// <summary>
-        /// Asset
+        /// Symbol as returned by the exchange
         /// </summary>
         [JsonPropertyName("coin")]
-        public string Asset { get; set; } = string.Empty;
+        public string ExchangeSymbol { get; set; } = string.Empty;
+        /// <summary>
+        /// Symbol
+        /// </summary>
+        [JsonIgnore]
+        public string Symbol { get; set; } = string.Empty;
+        /// <summary>
+        /// Symbol type
+        /// </summary>
+        [JsonIgnore]
+        public SymbolType SymbolType { get; set; }
         /// <summary>
         /// Crossed
         /// </summary>

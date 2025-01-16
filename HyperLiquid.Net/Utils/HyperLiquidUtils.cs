@@ -148,32 +148,17 @@ namespace HyperLiquid.Net.Utils
         /// Get an exchange symbol name from a symbol name
         /// </summary>
         /// <returns></returns>
-        public static async Task<CallResult<string>> GetExchangeNameFromSymbolNameAsync(SymbolType symbolType, string name)
+        public static async Task<CallResult<string>> GetExchangeNameFromSymbolNameAsync(string name)
         {
-            if (symbolType == SymbolType.Spot)
-            {
-                var update = await UpdateSpotSymbolInfoAsync().ConfigureAwait(false);
-                if (!update)
-                    return new CallResult<string>(update.Error!);
+            var update = await UpdateSpotSymbolInfoAsync().ConfigureAwait(false);
+            if (!update)
+                return new CallResult<string>(update.Error!);
 
-                var symbol = _spotSymbolInfo.SingleOrDefault(x => x.Name == name);
-                if (symbol == null)
-                    return new CallResult<string>(new ServerError("Symbol not found"));
+            var symbol = _spotSymbolInfo.SingleOrDefault(x => x.Name == name);
+            if (symbol == null)
+                return new CallResult<string>(new ServerError("Symbol not found"));
 
-                return new CallResult<string>(symbol.ExchangeName);
-            }
-            else
-            {
-                var update = await UpdateFuturesSymbolInfoAsync().ConfigureAwait(false);
-                if (!update)
-                    return new CallResult<string>(update.Error!);
-
-                var symbol = _futuresSymbolInfo.SingleOrDefault(x => x.Name == name);
-                if (symbol == null)
-                    return new CallResult<string>(new ServerError("Symbol not found"));
-
-                return new CallResult<string>(symbol.ExchangeName);
-            }
+            return new CallResult<string>(symbol.ExchangeName);
         }
 
         /// <summary>

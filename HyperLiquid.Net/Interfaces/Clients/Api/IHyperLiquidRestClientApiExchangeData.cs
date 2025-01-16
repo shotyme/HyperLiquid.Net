@@ -24,7 +24,7 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         /// Get order book
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#l2-book-snapshot" /></para>
         /// </summary>
-        /// <param name="symbol">Asset name</param>
+        /// <param name="symbol">Symbol, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
         /// <param name="numberSignificantFigures">Asset name</param>
         /// <param name="mantissa">Mantissa</param>
         /// <param name="ct">Cancellation token</param>
@@ -34,7 +34,7 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         /// Get klines
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#candle-snapshot" /></para>
         /// </summary>
-        /// <param name="symbol">Symbol</param>
+        /// <param name="symbol">Symbol, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
         /// <param name="interval">Kline interval</param>
         /// <param name="startTime">Data start time</param>
         /// <param name="endTime">Data end time</param>
@@ -69,5 +69,28 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         /// <param name="assetId">The asset id</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<HyperLiquidAssetInfo>> GetAssetInfoAsync(string assetId, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get futures exchange info and ticker info
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/perpetuals#retrieve-perpetuals-asset-contexts-includes-mark-price-current-funding-open-interest-etc" /></para>
+        /// </summary>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult<HyperLiquidFuturesExchangeInfoAndTickers>> GetFuturesExchangeInfoAndTickersAsync(CancellationToken ct = default);
+
+        /// <summary>
+        /// Get funding rate history
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/perpetuals#retrieve-historical-funding-rates" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol, for example "ETH"</param>
+        /// <param name="startTime">Filter by start time</param>
+        /// <param name="endTime">Filter by end time</param>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult<IEnumerable<HyperLiquidFundingRate>>> GetFundingRateHistoryAsync(string symbol, DateTime startTime, DateTime? endTime = null, CancellationToken ct = default);
+
+        /// <summary>
+        /// Get futures symbols at max open interest
+        /// </summary>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult<IEnumerable<string>>> GetFuturesSymbolsAtMaxOpenInterestAsync(CancellationToken ct = default);
     }
 }
