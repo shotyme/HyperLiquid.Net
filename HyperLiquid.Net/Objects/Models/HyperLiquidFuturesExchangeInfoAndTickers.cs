@@ -1,10 +1,7 @@
 ﻿using CryptoExchange.Net.Attributes;
 using CryptoExchange.Net.Converters;
 using CryptoExchange.Net.Converters.SystemTextJson;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
 
 namespace HyperLiquid.Net.Objects.Models
@@ -33,6 +30,11 @@ namespace HyperLiquid.Net.Objects.Models
     /// </summary>
     public record HyperLiquidFuturesTicker
     {
+        /// <summary>
+        /// Symbol name
+        /// </summary>
+        [JsonIgnore]
+        public string Symbol { get; set; } = string.Empty;
         /// <summary>
         /// Impact prices
         /// </summary>

@@ -8,9 +8,7 @@ using Microsoft.Extensions.Logging;
 using HyperLiquid.Net.Clients;
 using HyperLiquid.Net.Interfaces.Clients;
 using HyperLiquid.Net.Objects.Options;
-using HyperLiquid.Net.Enums;
 using HyperLiquid.Net.Objects.Models;
-using Nethereum.ABI.Util;
 
 namespace HyperLiquid.Net.SymbolOrderBooks
 {
@@ -65,7 +63,8 @@ namespace HyperLiquid.Net.SymbolOrderBooks
         /// <inheritdoc />
         protected override async Task<CallResult<UpdateSubscription>> DoStartAsync(CancellationToken ct)
         {
-            var sub = await _socketClient.Api.SubscribeToOrderBookUpdatesAsync(Symbol, HandleUpdate, ct).ConfigureAwait(false);
+            // Uses SpotApi but can also be used for futures
+            var sub = await _socketClient.SpotApi.SubscribeToOrderBookUpdatesAsync(Symbol, HandleUpdate, ct).ConfigureAwait(false);
             if (!sub)
                 return sub;
 

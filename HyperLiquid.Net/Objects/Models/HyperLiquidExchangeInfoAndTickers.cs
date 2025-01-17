@@ -1,10 +1,7 @@
 ﻿using CryptoExchange.Net.Attributes;
 using CryptoExchange.Net.Converters;
 using CryptoExchange.Net.Converters.SystemTextJson;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
 
 namespace HyperLiquid.Net.Objects.Models
@@ -42,7 +39,7 @@ namespace HyperLiquid.Net.Objects.Models
         /// 24h notional volume
         /// </summary>
         [JsonPropertyName("dayNtlVlm")]
-        public decimal DayNotionalVlm { get; set; }
+        public decimal QuoteVolume { get; set; }
         /// <summary>
         /// Mark price
         /// </summary>
@@ -67,6 +64,11 @@ namespace HyperLiquid.Net.Objects.Models
         /// 24h base volume
         /// </summary>
         [JsonPropertyName("dayBaseVlm")]
-        public decimal DayBaseVlm { get; set; }
+        public decimal BaseVolume { get; set; }
+        /// <summary>
+        /// Symbol
+        /// </summary>
+        [JsonPropertyName("coin")]
+        public string? Symbol { get; set; }
     }
 }

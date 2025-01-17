@@ -1,7 +1,8 @@
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Objects.Options;
-using HyperLiquid.Net.Interfaces.Clients.Api;
+using HyperLiquid.Net.Interfaces.Clients.FuturesApi;
+using HyperLiquid.Net.Interfaces.Clients.SpotApi;
 
 namespace HyperLiquid.Net.Interfaces.Clients
 {
@@ -11,9 +12,13 @@ namespace HyperLiquid.Net.Interfaces.Clients
     public interface IHyperLiquidRestClient : IRestClient
     {        
         /// <summary>
-        ///  API endpoints
+        /// Spot API endpoints
         /// </summary>
-        public IHyperLiquidRestClientApi Api { get; }
+        public IHyperLiquidRestClientSpotApi SpotApi { get; }
+        /// <summary>
+        /// Futures API endpoints
+        /// </summary>
+        public IHyperLiquidRestClientFuturesApi FuturesApi { get; }
 
         /// <summary>
         /// Update specific options

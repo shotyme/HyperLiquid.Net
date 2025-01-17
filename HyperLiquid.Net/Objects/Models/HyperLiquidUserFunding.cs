@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.Json.Serialization;
 
 namespace HyperLiquid.Net.Objects.Models
@@ -25,7 +23,9 @@ namespace HyperLiquid.Net.Objects.Models
         /// </summary>
         [JsonPropertyName("usdc")]
         public decimal Usdc { get; set; }
-#warning TODO
+        /// <summary>
+        /// Quantity
+        /// </summary>
         [JsonPropertyName("szi")]
         public decimal Szi { get; set; }
         /// <summary>

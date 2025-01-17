@@ -1,16 +1,10 @@
-﻿using HyperLiquid.Net.Enums;
-
-namespace HyperLiquid.Net.Objects.Models
+﻿namespace HyperLiquid.Net.Objects.Models
 {
     /// <summary>
     /// Cancel request
     /// </summary>
     public record HyperLiquidCancelRequest
     {
-        /// <summary>
-        /// Type of the symbol
-        /// </summary>
-        public SymbolType SymbolType { get; set; }
         /// <summary>
         /// Symbol name
         /// </summary>
@@ -23,9 +17,8 @@ namespace HyperLiquid.Net.Objects.Models
         /// <summary>
         /// ctor
         /// </summary>
-        public HyperLiquidCancelRequest(SymbolType symbolType, string symbol, long orderId)
+        public HyperLiquidCancelRequest(string symbol, long orderId)
         {
-            SymbolType = symbolType;
             Symbol = symbol;
             OrderId = orderId;
         }
@@ -36,10 +29,6 @@ namespace HyperLiquid.Net.Objects.Models
     /// </summary>
     public record HyperLiquidCancelByClientOrderIdRequest
     {
-        /// <summary>
-        /// Type of the symbol
-        /// </summary>
-        public SymbolType SymbolType { get; set; }
         /// <summary>
         /// Symbol name
         /// </summary>
@@ -52,9 +41,8 @@ namespace HyperLiquid.Net.Objects.Models
         /// <summary>
         /// ctor
         /// </summary>
-        public HyperLiquidCancelByClientOrderIdRequest(SymbolType symbolType, string symbol, string orderId)
+        public HyperLiquidCancelByClientOrderIdRequest(string symbol, string orderId)
         {
-            SymbolType = symbolType;
             Symbol = symbol;
             OrderId = orderId;
         }

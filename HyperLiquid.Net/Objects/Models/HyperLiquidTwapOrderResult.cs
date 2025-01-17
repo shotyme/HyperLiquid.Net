@@ -1,8 +1,4 @@
-﻿using HyperLiquid.Net.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace HyperLiquid.Net.Objects.Models
 {

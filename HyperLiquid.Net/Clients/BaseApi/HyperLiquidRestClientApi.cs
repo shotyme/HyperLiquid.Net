@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using HyperLiquid.Net.Interfaces.Clients.Api;
 using HyperLiquid.Net.Objects.Options;
 using CryptoExchange.Net.Clients;
 using CryptoExchange.Net.Converters.SystemTextJson;
@@ -14,36 +13,24 @@ using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.SharedApis;
 using CryptoExchange.Net.Converters.MessageParsing;
 using HyperLiquid.Net.Objects.Models;
+using CryptoExchange.Net.Objects.Options;
 
-namespace HyperLiquid.Net.Clients.Api
+namespace HyperLiquid.Net.Clients.BaseApi
 {
-    /// <inheritdoc cref="IHyperLiquidRestClientApi" />
-    internal partial class HyperLiquidRestClientApi : RestApiClient, IHyperLiquidRestClientApi
+    internal abstract partial class HyperLiquidRestClientApi : RestApiClient
     {
         #region fields 
-        internal static TimeSyncState _timeSyncState = new TimeSyncState("Api");
-
-        internal new HyperLiquidRestOptions ClientOptions => (HyperLiquidRestOptions)base.ClientOptions;
         #endregion
 
         #region Api clients
-        /// <inheritdoc />
-        public IHyperLiquidRestClientApiAccount Account { get; }
-        /// <inheritdoc />
-        public IHyperLiquidRestClientApiExchangeData ExchangeData { get; }
-        /// <inheritdoc />
-        public IHyperLiquidRestClientApiTrading Trading { get; }
         /// <inheritdoc />
         public string ExchangeName => "HyperLiquid";
         #endregion
 
         #region constructor/destructor
-        internal HyperLiquidRestClientApi(ILogger logger, HttpClient? httpClient, HyperLiquidRestOptions options)
-            : base(logger, httpClient, options.Environment.RestClientAddress, options, options.Options)
+        internal HyperLiquidRestClientApi(ILogger logger, HttpClient? httpClient, HyperLiquidRestOptions options, RestApiOptions apiOptions)
+            : base(logger, httpClient, options.Environment.RestClientAddress, options, apiOptions)
         {
-            Account = new HyperLiquidRestClientApiAccount(this);
-            ExchangeData = new HyperLiquidRestClientApiExchangeData(logger, this);
-            Trading = new HyperLiquidRestClientApiTrading(logger, this);
         }
         #endregion
 
@@ -100,14 +87,8 @@ namespace HyperLiquid.Net.Clients.Api
         public override TimeSyncInfo? GetTimeSyncInfo() => null;
 
         /// <inheritdoc />
-        public override TimeSpan? GetTimeOffset() => _timeSyncState.TimeOffset;
-
-        /// <inheritdoc />
-        public override string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverDate = null) 
+        public override string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverDate = null)
             => HyperLiquidExchange.FormatSymbol(baseAsset, quoteAsset, tradingMode, deliverDate);
-
-        /// <inheritdoc />
-        public IHyperLiquidRestClientApiShared SharedClient => this;
 
     }
 }

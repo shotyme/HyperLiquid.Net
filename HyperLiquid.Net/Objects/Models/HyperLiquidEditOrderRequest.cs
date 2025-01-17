@@ -1,7 +1,4 @@
 ﻿using HyperLiquid.Net.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HyperLiquid.Net.Objects.Models
 {
@@ -10,10 +7,6 @@ namespace HyperLiquid.Net.Objects.Models
     /// </summary>
     public record HyperLiquidEditOrderRequest
     {
-        /// <summary>
-        /// Symbol type
-        /// </summary>
-        public SymbolType SymbolType { get; set; }
         /// <summary>
         /// Symbol name
         /// </summary>
@@ -66,7 +59,6 @@ namespace HyperLiquid.Net.Objects.Models
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="symbolType">Symbol type</param>
         /// <param name="symbol">Symbol</param>
         /// <param name="orderId">Order id of the order to edit, either this or clientOrderId should be provided</param>
         /// <param name="clientOrderId">Client order id of the order to edit, either this or orderId should be provided</param>
@@ -80,7 +72,6 @@ namespace HyperLiquid.Net.Objects.Models
         /// <param name="tpSlType">Take profit / Stop loss type</param>
         /// <param name="newClientOrderId">New client order id</param>
         public HyperLiquidEditOrderRequest(
-            SymbolType symbolType,
             string symbol,
             long? orderId,
             string? clientOrderId,
@@ -95,7 +86,6 @@ namespace HyperLiquid.Net.Objects.Models
             string? newClientOrderId = null
             )
         {
-            SymbolType = symbolType;
             Symbol = symbol;
             OrderId = orderId;
             ClientOrderId = clientOrderId;

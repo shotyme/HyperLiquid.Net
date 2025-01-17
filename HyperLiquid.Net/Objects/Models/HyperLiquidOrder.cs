@@ -1,7 +1,5 @@
 ﻿using HyperLiquid.Net.Enums;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.Json.Serialization;
 
 namespace HyperLiquid.Net.Objects.Models
@@ -70,6 +68,7 @@ namespace HyperLiquid.Net.Objects.Models
         /// Order quantity
         /// </summary>
         [JsonPropertyName("sz")]
+#warning is this executed quantity?
         public decimal Quantity { get; set; }
         /// <summary>
         /// Timestamp

@@ -1,5 +1,4 @@
 using CryptoExchange.Net.Objects;
-using HyperLiquid.Net.Interfaces.Clients.Api;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Threading;
@@ -9,17 +8,19 @@ using System;
 using HyperLiquid.Net.Utils;
 using HyperLiquid.Net.Enums;
 using System.Globalization;
+using HyperLiquid.Net.Interfaces.Clients.SpotApi;
+using HyperLiquid.Net.Clients.BaseApi;
 
-namespace HyperLiquid.Net.Clients.Api
+namespace HyperLiquid.Net.Clients.SpotApi
 {
     /// <inheritdoc />
-    internal class HyperLiquidRestClientApiAccount : IHyperLiquidRestClientApiAccount
+    internal class HyperLiquidRestClientSpotApiAccount : HyperLiquidRestClientAccount, IHyperLiquidRestClientSpotApiAccount
     {
         private static readonly RequestDefinitionCache _definitions = new RequestDefinitionCache();
-        private readonly HyperLiquidRestClientApi _baseClient;
+        private readonly HyperLiquidRestClientSpotApi _baseClient;
         private readonly string _chainId = "0xabc";
 
-        internal HyperLiquidRestClientApiAccount(HyperLiquidRestClientApi baseClient)
+        internal HyperLiquidRestClientSpotApiAccount(HyperLiquidRestClientSpotApi baseClient): base(baseClient)
         {
             _baseClient = baseClient;
         }
@@ -27,7 +28,7 @@ namespace HyperLiquid.Net.Clients.Api
         #region Get Spot Balances
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<HyperLiquidBalance>>> GetSpotBalancesAsync(string? address = null, CancellationToken ct = default)
+        public async Task<WebCallResult<IEnumerable<HyperLiquidBalance>>> GetBalancesAsync(string? address = null, CancellationToken ct = default)
         {
             if (address == null && _baseClient.AuthenticationProvider == null)
                 throw new ArgumentNullException(nameof(address), "Address needs to be provided if API credentials not set");
@@ -40,46 +41,6 @@ namespace HyperLiquid.Net.Clients.Api
             var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 2, false);
             var result = await _baseClient.SendAsync<HyperLiquidBalances>(request, parameters, ct).ConfigureAwait(false);
             return result.As<IEnumerable<HyperLiquidBalance>>(result.Data?.Balances);
-        }
-
-        #endregion
-
-        #region Get Futures Account
-
-        /// <inheritdoc />
-        public async Task<WebCallResult<HyperLiquidFuturesAccount>> GetFuturesAccountAsync(string? address = null, CancellationToken ct = default)
-        {
-            if (address == null && _baseClient.AuthenticationProvider == null)
-                throw new ArgumentNullException(nameof(address), "Address needs to be provided if API credentials not set");
-
-            var parameters = new ParameterCollection()
-            {
-                { "type", "clearinghouseState" },
-                { "user", address ?? _baseClient.AuthenticationProvider!.ApiKey }
-            };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 2, false);
-            return await _baseClient.SendAsync<HyperLiquidFuturesAccount>(request, parameters, ct).ConfigureAwait(false);
-        }
-
-        #endregion
-
-        #region Get Funding History
-
-        /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<HyperLiquidUserLedger<HyperLiquidUserFunding>>>> GetFundingHistoryAsync(DateTime startTime, DateTime? endTime = null, string? address = null, CancellationToken ct = default)
-        {
-            if (address == null && _baseClient.AuthenticationProvider == null)
-                throw new ArgumentNullException(nameof(address), "Address needs to be provided if API credentials not set");
-
-            var parameters = new ParameterCollection()
-            {
-                { "type", "userFunding" },
-                { "user", address ?? _baseClient.AuthenticationProvider!.ApiKey }
-            };
-            parameters.AddMilliseconds("startTime", startTime);
-            parameters.AddOptionalMilliseconds("endTime", endTime);
-            var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 2, false);
-            return await _baseClient.SendAsync<IEnumerable<HyperLiquidUserLedger<HyperLiquidUserFunding>>>(request, parameters, ct).ConfigureAwait(false);
         }
 
         #endregion

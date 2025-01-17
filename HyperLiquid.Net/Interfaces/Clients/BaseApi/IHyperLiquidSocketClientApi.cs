@@ -8,7 +8,7 @@ using HyperLiquid.Net.Objects.Models;
 using System.Collections.Generic;
 using HyperLiquid.Net.Enums;
 
-namespace HyperLiquid.Net.Interfaces.Clients.Api
+namespace HyperLiquid.Net.Interfaces.Clients.BaseApi
 {
     /// <summary>
     /// HyperLiquid  streams
@@ -16,7 +16,7 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
     public interface IHyperLiquidSocketClientApi : ISocketApiClient, IDisposable
     {
         /// <summary>
-        /// Subscribe to mid price updates
+        /// Subscribe to mid price updates, will send updates for both Spot and Futures symbols
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
         /// </summary>
         /// <param name="onMessage">The event handler for the received data</param>
@@ -25,7 +25,7 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         Task<CallResult<UpdateSubscription>> SubscribeToPriceUpdatesAsync(Action<DataEvent<Dictionary<string, decimal>>> onMessage, CancellationToken ct = default);
 
         /// <summary>
-        /// Interval of the klines/candles
+        /// Subscribe to kline/candlestick data
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
         /// </summary>
         /// <param name="symbol">Symbol name, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
@@ -53,61 +53,10 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         /// <param name="onMessage">The data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync( string symbol, Action<DataEvent<IEnumerable<HyperLiquidTrade>>> onMessage, CancellationToken ct = default);
+        Task<CallResult<UpdateSubscription>> SubscribeToTradeUpdatesAsync(string symbol, Action<DataEvent<IEnumerable<HyperLiquidTrade>>> onMessage, CancellationToken ct = default);
 
         /// <summary>
-        /// Subscribe to spot symbol updates
-        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
-        /// </summary>
-        /// <param name="symbol">Symbol name, for example `HYPE/USDC`</param>
-        /// <param name="onMessage">The data handler</param>
-        /// <param name="ct">Cancellation token for closing this subscription</param>
-        /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToSpotSymbolUpdatesAsync(string symbol, Action<DataEvent<HyperLiquidTicker>> onMessage, CancellationToken ct = default);
-
-        /// <summary>
-        /// Subscribe to futures symbol updates
-        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
-        /// </summary>
-        /// <param name="symbol">Symbol name, for example `ETH`</param>
-        /// <param name="onMessage">The data handler</param>
-        /// <param name="ct">Cancellation token for closing this subscription</param>
-        /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeFuturesSymbolUpdatesAsync(string symbol, Action<DataEvent<HyperLiquidFuturesTicker>> onMessage, CancellationToken ct = default);
-
-        /// <summary>
-        /// Subscribe to futures user symbol updates
-        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
-        /// </summary>
-        /// <param name="address">Address to subscribe for. If not provided will use the address provided in the API credentials</param>
-        /// <param name="symbol">Symbol name, for example `ETH`</param>
-        /// <param name="onMessage">The data handler</param>
-        /// <param name="ct">Cancellation token for closing this subscription</param>
-        /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeFuturesUserSymbolUpdatesAsync(string? address, string symbol, Action<DataEvent<HyperLiquidFuturesUserSymbolUpdate>> onMessage, CancellationToken ct = default);
-
-        /// <summary>
-        /// Subscribe to user notification updates
-        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
-        /// </summary>
-        /// <param name="address">Address to subscribe for. If not provided will use the address provided in the API credentials</param>
-        /// <param name="onMessage">The data handler</param>
-        /// <param name="ct">Cancellation token for closing this subscription</param>
-        /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToNotificationUpdatesAsync(string? address, Action<DataEvent<IEnumerable<HyperLiquidTrade>>> onMessage, CancellationToken ct = default);
-
-        /// <summary>
-        /// Subscribe to user data updates
-        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
-        /// </summary>
-        /// <param name="address">Address to subscribe for. If not provided will use the address provided in the API credentials</param>
-        /// <param name="onMessage">The data handler</param>
-        /// <param name="ct">Cancellation token for closing this subscription</param>
-        /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToUserUpdatesAsync(string? address, Action<DataEvent<IEnumerable<HyperLiquidTrade>>> onMessage, CancellationToken ct = default);
-
-        /// <summary>
-        /// Subscribe to order updates
+        /// Subscribe to order updates, will provided updates for both Spot and Futures orders
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
         /// </summary>
         /// <param name="address">Address to subscribe for. If not provided will use the address provided in the API credentials</param>
@@ -117,7 +66,7 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         Task<CallResult<UpdateSubscription>> SubscribeToOrderUpdatesAsync(string? address, Action<DataEvent<IEnumerable<HyperLiquidOrderStatus>>> onMessage, CancellationToken ct = default);
 
         /// <summary>
-        /// Subscribe to user trade updates
+        /// Subscribe to user trade updates, will provided updates for both Spot and Futures orders
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
         /// </summary>
         /// <param name="address">Address to subscribe for. If not provided will use the address provided in the API credentials</param>
@@ -127,17 +76,27 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         Task<CallResult<UpdateSubscription>> SubscribeToUserTradeUpdatesAsync(string? address, Action<DataEvent<IEnumerable<HyperLiquidUserTrade>>> onMessage, CancellationToken ct = default);
 
         /// <summary>
-        /// Subscribe to user funding updates
+        /// Subscribe to user ledger updates (excluding funding updates)will provided updates for both Spot and Futures changes
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
         /// </summary>
         /// <param name="address">Address to subscribe for. If not provided will use the address provided in the API credentials</param>
         /// <param name="onMessage">The data handler</param>
         /// <param name="ct">Cancellation token for closing this subscription</param>
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
-        Task<CallResult<UpdateSubscription>> SubscribeToUserFundingUpdatesAsync(string? address, Action<DataEvent<IEnumerable<HyperLiquidUserFunding>>> onMessage, CancellationToken ct = default);
+        Task<CallResult<UpdateSubscription>> SubscribeToUserLedgerUpdatesAsync(string? address, Action<DataEvent<HyperLiquidAccountLedger>> onMessage, CancellationToken ct = default);
 
         /// <summary>
-        /// Subscribe to Time Weighted Average Price trade updates
+        /// Subscribe to user updates, including Spot and Futures balances
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
+        /// </summary>
+        /// <param name="address">Address to subscribe for. If not provided will use the address provided in the API credentials</param>
+        /// <param name="onMessage">The data handler</param>
+        /// <param name="ct">Cancellation token for closing this subscription</param>
+        /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
+        Task<CallResult<UpdateSubscription>> SubscribeToUserUpdatesAsync(string? address, Action<DataEvent<HyperLiquidUserUpdate>> onMessage, CancellationToken ct = default);
+
+        /// <summary>
+        /// Subscribe to Time Weighted Average Price trade updates, will provided updates for both Spot and Futures orders
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
         /// </summary>
         /// <param name="address">Address to subscribe for. If not provided will use the address provided in the API credentials</param>
@@ -147,7 +106,7 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         Task<CallResult<UpdateSubscription>> SubscribeToTwapTradeUpdatesAsync(string? address, Action<DataEvent<IEnumerable<HyperLiquidTwapStatus>>> onMessage, CancellationToken ct = default);
 
         /// <summary>
-        /// Subscribe to Time Weighted Average Price order history updates
+        /// Subscribe to Time Weighted Average Price order history updates, will provided updates for both Spot and Futures orders
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/websocket/subscriptions" /></para>
         /// </summary>
         /// <param name="address">Address to subscribe for. If not provided will use the address provided in the API credentials</param>
@@ -156,9 +115,5 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         /// <returns>A stream subscription. This stream subscription can be used to be notified when the socket is disconnected/reconnected and to unsubscribe</returns>
         Task<CallResult<UpdateSubscription>> SubscribeToTwapOrderUpdatesAsync(string? address, Action<DataEvent<IEnumerable<HyperLiquidTwapOrderStatus>>> onMessage, CancellationToken ct = default);
 
-        /// <summary>
-        /// Get the shared socket requests client. This interface is shared with other exhanges to allow for a common implementation for different exchanges.
-        /// </summary>
-        public IHyperLiquidSocketClientApiShared SharedClient { get; }
     }
 }

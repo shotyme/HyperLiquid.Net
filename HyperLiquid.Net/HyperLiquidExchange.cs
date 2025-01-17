@@ -4,8 +4,6 @@ using CryptoExchange.Net.RateLimiting.Guards;
 using CryptoExchange.Net.RateLimiting.Interfaces;
 using CryptoExchange.Net.RateLimiting;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using CryptoExchange.Net.SharedApis;
 
 namespace HyperLiquid.Net
@@ -47,7 +45,10 @@ namespace HyperLiquid.Net
         /// <returns></returns>
         public static string FormatSymbol(string baseAsset, string quoteAsset, TradingMode tradingMode, DateTime? deliverTime = null)
         {
-            return baseAsset + "/" + quoteAsset;
+            if (tradingMode == TradingMode.Spot)
+                return baseAsset + "/" + quoteAsset;
+
+            return baseAsset;
         }
 
         /// <summary>

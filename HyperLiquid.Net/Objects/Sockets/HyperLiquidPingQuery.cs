@@ -1,7 +1,6 @@
 ﻿using CryptoExchange.Net.Sockets;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using HyperLiquid.Net.Objects.Internal;
 
 namespace HyperLiquid.Net.Objects.Sockets

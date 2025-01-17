@@ -121,8 +121,10 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddTransient<IHyperLiquidOrderBookFactory, HyperLiquidOrderBookFactory>();
             services.AddTransient<IHyperLiquidTrackerFactory, HyperLiquidTrackerFactory>();
 
-            services.RegisterSharedRestInterfaces(x => x.GetRequiredService<IHyperLiquidRestClient>().Api.SharedClient);
-            services.RegisterSharedSocketInterfaces(x => x.GetRequiredService<IHyperLiquidSocketClient>().Api.SharedClient);
+            services.RegisterSharedRestInterfaces(x => x.GetRequiredService<IHyperLiquidRestClient>().SpotApi.SharedClient);
+            services.RegisterSharedRestInterfaces(x => x.GetRequiredService<IHyperLiquidRestClient>().FuturesApi.SharedClient);
+            services.RegisterSharedSocketInterfaces(x => x.GetRequiredService<IHyperLiquidSocketClient>().SpotApi.SharedClient);
+            services.RegisterSharedSocketInterfaces(x => x.GetRequiredService<IHyperLiquidSocketClient>().FuturesApi.SharedClient);
 
             return services;
         }

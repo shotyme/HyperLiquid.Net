@@ -2,7 +2,6 @@ using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.SharedApis;
 using System;
 using HyperLiquid.Net.Objects.Options;
-using HyperLiquid.Net.Enums;
 
 namespace HyperLiquid.Net.Interfaces
 {

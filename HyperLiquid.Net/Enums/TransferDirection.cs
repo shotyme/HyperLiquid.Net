@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HyperLiquid.Net.Enums
+﻿namespace HyperLiquid.Net.Enums
 {
     /// <summary>
     /// Transfer direction

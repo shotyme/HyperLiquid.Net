@@ -5,13 +5,14 @@ using CryptoExchange.Net.Objects;
 using HyperLiquid.Net.Objects.Models;
 using HyperLiquid.Net.Enums;
 using System;
+using HyperLiquid.Net.Interfaces.Clients.BaseApi;
 
-namespace HyperLiquid.Net.Interfaces.Clients.Api
+namespace HyperLiquid.Net.Interfaces.Clients.SpotApi
 {
     /// <summary>
-    /// HyperLiquid  account endpoints. Account endpoints include balance info, withdraw/deposit info and requesting and account settings
+    /// HyperLiquid spot account endpoints. Account endpoints include balance info, withdraw/deposit info and requesting and account settings
     /// </summary>
-    public interface IHyperLiquidRestClientApiAccount
+    public interface IHyperLiquidRestClientSpotApiAccount : IHyperLiquidRestClientAccount
     {
         /// <summary>
         /// Get user asset balances
@@ -19,25 +20,7 @@ namespace HyperLiquid.Net.Interfaces.Clients.Api
         /// </summary>
         /// <param name="address">Address to request balances for. If not provided will use the address provided in the API credentials</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<IEnumerable<HyperLiquidBalance>>> GetSpotBalancesAsync(string? address = null, CancellationToken ct = default);
-
-        /// <summary>
-        /// Get futures account info
-        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/perpetuals#retrieve-users-perpetuals-account-summary" /></para>
-        /// </summary>
-        /// <param name="address">Address to request balances for. If not provided will use the address provided in the API credentials</param>
-        /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<HyperLiquidFuturesAccount>> GetFuturesAccountAsync(string? address = null, CancellationToken ct = default);
-
-        /// <summary>
-        /// Get user funding history
-        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint/perpetuals#retrieve-a-users-funding-history-or-non-funding-ledger-updates" /></para>
-        /// </summary>
-        /// <param name="startTime">Filter by start time</param>
-        /// <param name="endTime">Filter by end time</param>
-        /// <param name="address">Address to request funding history for. If not provided will use the address provided in the API credentials</param>
-        /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<IEnumerable<HyperLiquidUserLedger<HyperLiquidUserFunding>>>> GetFundingHistoryAsync(DateTime startTime, DateTime? endTime = null, string? address = null, CancellationToken ct = default);
+        Task<WebCallResult<IEnumerable<HyperLiquidBalance>>> GetBalancesAsync(string? address = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get user account ledger

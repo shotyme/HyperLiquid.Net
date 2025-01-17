@@ -7,7 +7,6 @@ using System;
 using HyperLiquid.Net.Interfaces;
 using HyperLiquid.Net.Interfaces.Clients;
 using HyperLiquid.Net.Objects.Options;
-using HyperLiquid.Net.Enums;
 
 namespace HyperLiquid.Net.SymbolOrderBooks
 {

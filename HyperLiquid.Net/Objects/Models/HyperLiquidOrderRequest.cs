@@ -1,7 +1,4 @@
 ﻿using HyperLiquid.Net.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace HyperLiquid.Net.Objects.Models
 {
@@ -10,10 +7,6 @@ namespace HyperLiquid.Net.Objects.Models
     /// </summary>
     public record HyperLiquidOrderRequest
     {
-        /// <summary>
-        /// Symbol type
-        /// </summary>
-        public SymbolType SymbolType { get; set; }
         /// <summary>
         /// Symbol name
         /// </summary>
@@ -63,7 +56,6 @@ namespace HyperLiquid.Net.Objects.Models
         /// ctor
         /// </summary>
         public HyperLiquidOrderRequest(
-            SymbolType symbolType,
             string symbol,
             OrderSide side,
             OrderType orderType,
@@ -76,7 +68,6 @@ namespace HyperLiquid.Net.Objects.Models
             string? clientOrderId = null
             )
         {
-            SymbolType = symbolType;
             Symbol = symbol;
             Side = side;
             OrderType = orderType;

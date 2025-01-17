@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace HyperLiquid.Net.Objects.Models
@@ -26,7 +23,6 @@ namespace HyperLiquid.Net.Objects.Models
         /// <summary>
         /// Symbol name
         /// </summary>
-        [JsonIgnore]
         [JsonPropertyName("name")]
         public string Name { get; set; } = string.Empty;
         /// <summary>

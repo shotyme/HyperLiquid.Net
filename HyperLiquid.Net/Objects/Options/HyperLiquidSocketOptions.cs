@@ -25,9 +25,17 @@ namespace HyperLiquid.Net.Objects.Options
         }
 
         /// <summary>
-        ///  API options
+        /// Spot API options
         /// </summary>
-        public SocketApiOptions Options { get; private set; } = new SocketApiOptions()
+        public SocketApiOptions SpotOptions { get; private set; } = new SocketApiOptions()
+        {
+            MaxSocketConnections = 100
+        };
+
+        /// <summary>
+        /// Spot API options
+        /// </summary>
+        public SocketApiOptions FuturesOptions { get; private set; } = new SocketApiOptions()
         {
             MaxSocketConnections = 100
         };
@@ -35,7 +43,8 @@ namespace HyperLiquid.Net.Objects.Options
         internal HyperLiquidSocketOptions Set(HyperLiquidSocketOptions targetOptions)
         {
             targetOptions = base.Set<HyperLiquidSocketOptions>(targetOptions);            
-            targetOptions.Options = Options.Set(targetOptions.Options);
+            targetOptions.SpotOptions = SpotOptions.Set(targetOptions.SpotOptions);
+            targetOptions.FuturesOptions = FuturesOptions.Set(targetOptions.FuturesOptions);
             return targetOptions;
         }
     }

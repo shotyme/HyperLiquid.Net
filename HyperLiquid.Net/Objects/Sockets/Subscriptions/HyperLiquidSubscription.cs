@@ -5,7 +5,6 @@ using CryptoExchange.Net.Sockets;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using HyperLiquid.Net.Objects.Models;
 using HyperLiquid.Net.Objects.Internal;
 
 namespace HyperLiquid.Net.Objects.Sockets.Subscriptions

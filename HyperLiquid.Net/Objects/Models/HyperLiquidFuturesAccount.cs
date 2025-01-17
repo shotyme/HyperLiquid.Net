@@ -1,7 +1,6 @@
 ﻿using HyperLiquid.Net.Enums;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.Json.Serialization;
 
 namespace HyperLiquid.Net.Objects.Models
@@ -140,11 +139,10 @@ namespace HyperLiquid.Net.Objects.Models
         [JsonPropertyName("returnOnEquity")]
         public decimal? ReturnOnEquity { get; set; }
         /// <summary>
-        /// szi
+        /// Position quantity
         /// </summary>
         [JsonPropertyName("szi")]
-        public decimal? szi { get; set; }
-#warning ?
+        public decimal? PositionQuantity { get; set; }
 
         /// <summary>
         /// Unrealized profit and loss

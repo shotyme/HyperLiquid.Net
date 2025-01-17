@@ -2,7 +2,6 @@ using CryptoExchange.Net.Objects;
 using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net.Sockets;
 using System.Collections.Generic;
-using HyperLiquid.Net.Objects.Models;
 using HyperLiquid.Net.Objects.Internal;
 
 namespace HyperLiquid.Net.Objects.Sockets

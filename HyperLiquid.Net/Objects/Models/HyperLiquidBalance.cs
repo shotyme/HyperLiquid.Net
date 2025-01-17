@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace HyperLiquid.Net.Objects.Models
 {
-    internal class HyperLiquidBalances
+    /// <summary>
+    /// Spot balances
+    /// </summary>
+    public record HyperLiquidBalances
     {
+        /// <summary>
+        /// Balances
+        /// </summary>
         [JsonPropertyName("balances")]
         public IEnumerable<HyperLiquidBalance> Balances { get; set; } = [];
     }

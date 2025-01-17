@@ -4,7 +4,6 @@ using CryptoExchange.Net.Trackers.Trades;
 using HyperLiquid.Net.Interfaces;
 using HyperLiquid.Net.Interfaces.Clients;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
 using HyperLiquid.Net.Clients;
 

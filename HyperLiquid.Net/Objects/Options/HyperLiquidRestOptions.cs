@@ -24,15 +24,20 @@ namespace HyperLiquid.Net.Objects.Options
             Default?.Set(this);
         }
         
-         /// <summary>
-        ///  API options
+        /// <summary>
+        /// Spot API options
         /// </summary>
-        public RestApiOptions Options { get; private set; } = new RestApiOptions();
+        public RestApiOptions SpotOptions { get; private set; } = new RestApiOptions();
+        /// <summary>
+        /// Futures API options
+        /// </summary>
+        public RestApiOptions FuturesOptions { get; private set; } = new RestApiOptions();
 
         internal HyperLiquidRestOptions Set(HyperLiquidRestOptions targetOptions)
         {
             targetOptions = base.Set<HyperLiquidRestOptions>(targetOptions);            
-            targetOptions.Options = Options.Set(targetOptions.Options);
+            targetOptions.SpotOptions = SpotOptions.Set(targetOptions.SpotOptions);
+            targetOptions.FuturesOptions = FuturesOptions.Set(targetOptions.FuturesOptions);
             return targetOptions;
         }
     }
