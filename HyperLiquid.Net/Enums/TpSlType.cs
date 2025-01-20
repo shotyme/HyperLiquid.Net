@@ -1,4 +1,6 @@
-﻿namespace HyperLiquid.Net.Enums
+﻿using CryptoExchange.Net.Attributes;
+
+namespace HyperLiquid.Net.Enums
 {
     /// <summary>
     /// TakeProfit/StopLoss type
@@ -8,10 +10,12 @@
         /// <summary>
         /// Take profit
         /// </summary>
+        [Map("tp")]
         TakeProfit,
         /// <summary>
         /// Stop loss
         /// </summary>
+        [Map("sl")]
         StopLoss
     }
 }

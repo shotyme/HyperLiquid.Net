@@ -6,6 +6,7 @@ using HyperLiquid.Net.Interfaces.Clients;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using HyperLiquid.Net.Clients;
+using Microsoft.Extensions.Logging;
 
 namespace HyperLiquid.Net
 {
@@ -36,30 +37,28 @@ namespace HyperLiquid.Net
             var restClient = _serviceProvider?.GetRequiredService<IHyperLiquidRestClient>() ?? new HyperLiquidRestClient();
             var socketClient = _serviceProvider?.GetRequiredService<IHyperLiquidSocketClient>() ?? new HyperLiquidSocketClient();
 
-#warning todo
-            throw new NotImplementedException();
-            //IKlineRestClient sharedRestClient;
-            //IKlineSocketClient sharedSocketClient;
-            //if (symbol.TradingMode == TradingMode.Spot)
-            //{
-            //    sharedRestClient = restClient.SpotApi.SharedClient;
-            //    sharedSocketClient = socketClient.SpotApi.SharedClient;
-            //}
-            //else
-            //{
-            //    sharedRestClient = restClient.FuturesApi.SharedClient;
-            //    sharedSocketClient = socketClient.FuturesApi.SharedClient;
-            //}
+            IKlineRestClient sharedRestClient;
+            IKlineSocketClient sharedSocketClient;
+            if (symbol.TradingMode == TradingMode.Spot)
+            {
+                sharedRestClient = restClient.SpotApi.SharedClient;
+                sharedSocketClient = socketClient.SpotApi.SharedClient;
+            }
+            else
+            {
+                sharedRestClient = restClient.FuturesApi.SharedClient;
+                sharedSocketClient = socketClient.FuturesApi.SharedClient;
+            }
 
-            //return new KlineTracker(
-            //    _serviceProvider?.GetRequiredService<ILoggerFactory>().CreateLogger(restClient.Exchange),
-            //    sharedRestClient,
-            //    sharedSocketClient,
-            //    symbol,
-            //    interval,
-            //    limit,
-            //    period
-            //    );
+            return new KlineTracker(
+                _serviceProvider?.GetRequiredService<ILoggerFactory>().CreateLogger(restClient.Exchange),
+                sharedRestClient,
+                sharedSocketClient,
+                symbol,
+                interval,
+                limit,
+                period
+                );
         }
         /// <inheritdoc />
         public ITradeTracker CreateTradeTracker(SharedSymbol symbol, int? limit = null, TimeSpan? period = null)
@@ -67,31 +66,21 @@ namespace HyperLiquid.Net
             var restClient = _serviceProvider?.GetRequiredService<IHyperLiquidRestClient>() ?? new HyperLiquidRestClient();
             var socketClient = _serviceProvider?.GetRequiredService<IHyperLiquidSocketClient>() ?? new HyperLiquidSocketClient();
 
-#warning todo
-            throw new NotImplementedException();
-
-            //IRecentTradeRestClient? sharedRestClient;
-            //ITradeSocketClient sharedSocketClient;
-            //if (symbol.TradingMode == TradingMode.Spot)
-            //{
-            //    sharedRestClient = restClient.SpotApi.SharedClient;
-            //    sharedSocketClient = socketClient.SpotApi.SharedClient;
-            //}
-            //else
-            //{
-            //    sharedRestClient = restClient.FuturesApi.SharedClient;
-            //    sharedSocketClient = socketClient.FuturesApi.SharedClient;
-            //}
-
-            //return new TradeTracker(
-            //    _serviceProvider?.GetRequiredService<ILoggerFactory>().CreateLogger(restClient.Exchange),
-            //    sharedRestClient,
-            //    null,
-            //    sharedSocketClient,
-            //    symbol,
-            //    limit,
-            //    period
-            //    );
+            ITradeSocketClient sharedSocketClient;
+            if (symbol.TradingMode == TradingMode.Spot)            
+                sharedSocketClient = socketClient.SpotApi.SharedClient;            
+            else            
+                sharedSocketClient = socketClient.FuturesApi.SharedClient;
+            
+            return new TradeTracker(
+                _serviceProvider?.GetRequiredService<ILoggerFactory>().CreateLogger(restClient.Exchange),
+                null,
+                null,
+                sharedSocketClient,
+                symbol,
+                limit,
+                period
+                );
         }
     }
 }

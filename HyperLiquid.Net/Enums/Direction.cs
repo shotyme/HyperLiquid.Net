@@ -26,8 +26,16 @@ namespace HyperLiquid.Net.Enums
         /// Close short
         /// </summary>
         [Map("Close Short")]
-        CloseShort
-
-#warning spot?
+        CloseShort,
+        /// <summary>
+        /// Buy spot order
+        /// </summary>
+        [Map("Buy")]
+        Buy,
+        /// <summary>
+        /// Sell spot order
+        /// </summary>
+        [Map("Sell")]
+        Sell
     }
 }

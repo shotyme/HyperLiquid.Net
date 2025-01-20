@@ -31,8 +31,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
             if (!result)
                 return result.AsExchangeResult<IEnumerable<SharedBalance>>(Exchange, null, default);
 
-#warning check total balance
-            return result.AsExchangeResult<IEnumerable<SharedBalance>>(Exchange, TradingMode.Spot, [new SharedBalance("USDC", result.Data.Withdrawable, result.Data.MarginSummary.TotalRawUsd)]);
+            return result.AsExchangeResult<IEnumerable<SharedBalance>>(Exchange, TradingMode.Spot, [new SharedBalance("USDC", result.Data.Withdrawable, result.Data.Withdrawable + result.Data.MarginSummary.TotalMarginUsed + result.Data.CrossMarginSummary.TotalMarginUsed)]);
         }
 
         #endregion
@@ -173,8 +172,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
             return result.AsExchangeResult<IEnumerable<SharedFuturesSymbol>>(Exchange, TradingMode.Spot, result.Data.Select(s => new SharedFuturesSymbol(SharedSymbolType.PerpetualLinear, s.Name, "USDC", s.Name + "/USDC", true)
             {
                 MinTradeQuantity = 1m / (decimal)(Math.Pow(10, s.QuantityDecimals)),
-#warning check
-                //MinNotionalValue = s.MinNotionalFilter?.MinNotional ?? s.NotionalFilter?.MinNotional,
+                MinNotionalValue = 10, // Order API returns error mentioning at least 10$ order value, but value isn't returned by symbol API
                 QuantityDecimals = s.QuantityDecimals,
                 PriceSignificantFigures = 5,
                 PriceDecimals = 6 - s.QuantityDecimals
@@ -313,7 +311,13 @@ namespace HyperLiquid.Net.Clients.FuturesApi
                 SharedQuantityType.BaseAsset,
                 SharedQuantityType.BaseAsset);
 
-        PlaceFuturesOrderOptions IFuturesOrderRestClient.PlaceFuturesOrderOptions { get; } = new PlaceFuturesOrderOptions();
+        PlaceFuturesOrderOptions IFuturesOrderRestClient.PlaceFuturesOrderOptions { get; } = new PlaceFuturesOrderOptions()
+        {
+            RequiredOptionalParameters = new List<ParameterDescription>
+            {
+                new ParameterDescription(nameof(PlaceSpotOrderRequest.Price), typeof(decimal), "Price for the order. For market orders this should be the current symbol price", 21.5m)
+            }
+        };
         async Task<ExchangeWebResult<SharedId>> IFuturesOrderRestClient.PlaceFuturesOrderAsync(PlaceFuturesOrderRequest request, CancellationToken ct)
         {
             var validationError = ((IFuturesOrderRestClient)this).PlaceFuturesOrderOptions.ValidateRequest(
@@ -332,7 +336,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
                 request.Side == SharedOrderSide.Buy ? Enums.OrderSide.Buy : Enums.OrderSide.Sell,
                 request.OrderType == SharedOrderType.Limit || request.OrderType == SharedOrderType.LimitMaker ? Enums.OrderType.Limit : Enums.OrderType.Market,
                 quantity: request.Quantity!.Value,
-                price: request.Price,
+                price: request.Price!.Value,
                 reduceOnly: request.ReduceOnly,
                 timeInForce: GetTimeInForce(request.TimeInForce, request.OrderType),
                 clientOrderId: request.ClientOrderId,
@@ -366,11 +370,9 @@ namespace HyperLiquid.Net.Clients.FuturesApi
                 ParseOrderStatus(order.Data.Status),
                 order.Data.Order.Timestamp)
             {
-#warning check
-                //AveragePrice = order.Data.Order.av,
                 OrderPrice = order.Data.Order.Price,
-                Quantity = order.Data.Order.OriginalQuantity,
-                QuantityFilled = order.Data.Order.Quantity,
+                Quantity = order.Data.Order.Quantity,
+                QuantityFilled = order.Data.Order.Quantity - order.Data.Order.QuantityRemaining,
                 UpdateTime = order.Data.Timestamp,
                 ReduceOnly = order.Data.Order.ReduceOnly
             });
@@ -401,10 +403,9 @@ namespace HyperLiquid.Net.Clients.FuturesApi
                 SharedOrderStatus.Open,
                 x.Timestamp)
             {
-                //AveragePrice = x.AverageFillPrice,
                 OrderPrice = x.Price,
-                Quantity = x.OriginalQuantity,
-                QuantityFilled = x.Quantity,
+                Quantity = x.Quantity,
+                QuantityFilled = x.Quantity - x.QuantityRemaining,
                 UpdateTime = x.Timestamp,
                 ReduceOnly = x.ReduceOnly
             }).ToArray());
@@ -440,8 +441,8 @@ namespace HyperLiquid.Net.Clients.FuturesApi
                 x.Order.Timestamp)
             {
                 OrderPrice = x.Order.Price,
-                Quantity = x.Order.OriginalQuantity,
-                QuantityFilled = x.Order.Quantity,
+                Quantity = x.Order.Quantity,
+                QuantityFilled = x.Order.Quantity - x.Order.QuantityRemaining,
                 UpdateTime = x.Timestamp,
                 ReduceOnly = x.Order.ReduceOnly
             }).ToArray());
@@ -473,8 +474,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
             {
                 Fee = x.Fee,
                 FeeAsset = x.FeeToken,
-#warning check
-                //Role = x.IsMaker ? SharedRole.Maker : SharedRole.Taker
+                Role = x.Crossed ? SharedRole.Taker : SharedRole.Maker
             }).ToArray());
         }
 
@@ -517,7 +517,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
             {
                 Fee = x.Fee,
                 FeeAsset = x.FeeToken,
-                //Role = x.IsMaker ? SharedRole.Maker : SharedRole.Taker
+                Role = x.Crossed ? SharedRole.Taker : SharedRole.Maker
             }).ToArray(), nextToken);
         }
 
@@ -570,6 +570,10 @@ namespace HyperLiquid.Net.Clients.FuturesApi
             {
                 new ParameterDescription(nameof(ClosePositionRequest.PositionSide), typeof(SharedPositionSide), "The position side to close", SharedPositionSide.Long),
                 new ParameterDescription(nameof(ClosePositionRequest.Quantity), typeof(decimal), "Quantity of the position is required", 0.1m)
+            },
+            RequiredExchangeParameters = new List<ParameterDescription>
+            {
+                new ParameterDescription("Price", typeof(decimal), "The current price of the symbol. Required to calculate max slippage.", 21.5m)
             }
         };
         async Task<ExchangeWebResult<SharedId>> IFuturesOrderRestClient.ClosePositionAsync(ClosePositionRequest request, CancellationToken ct)
@@ -584,6 +588,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
                 request.PositionSide == SharedPositionSide.Long ? Enums.OrderSide.Sell : Enums.OrderSide.Buy,
                 Enums.OrderType.Market,
                 quantity: request.Quantity!.Value,
+                price: ExchangeParameters.GetValue<decimal>(request.ExchangeParameters, ExchangeName, "Price"),
                 reduceOnly: true,
                 timeInForce: Enums.TimeInForce.ImmediateOrCancel,
                 ct: ct).ConfigureAwait(false);

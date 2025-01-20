@@ -51,7 +51,18 @@ namespace HyperLiquid.Net.Converters
 
         public override void Write(Utf8JsonWriter writer, HyperLiquidAccountLedger value, JsonSerializerOptions options)
         {
-
+            writer.WriteStartArray();
+            foreach (var item in value.Withdrawals)
+                JsonSerializer.Serialize(writer, item);
+            foreach (var item in value.Deposits)
+                JsonSerializer.Serialize(writer, item);
+            foreach (var item in value.Liquidations)
+                JsonSerializer.Serialize(writer, item);
+            foreach (var item in value.SpotTransfers)
+                JsonSerializer.Serialize(writer, item);
+            foreach (var item in value.InternalTransfer)
+                JsonSerializer.Serialize(writer, item);
+            writer.WriteEndArray();
         }
     }
 }

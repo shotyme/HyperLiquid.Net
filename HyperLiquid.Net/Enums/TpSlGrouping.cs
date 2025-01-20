@@ -1,4 +1,6 @@
-﻿namespace HyperLiquid.Net.Enums
+﻿using CryptoExchange.Net.Attributes;
+
+namespace HyperLiquid.Net.Enums
 {
     /// <summary>
     /// TakeProfit/StopLoss grouping
@@ -8,10 +10,12 @@
         /// <summary>
         /// Normal TakeProfit/StopLoss
         /// </summary>
+        [Map("normalTpsl")]
         NormalTpSl,
         /// <summary>
         /// Position TakeProfit/StopLoss
         /// </summary>
+        [Map("positionTpsl")]
         PositionTpSl
     }
 }

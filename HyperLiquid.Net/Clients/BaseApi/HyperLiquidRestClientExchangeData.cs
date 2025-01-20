@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using HyperLiquid.Net.Objects.Models;
 using HyperLiquid.Net.Enums;
 using HyperLiquid.Net.Utils;
+using CryptoExchange.Net.Objects.Sockets;
 
 namespace HyperLiquid.Net.Clients.BaseApi
 {
@@ -32,7 +33,16 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "type", "allMids" }
             };
             var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 2, false);
-            return await _baseClient.SendAsync<Dictionary<string, decimal>>(request, parameters, ct).ConfigureAwait(false);
+            var result = await _baseClient.SendAsync<Dictionary<string, decimal>>(request, parameters, ct).ConfigureAwait(false);
+            
+            var resultMapped = new Dictionary<string, decimal>();
+            foreach (var item in result.Data)
+            {
+                var nameRes = await HyperLiquidUtils.GetSymbolNameFromExchangeNameAsync(item.Key).ConfigureAwait(false);
+                resultMapped.Add(nameRes.Data ?? item.Key, item.Value);
+            }
+
+            return result.As(resultMapped);
         }
 
         #endregion

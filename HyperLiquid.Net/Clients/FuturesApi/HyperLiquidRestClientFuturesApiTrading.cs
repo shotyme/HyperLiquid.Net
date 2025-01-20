@@ -69,7 +69,6 @@ namespace HyperLiquid.Net.Clients.FuturesApi
             actionParameters.Add("ntli", updateValue);
             parameters.Add("action", actionParameters);
 
-#warning check
             var request = _definitions.GetOrCreate(HttpMethod.Post, "exchange", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 1, true);
             var result = await _baseClient.SendAsync<HyperLiquidResponse>(request, parameters, ct).ConfigureAwait(false);
             return result.AsDataless();

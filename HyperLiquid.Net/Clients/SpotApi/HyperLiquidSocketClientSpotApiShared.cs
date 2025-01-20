@@ -115,6 +115,9 @@ namespace HyperLiquid.Net.Clients.SpotApi
             var result = await SubscribeToOrderUpdatesAsync(null,
                 update =>
                 {
+                    if (update.UpdateType == SocketUpdateType.Snapshot)
+                        return;
+
                     var spotOrders = update.Data.Where(x => x.Order.SymbolType == Enums.SymbolType.Spot);
                     if (!spotOrders.Any())
                         return;
@@ -129,8 +132,8 @@ namespace HyperLiquid.Net.Clients.SpotApi
                             x.Order.Timestamp)
                         {
                             OrderPrice = x.Order.Price,
-                            Quantity = x.Order.OriginalQuantity,
-                            QuantityFilled = x.Order.Quantity,
+                            Quantity = x.Order.Quantity,
+                            QuantityFilled = x.Order.Quantity - x.Order.QuantityRemaining,
                             UpdateTime = x.Timestamp
                         }
                     ).ToList()));
@@ -160,6 +163,9 @@ namespace HyperLiquid.Net.Clients.SpotApi
             var result = await SubscribeToUserTradeUpdatesAsync(null,
                 update =>
                 {
+                    if (update.UpdateType == SocketUpdateType.Snapshot)
+                        return;
+
                     var spotOrders = update.Data.Where(x => x.SymbolType == Enums.SymbolType.Spot);
                     if (!spotOrders.Any())
                         return;

@@ -164,8 +164,7 @@ namespace HyperLiquid.Net.Clients.SpotApi
             return result.AsExchangeResult<IEnumerable<SharedSpotSymbol>>(Exchange, TradingMode.Spot, result.Data.Symbols.Select(s => new SharedSpotSymbol(s.BaseAsset.Name, s.QuoteAsset.Name, s.Name, true)
             {
                 MinTradeQuantity = 1m / (decimal)(Math.Pow(10, s.BaseAsset.QuantityDecimals)),
-#warning check
-                //MinNotionalValue = s.MinNotionalFilter?.MinNotional ?? s.NotionalFilter?.MinNotional,
+                MinNotionalValue = 10, // Order API returns error mentioning at least 10$ order value, but value isn't returned by symbol API
                 QuantityDecimals = s.BaseAsset.QuantityDecimals,
                 PriceSignificantFigures = 5,
                 PriceDecimals = 8 - s.BaseAsset.QuantityDecimals
@@ -176,7 +175,6 @@ namespace HyperLiquid.Net.Clients.SpotApi
 
         #region Spot Order Client
 
-#warning check
         SharedFeeDeductionType ISpotOrderRestClient.SpotFeeDeductionType => SharedFeeDeductionType.DeductFromOutput;
         SharedFeeAssetType ISpotOrderRestClient.SpotFeeAssetType => SharedFeeAssetType.OutputAsset;
         IEnumerable<SharedOrderType> ISpotOrderRestClient.SpotSupportedOrderTypes { get; } = new[] { SharedOrderType.Limit, SharedOrderType.Market, SharedOrderType.LimitMaker };
@@ -187,7 +185,14 @@ namespace HyperLiquid.Net.Clients.SpotApi
                 SharedQuantityType.BaseAsset,
                 SharedQuantityType.BaseAsset);
 
-        PlaceSpotOrderOptions ISpotOrderRestClient.PlaceSpotOrderOptions { get; } = new PlaceSpotOrderOptions();
+        PlaceSpotOrderOptions ISpotOrderRestClient.PlaceSpotOrderOptions { get; } = new PlaceSpotOrderOptions()
+        {
+            RequiredOptionalParameters = new List<ParameterDescription>
+            {
+                new ParameterDescription(nameof(PlaceSpotOrderRequest.Price), typeof(decimal), "Price for the order. For market orders this should be the current symbol price", 21.5m)
+            }
+        };
+
         async Task<ExchangeWebResult<SharedId>> ISpotOrderRestClient.PlaceSpotOrderAsync(PlaceSpotOrderRequest request, CancellationToken ct)
         {
             var validationError = ((ISpotOrderRestClient)this).PlaceSpotOrderOptions.ValidateRequest(
@@ -206,7 +211,7 @@ namespace HyperLiquid.Net.Clients.SpotApi
                 request.Side == SharedOrderSide.Buy ? Enums.OrderSide.Buy : Enums.OrderSide.Sell,
                 request.OrderType == SharedOrderType.Limit || request.OrderType == SharedOrderType.LimitMaker ? Enums.OrderType.Limit : Enums.OrderType.Market,
                 quantity: request.Quantity!.Value,
-                price: request.Price,
+                price: request.Price!.Value,
                 timeInForce: GetTimeInForce(request.TimeInForce, request.OrderType),
                 clientOrderId: request.ClientOrderId,
                 ct: ct).ConfigureAwait(false);
@@ -239,11 +244,9 @@ namespace HyperLiquid.Net.Clients.SpotApi
                 ParseOrderStatus(order.Data.Status),
                 order.Data.Order.Timestamp)
             {
-#warning check
-                //AveragePrice = order.Data.Order.av,
                 OrderPrice = order.Data.Order.Price,
-                Quantity = order.Data.Order.OriginalQuantity,
-                QuantityFilled = order.Data.Order.Quantity,
+                Quantity = order.Data.Order.Quantity,
+                QuantityFilled = order.Data.Order.Quantity - order.Data.Order.QuantityRemaining,
                 UpdateTime = order.Data.Timestamp
             });
         }
@@ -272,10 +275,9 @@ namespace HyperLiquid.Net.Clients.SpotApi
                 SharedOrderStatus.Open,
                 x.Timestamp)
             {
-                //AveragePrice = x.AverageFillPrice,
                 OrderPrice = x.Price,
-                Quantity = x.OriginalQuantity,
-                QuantityFilled = x.Quantity,
+                Quantity = x.Quantity,
+                QuantityFilled = x.Quantity - x.QuantityRemaining,
                 UpdateTime = x.Timestamp
             }).ToArray());
         }
@@ -312,8 +314,8 @@ namespace HyperLiquid.Net.Clients.SpotApi
                 x.Order.Timestamp)
             {
                 OrderPrice = x.Order.Price,
-                Quantity = x.Order.OriginalQuantity,
-                QuantityFilled = x.Order.Quantity,
+                Quantity = x.Order.Quantity,
+                QuantityFilled = x.Order.Quantity - x.Order.QuantityRemaining,
                 UpdateTime = x.Timestamp
             }).ToArray());
         }
@@ -344,8 +346,7 @@ namespace HyperLiquid.Net.Clients.SpotApi
             {
                 Fee = x.Fee,
                 FeeAsset = x.FeeToken,
-#warning check
-                //Role = x.IsMaker ? SharedRole.Maker : SharedRole.Taker
+                Role = x.Crossed ? SharedRole.Taker : SharedRole.Maker
             }).ToArray());
         }
 

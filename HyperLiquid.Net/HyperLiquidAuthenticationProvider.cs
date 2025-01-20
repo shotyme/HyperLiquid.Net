@@ -88,7 +88,7 @@ namespace HyperLiquid.Net
                 return;
 
             var action = (Dictionary<string, object>)bodyParameters!["action"];
-            var nonce = action.TryGetValue("time", out var time) ? (long)time : action.TryGetValue("nonce", out var n) ? (long)n : DateTimeConverter.ConvertToMilliseconds(DateTime.UtcNow).Value;
+            var nonce = action.TryGetValue("time", out var time) ? (long)time : action.TryGetValue("nonce", out var n) ? (long)n : GetMillisecondTimestampLong(apiClient);
             bodyParameters!.Add("nonce", nonce);
             if (action.TryGetValue("signatureChainId", out var chainId))
             {
@@ -152,7 +152,7 @@ namespace HyperLiquid.Net
             {
                 { "r", "0x" + BytesToHexString(sign.R).ToLowerInvariant() },
                 { "s", "0x" + BytesToHexString(sign.S).ToLowerInvariant() },
-                { "v", ((int)sign.V[0]) - 27 }
+                { "v", (int)sign.V[0] }
             };
         }
 

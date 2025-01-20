@@ -55,21 +55,20 @@ namespace HyperLiquid.Net.Objects.Models
         [JsonPropertyName("type")]
         public OrderType OrderType { get; set; }
         /// <summary>
-        /// Original quantity
+        /// Original order quantity
         /// </summary>
         [JsonPropertyName("origSz")]
-        public decimal OriginalQuantity { get; set; }
+        public decimal Quantity { get; set; }
         /// <summary>
         /// Reduce only
         /// </summary>
         [JsonPropertyName("reduceOnly")]
         public bool ReduceOnly { get; set; }
         /// <summary>
-        /// Order quantity
+        /// Remaining unexecuted order quantity
         /// </summary>
         [JsonPropertyName("sz")]
-#warning is this executed quantity?
-        public decimal Quantity { get; set; }
+        public decimal QuantityRemaining { get; set; }
         /// <summary>
         /// Timestamp
         /// </summary>
@@ -79,7 +78,7 @@ namespace HyperLiquid.Net.Objects.Models
         /// Trigger condition
         /// </summary>
         [JsonPropertyName("triggerCondition")]
-        public TriggerCondition TriggerCondition { get; set; }
+        public string TriggerCondition { get; set; } = string.Empty;
         /// <summary>
         /// Trigger price
         /// </summary>

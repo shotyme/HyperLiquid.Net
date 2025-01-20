@@ -70,7 +70,7 @@ namespace HyperLiquid.Net.Objects.Models
         /// Deploy gas
         /// </summary>
         [JsonPropertyName("deployGas")]
-        public decimal DeployGas { get; set; }
+        public decimal? DeployGas { get; set; }
         /// <summary>
         /// Deploy time
         /// </summary>

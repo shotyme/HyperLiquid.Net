@@ -44,10 +44,10 @@ namespace HyperLiquid.Net.Interfaces.Clients.SpotApi
         /// Get the approved builder fee
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#check-builder-fee-approval" /></para>
         /// </summary>
-        /// <param name="builderAddress">The address of the builder</param>
+        /// <param name="builderAddress">The address of the builder. If not provided will use the builder address for this library</param>
         /// <param name="address">Address to request approved builder fee for. If not provided will use the address provided in the API credentials</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<int>> GetApprovedBuilderFeeAsync(string builderAddress, string? address = null, CancellationToken ct = default);
+        Task<WebCallResult<int>> GetApprovedBuilderFeeAsync(string? builderAddress = null, string? address = null, CancellationToken ct = default);
 
         /// <summary>
         /// Send usd to another address. This transfer does not touch the EVM bridge.
@@ -131,6 +131,13 @@ namespace HyperLiquid.Net.Interfaces.Clients.SpotApi
         /// <param name="usd">USD to withdraw or deposit</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult> DepositOrWithdrawFromVaultAsync(DepositWithdrawDirection direction, string vaultAddress, long usd, CancellationToken ct = default);
+
+        /// <summary>
+        /// Approve a builder address of the library to charge the fee percentage as defined in the BuilderFeePercentage client options field
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#approve-a-builder-fee" /></para>
+        /// </summary>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult> ApproveBuilderFeeAsync(CancellationToken ct = default);
 
         /// <summary>
         /// Approve a builder address to charge a certain fee

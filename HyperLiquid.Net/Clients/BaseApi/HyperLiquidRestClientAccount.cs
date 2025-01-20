@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
-using HyperLiquid.Net.Clients.SpotApi;
 using CryptoExchange.Net.Objects;
 using HyperLiquid.Net.Objects.Models;
+using HyperLiquid.Net.Interfaces.Clients.BaseApi;
 
 namespace HyperLiquid.Net.Clients.BaseApi
 {
-    internal class HyperLiquidRestClientAccount
+    internal class HyperLiquidRestClientAccount: IHyperLiquidRestClientAccount
     {
         private static readonly RequestDefinitionCache _definitions = new RequestDefinitionCache();
         private readonly HyperLiquidRestClientApi _baseClient;

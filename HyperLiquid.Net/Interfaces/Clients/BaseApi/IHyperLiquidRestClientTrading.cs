@@ -113,26 +113,20 @@ namespace HyperLiquid.Net.Interfaces.Clients.BaseApi
         /// <param name="side">Order side</param>
         /// <param name="orderType">Order type</param>
         /// <param name="quantity">Quantity</param>
-        /// <param name="price">Limit price</param>
+        /// <param name="price">Limit price. For market orders pass the current price of the symbol for max slippage calculation.</param>
         /// <param name="timeInForce">Time in force</param>
         /// <param name="reduceOnly">Reduce only</param>
         /// <param name="clientOrderId">Client order id, an optional 128 bit hex string, e.g. 0x1234567890abcdef1234567890abcdef</param>
-        /// <param name="triggerPrice">Trigger order trigger price</param>
-        /// <param name="tpSlType">Trigger order type</param>
-        /// <param name="tpSlGrouping">Trigger order grouping</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<HyperLiquidOrderResult>> PlaceOrderAsync(
             string symbol,
             OrderSide side,
             OrderType orderType,
             decimal quantity,
-            decimal? price = null,
+            decimal price,
             TimeInForce? timeInForce = null,
             bool? reduceOnly = null,
             string? clientOrderId = null,
-            decimal? triggerPrice = null,
-            TpSlType? tpSlType = null,
-            TpSlGrouping? tpSlGrouping = null,
             CancellationToken ct = default
             );
 
@@ -144,6 +138,49 @@ namespace HyperLiquid.Net.Interfaces.Clients.BaseApi
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<IEnumerable<CallResult<HyperLiquidOrderResult>>>> PlaceMultipleOrdersAsync(
             IEnumerable<HyperLiquidOrderRequest> orders,
+            CancellationToken ct = default);
+
+        /// <summary>
+        /// Place a new trigger order
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#place-an-order" /></para>
+        /// </summary>
+        /// <param name="symbol">Symbol name, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
+        /// <param name="side">Order side</param>
+        /// <param name="orderType">Order type</param>
+        /// <param name="quantity">Quantity</param>
+        /// <param name="price">Limit price. For market orders pass the current price of the symbol for max slippage calculation.</param>
+        /// <param name="timeInForce">Time in force</param>
+        /// <param name="reduceOnly">Reduce only</param>
+        /// <param name="clientOrderId">Client order id, an optional 128 bit hex string, e.g. 0x1234567890abcdef1234567890abcdef</param>
+        /// <param name="triggerPrice">Trigger order trigger price</param>
+        /// <param name="tpSlType">Trigger order type</param>
+        /// <param name="tpSlGrouping">Trigger order grouping</param>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult> PlaceTriggerOrderAsync(
+            string symbol,
+            OrderSide side,
+            OrderType orderType,
+            decimal quantity,
+            decimal price,
+            decimal triggerPrice,
+            TpSlType tpSlType,
+            TpSlGrouping tpSlGrouping,
+            TimeInForce? timeInForce = null,
+            bool? reduceOnly = null,
+            string? clientOrderId = null,
+            CancellationToken ct = default
+            );
+
+        /// <summary>
+        /// Place multiple new trigger orders
+        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#place-an-order" /></para>
+        /// </summary>
+        /// <param name="orders">Orders to place</param>
+        /// <param name="tpSlGrouping">Take profit / Stop loss grouping</param>
+        /// <param name="ct">Cancellation token</param>
+        Task<WebCallResult<IEnumerable<CallResult>>> PlaceMultipleTriggerOrdersAsync(
+            IEnumerable<HyperLiquidOrderRequest> orders,
+            TpSlGrouping tpSlGrouping,
             CancellationToken ct = default);
 
         /// <summary>

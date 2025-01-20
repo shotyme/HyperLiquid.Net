@@ -64,6 +64,9 @@
         <member name="M:HyperLiquid.Net.Clients.BaseApi.HyperLiquidRestClientTrading.PlaceMultipleOrdersAsync(System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidOrderRequest},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
+        <member name="M:HyperLiquid.Net.Clients.BaseApi.HyperLiquidRestClientTrading.PlaceMultipleTriggerOrdersAsync(System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidOrderRequest},HyperLiquid.Net.Enums.TpSlGrouping,System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
         <member name="M:HyperLiquid.Net.Clients.BaseApi.HyperLiquidRestClientTrading.CancelOrdersAsync(System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidCancelRequest},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
@@ -354,6 +357,9 @@
         <member name="M:HyperLiquid.Net.Clients.SpotApi.HyperLiquidRestClientSpotApiAccount.DepositOrWithdrawFromVaultAsync(HyperLiquid.Net.Enums.DepositWithdrawDirection,System.String,System.Int64,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
+        <member name="M:HyperLiquid.Net.Clients.SpotApi.HyperLiquidRestClientSpotApiAccount.ApproveBuilderFeeAsync(System.Threading.CancellationToken)">
+            <inheritdoc />
+        </member>
         <member name="M:HyperLiquid.Net.Clients.SpotApi.HyperLiquidRestClientSpotApiAccount.ApproveBuilderFeeAsync(System.String,System.Decimal,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
@@ -441,6 +447,16 @@
         <member name="F:HyperLiquid.Net.Enums.Direction.CloseShort">
             <summary>
             Close short
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.Direction.Buy">
+            <summary>
+            Buy spot order
+            </summary>
+        </member>
+        <member name="F:HyperLiquid.Net.Enums.Direction.Sell">
+            <summary>
+            Sell spot order
             </summary>
         </member>
         <member name="T:HyperLiquid.Net.Enums.KlineInterval">
@@ -698,16 +714,6 @@
             Futures to spot
             </summary>
         </member>
-        <member name="T:HyperLiquid.Net.Enums.TriggerCondition">
-            <summary>
-            Trigger condition
-            </summary>
-        </member>
-        <member name="F:HyperLiquid.Net.Enums.TriggerCondition.NA">
-            <summary>
-            Not applicable
-            </summary>
-        </member>
         <member name="T:HyperLiquid.Net.Enums.TwapStatus">
             <summary>
             TWAP order status
@@ -805,6 +811,11 @@
         <member name="P:HyperLiquid.Net.HyperLiquidExchange.Type">
             <summary>
             Type of exchange
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.HyperLiquidExchange.BuilderAddress">
+            <summary>
+            Address of the builder
             </summary>
         </member>
         <member name="M:HyperLiquid.Net.HyperLiquidExchange.FormatSymbol(System.String,System.String,CryptoExchange.Net.SharedApis.TradingMode,System.Nullable{System.DateTime})">
@@ -989,7 +1000,7 @@
             <param name="requests">Cancel requests</param>
             <param name="ct">Cancellation token</param>
         </member>
-        <member name="M:HyperLiquid.Net.Interfaces.Clients.BaseApi.IHyperLiquidRestClientTrading.PlaceOrderAsync(System.String,HyperLiquid.Net.Enums.OrderSide,HyperLiquid.Net.Enums.OrderType,System.Decimal,System.Nullable{System.Decimal},System.Nullable{HyperLiquid.Net.Enums.TimeInForce},System.Nullable{System.Boolean},System.String,System.Nullable{System.Decimal},System.Nullable{HyperLiquid.Net.Enums.TpSlType},System.Nullable{HyperLiquid.Net.Enums.TpSlGrouping},System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.BaseApi.IHyperLiquidRestClientTrading.PlaceOrderAsync(System.String,HyperLiquid.Net.Enums.OrderSide,HyperLiquid.Net.Enums.OrderType,System.Decimal,System.Decimal,System.Nullable{HyperLiquid.Net.Enums.TimeInForce},System.Nullable{System.Boolean},System.String,System.Threading.CancellationToken)">
             <summary>
             Place a new order
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#place-an-order" /></para>
@@ -998,13 +1009,10 @@
             <param name="side">Order side</param>
             <param name="orderType">Order type</param>
             <param name="quantity">Quantity</param>
-            <param name="price">Limit price</param>
+            <param name="price">Limit price. For market orders pass the current price of the symbol for max slippage calculation.</param>
             <param name="timeInForce">Time in force</param>
             <param name="reduceOnly">Reduce only</param>
             <param name="clientOrderId">Client order id, an optional 128 bit hex string, e.g. 0x1234567890abcdef1234567890abcdef</param>
-            <param name="triggerPrice">Trigger order trigger price</param>
-            <param name="tpSlType">Trigger order type</param>
-            <param name="tpSlGrouping">Trigger order grouping</param>
             <param name="ct">Cancellation token</param>
         </member>
         <member name="M:HyperLiquid.Net.Interfaces.Clients.BaseApi.IHyperLiquidRestClientTrading.PlaceMultipleOrdersAsync(System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidOrderRequest},System.Threading.CancellationToken)">
@@ -1013,6 +1021,33 @@
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#place-an-order" /></para>
             </summary>
             <param name="orders">Orders to place</param>
+            <param name="ct">Cancellation token</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.BaseApi.IHyperLiquidRestClientTrading.PlaceTriggerOrderAsync(System.String,HyperLiquid.Net.Enums.OrderSide,HyperLiquid.Net.Enums.OrderType,System.Decimal,System.Decimal,System.Decimal,HyperLiquid.Net.Enums.TpSlType,HyperLiquid.Net.Enums.TpSlGrouping,System.Nullable{HyperLiquid.Net.Enums.TimeInForce},System.Nullable{System.Boolean},System.String,System.Threading.CancellationToken)">
+            <summary>
+            Place a new trigger order
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#place-an-order" /></para>
+            </summary>
+            <param name="symbol">Symbol name, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
+            <param name="side">Order side</param>
+            <param name="orderType">Order type</param>
+            <param name="quantity">Quantity</param>
+            <param name="price">Limit price. For market orders pass the current price of the symbol for max slippage calculation.</param>
+            <param name="timeInForce">Time in force</param>
+            <param name="reduceOnly">Reduce only</param>
+            <param name="clientOrderId">Client order id, an optional 128 bit hex string, e.g. 0x1234567890abcdef1234567890abcdef</param>
+            <param name="triggerPrice">Trigger order trigger price</param>
+            <param name="tpSlType">Trigger order type</param>
+            <param name="tpSlGrouping">Trigger order grouping</param>
+            <param name="ct">Cancellation token</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.BaseApi.IHyperLiquidRestClientTrading.PlaceMultipleTriggerOrdersAsync(System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidOrderRequest},HyperLiquid.Net.Enums.TpSlGrouping,System.Threading.CancellationToken)">
+            <summary>
+            Place multiple new trigger orders
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#place-an-order" /></para>
+            </summary>
+            <param name="orders">Orders to place</param>
+            <param name="tpSlGrouping">Take profit / Stop loss grouping</param>
             <param name="ct">Cancellation token</param>
         </member>
         <member name="M:HyperLiquid.Net.Interfaces.Clients.BaseApi.IHyperLiquidRestClientTrading.CancelAfterAsync(System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
@@ -1450,7 +1485,7 @@
             Get the approved builder fee
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#check-builder-fee-approval" /></para>
             </summary>
-            <param name="builderAddress">The address of the builder</param>
+            <param name="builderAddress">The address of the builder. If not provided will use the builder address for this library</param>
             <param name="address">Address to request approved builder fee for. If not provided will use the address provided in the API credentials</param>
             <param name="ct">Cancellation token</param>
         </member>
@@ -1525,6 +1560,13 @@
             <param name="direction">Direction</param>
             <param name="vaultAddress">Vault address</param>
             <param name="usd">USD to withdraw or deposit</param>
+            <param name="ct">Cancellation token</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.SpotApi.IHyperLiquidRestClientSpotApiAccount.ApproveBuilderFeeAsync(System.Threading.CancellationToken)">
+            <summary>
+            Approve a builder address of the library to charge the fee percentage as defined in the BuilderFeePercentage client options field
+            <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#approve-a-builder-fee" /></para>
+            </summary>
             <param name="ct">Cancellation token</param>
         </member>
         <member name="M:HyperLiquid.Net.Interfaces.Clients.SpotApi.IHyperLiquidRestClientSpotApiAccount.ApproveBuilderFeeAsync(System.String,System.Decimal,System.Threading.CancellationToken)">
@@ -2812,9 +2854,9 @@
             Order type
             </summary>
         </member>
-        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidOrder.OriginalQuantity">
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidOrder.Quantity">
             <summary>
-            Original quantity
+            Original order quantity
             </summary>
         </member>
         <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidOrder.ReduceOnly">
@@ -2822,9 +2864,9 @@
             Reduce only
             </summary>
         </member>
-        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidOrder.Quantity">
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidOrder.QuantityRemaining">
             <summary>
-            Order quantity
+            Remaining unexecuted order quantity
             </summary>
         </member>
         <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidOrder.Timestamp">
@@ -2952,12 +2994,12 @@
             Take profit / stop loss type
             </summary>
         </member>
-        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidOrderRequest.TpSlGrouping">
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidOrderRequest.MaxSlippage">
             <summary>
-            Take profit / stop loss grouping
+            Max Slippage for market orders
             </summary>
         </member>
-        <member name="M:HyperLiquid.Net.Objects.Models.HyperLiquidOrderRequest.#ctor(System.String,HyperLiquid.Net.Enums.OrderSide,HyperLiquid.Net.Enums.OrderType,System.Decimal,System.Nullable{System.Decimal},System.Nullable{HyperLiquid.Net.Enums.TimeInForce},System.Nullable{System.Boolean},System.Nullable{System.Decimal},System.Nullable{HyperLiquid.Net.Enums.TpSlType},System.String)">
+        <member name="M:HyperLiquid.Net.Objects.Models.HyperLiquidOrderRequest.#ctor(System.String,HyperLiquid.Net.Enums.OrderSide,HyperLiquid.Net.Enums.OrderType,System.Decimal,System.Decimal,System.Nullable{HyperLiquid.Net.Enums.TimeInForce},System.Nullable{System.Boolean},System.Nullable{System.Decimal},System.Nullable{HyperLiquid.Net.Enums.TpSlType},System.String,System.Nullable{System.Decimal})">
             <summary>
             ctor
             </summary>
@@ -3354,7 +3396,7 @@
         </member>
         <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.Crossed">
             <summary>
-            Crossed
+            Crossed, true: Taker, false: Maker
             </summary>
         </member>
         <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidUserTrade.Direction">
@@ -3515,6 +3557,12 @@
         <member name="M:HyperLiquid.Net.Objects.Options.HyperLiquidRestOptions.#ctor">
             <summary>
             ctor
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidRestOptions.BuilderFeePercentage">
+            <summary>
+            The builder fee percentage to apply to orders. This refers to a fee percentage being paid to the developer to support development. Defaults to null/0. Can be between 0.001% and 0.1%.<br />
+            If set to a non-null value the address has to be whitelisted using <see cref="M:HyperLiquid.Net.Clients.SpotApi.HyperLiquidRestClientSpotApiAccount.ApproveBuilderFeeAsync(System.Threading.CancellationToken)">restClient.SpotApi.Account.ApproveBuilderFeeAsync</see>
             </summary>
         </member>
         <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidRestOptions.SpotOptions">

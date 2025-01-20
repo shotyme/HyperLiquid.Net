@@ -26,7 +26,7 @@ namespace HyperLiquid.Net.Objects.Models
         /// <summary>
         /// Order price
         /// </summary>
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; }
         /// <summary>
         /// Quantity
         /// </summary>
@@ -47,10 +47,11 @@ namespace HyperLiquid.Net.Objects.Models
         /// Take profit / stop loss type
         /// </summary>
         public TpSlType? TpSlType { get; set; }
+
         /// <summary>
-        /// Take profit / stop loss grouping
+        /// Max Slippage for market orders
         /// </summary>
-        public TpSlGrouping? TpSlGrouping { get; set; }
+        public decimal? MaxSlippage { get; set; }
 
         /// <summary>
         /// ctor
@@ -60,12 +61,13 @@ namespace HyperLiquid.Net.Objects.Models
             OrderSide side,
             OrderType orderType,
             decimal quantity,
-            decimal? price = null,
+            decimal price,
             TimeInForce? timeInForce = null,
             bool? reduceOnly = null,
             decimal? triggerPrice = null,
             TpSlType? tpSlType = null,
-            string? clientOrderId = null
+            string? clientOrderId = null,
+            decimal? maxSlippage = null
             )
         {
             Symbol = symbol;
@@ -78,6 +80,7 @@ namespace HyperLiquid.Net.Objects.Models
             TpSlType = tpSlType;
             ClientOrderId = clientOrderId;
             TimeInForce = timeInForce;
+            MaxSlippage = maxSlippage;
         }
     }
 }

@@ -30,10 +30,9 @@ namespace HyperLiquid.Net.Objects.Models
         [JsonIgnore]
         public SymbolType SymbolType { get; set; }
         /// <summary>
-        /// Crossed
+        /// Crossed, true: Taker, false: Maker
         /// </summary>
         [JsonPropertyName("crossed")]
-#warning is this taker/maker?
         public bool Crossed { get; set; }
         /// <summary>
         /// Direction
@@ -64,7 +63,6 @@ namespace HyperLiquid.Net.Objects.Models
         /// Start position
         /// </summary>
         [JsonPropertyName("startPosition")]
-#warning What's this?
         public decimal StartPosition { get; set; }
         /// <summary>
         /// Quantity

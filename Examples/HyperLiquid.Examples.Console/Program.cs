@@ -1,10 +1,12 @@
 
+using CryptoExchange.Net.CommonObjects;
 using HyperLiquid.Net.Clients;
 
 // REST
 var restClient = new HyperLiquidRestClient();
-var ticker = await restClient.SpotApi.ExchangeData.GetTickerAsync("ETHUSDT");
-Console.WriteLine($"Rest client ticker price for ETHUSDT: {ticker.Data.List.First().LastPrice}");
+var result = await restClient.SpotApi.ExchangeData.GetPricesAsync();
+var symbolInfo = result.Data.Single(x => x.Key == "HYPE/USDC");
+Console.WriteLine($"Rest client ticker price for HYPEUSDC: {symbolInfo.Value}");
 
 Console.WriteLine();
 Console.WriteLine("Press enter to start websocket subscription");
@@ -12,9 +14,9 @@ Console.ReadLine();
 
 // Websocket
 var socketClient = new HyperLiquidSocketClient();
-var subscription = await socketClient.SpotApi.SubscribeToTickerUpdatesAsync("ETHUSDT", update =>
+var subscription = await socketClient.SpotApi.SubscribeToSymbolUpdatesAsync("HYPE/USDC", update =>
 {
-    Console.WriteLine($"Websocket client ticker price for ETHUSDT: {update.Data.LastPrice}");
+    Console.WriteLine($"Websocket client ticker price for HYPEUSDC: {update.Data.MidPrice}");
 });
 
 Console.ReadLine();

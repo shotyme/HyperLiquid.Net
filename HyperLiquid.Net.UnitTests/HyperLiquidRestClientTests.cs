@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Net.Http;
 using HyperLiquid.Net.Clients;
+using CryptoExchange.Net.Objects;
 
 namespace HyperLiquid.Net.UnitTests
 {
@@ -14,22 +15,35 @@ namespace HyperLiquid.Net.UnitTests
         [Test]
         public void CheckSignatureExample1()
         {
-            var authProvider = new HyperLiquidAuthenticationProvider(new ApiCredentials("XXX", "XXX"));
+            var authProvider = new HyperLiquidAuthenticationProvider(new ApiCredentials("0xaa", "0xbb"));
             var client = (RestApiClient)new HyperLiquidRestClient().SpotApi;
 
             CryptoExchange.Net.Testing.TestHelpers.CheckSignature(
                 client,
                 authProvider,
                 HttpMethod.Post,
-                "/api/v3/order",
+                "/exchange",
                 (uriParams, bodyParams, headers) =>
                 {
-                    return bodyParams["signature"].ToString();
+                    var signature = (Dictionary<string, object>)bodyParams["signature"];
+
+                    return signature["r"].ToString() + "-" + signature["s"].ToString();
                 },
-                "c8db56825ae71d6d79447849e617115f4a920fa2acdcab2b053c4b2838bd6b71",
+                "0x9b6ce90642ed560d93419b17c8b02f6b953b773c5d53c8d6d0d1f12b05e18d01-0x76044596dd1032e3663dc6b198e66f328aaeae11ac11504770682de3f414c861",
                 new Dictionary<string, object>
                 {
-                    { "symbol", "LTCBTC" },
+                    { "action", new ParameterCollection
+                        {
+                            { "type", "order" },
+                            { "orders", new [] {
+                                new Dictionary<string, object>{
+                                    { "symbol", 105 },
+                                    { "a", "123" }
+                                }
+
+                            } }
+                        }
+                    },
                 },
                 DateTimeConverter.ParseFromLong(1499827319559),
                 true,
@@ -39,8 +53,8 @@ namespace HyperLiquid.Net.UnitTests
         [Test]
         public void CheckInterfaces()
         {
-            CryptoExchange.Net.Testing.TestHelpers.CheckForMissingRestInterfaces<HyperLiquidRestClient>();
-            CryptoExchange.Net.Testing.TestHelpers.CheckForMissingSocketInterfaces<HyperLiquidSocketClient>();
+            CryptoExchange.Net.Testing.TestHelpers.CheckForMissingRestInterfaces<HyperLiquidRestClient>(["IHyperLiquidRestClientAccount", "IHyperLiquidRestClientExchangeData", "IHyperLiquidRestClientTrading"]);
+            CryptoExchange.Net.Testing.TestHelpers.CheckForMissingSocketInterfaces<HyperLiquidSocketClient>(["IHyperLiquidSocketClientApi"]);
         }
     }
 }

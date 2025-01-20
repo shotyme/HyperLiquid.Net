@@ -19,13 +19,10 @@ namespace HyperLiquid.Net.Clients.BaseApi
 {
     internal abstract partial class HyperLiquidRestClientApi : RestApiClient
     {
-        #region fields 
-        #endregion
-
-        #region Api clients
         /// <inheritdoc />
         public string ExchangeName => "HyperLiquid";
-        #endregion
+
+        public new HyperLiquidRestOptions ClientOptions => (HyperLiquidRestOptions)base.ClientOptions;
 
         #region constructor/destructor
         internal HyperLiquidRestClientApi(ILogger logger, HttpClient? httpClient, HyperLiquidRestOptions options, RestApiOptions apiOptions)

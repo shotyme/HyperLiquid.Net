@@ -10,6 +10,7 @@ using HyperLiquid.Net.Enums;
 using System.Globalization;
 using HyperLiquid.Net.Interfaces.Clients.SpotApi;
 using HyperLiquid.Net.Clients.BaseApi;
+using CryptoExchange.Net.Converters.SystemTextJson;
 
 namespace HyperLiquid.Net.Clients.SpotApi
 {
@@ -88,13 +89,13 @@ namespace HyperLiquid.Net.Clients.SpotApi
         #region Get Approved Builder Fee
 
         /// <inheritdoc />
-        public async Task<WebCallResult<int>> GetApprovedBuilderFeeAsync(string builderAddress, string? address = null, CancellationToken ct = default)
+        public async Task<WebCallResult<int>> GetApprovedBuilderFeeAsync(string? builderAddress = null, string? address = null, CancellationToken ct = default)
         {
             var parameters = new ParameterCollection()
             {
                 { "type", "maxBuilderFee" },
                 { "user", address ?? _baseClient.AuthenticationProvider!.ApiKey },
-                { "builder", builderAddress }
+                { "builder", builderAddress ?? HyperLiquidExchange.BuilderAddress }
             };
             var request = _definitions.GetOrCreate(HttpMethod.Post, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
             return await _baseClient.SendAsync<int>(request, parameters, ct).ConfigureAwait(false);
@@ -296,17 +297,21 @@ namespace HyperLiquid.Net.Clients.SpotApi
         #region Approve Builder Fee
 
         /// <inheritdoc />
+        public Task<WebCallResult> ApproveBuilderFeeAsync(CancellationToken ct = default)
+            => ApproveBuilderFeeAsync(HyperLiquidExchange.BuilderAddress, _baseClient.ClientOptions.BuilderFeePercentage ?? 0.1m);
+
+        /// <inheritdoc />
         public async Task<WebCallResult> ApproveBuilderFeeAsync(string builderAddress, decimal maxFeePercentage, CancellationToken ct = default)
         {
             var actionParameters = new ParameterCollection()
             {
-                { "type", "approveBuilderFee" },
                 { "hyperliquidChain", _baseClient.ClientOptions.Environment.Name == TradeEnvironmentNames.Testnet ? "Testnet" : "Mainnet" },
-                { "signatureChainId", _chainId },
                 { "maxFeeRate", $"{maxFeePercentage.ToString(CultureInfo.InvariantCulture)}%" },
-                { "builder", builderAddress }
+                { "builder", builderAddress.ToLower() },
+                { "nonce", DateTimeConverter.ConvertToMilliseconds(DateTime.UtcNow).Value },
+                { "type", "approveBuilderFee" },
+                { "signatureChainId", _chainId }
             };
-            actionParameters.AddMilliseconds("nonce", DateTime.UtcNow);
 
             var parameters = new ParameterCollection()
             {

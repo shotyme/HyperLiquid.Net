@@ -30,7 +30,11 @@ namespace HyperLiquid.Net.Converters
 
         public override void Write(Utf8JsonWriter writer, IEnumerable<string> value, JsonSerializerOptions options)
         {
+            writer.WriteStartArray();
+            foreach (var item in value)
+                writer.WriteStringValue(item);
 
+            writer.WriteEndArray();
         }
 
         class ErrorMessage

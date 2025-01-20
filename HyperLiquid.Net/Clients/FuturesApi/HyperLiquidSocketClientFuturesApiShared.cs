@@ -115,6 +115,9 @@ namespace HyperLiquid.Net.Clients.FuturesApi
             var result = await SubscribeToUserTradeUpdatesAsync(null,
                 update =>
                 {
+                    if (update.UpdateType == SocketUpdateType.Snapshot)
+                        return;
+
                     var futuresOrders = update.Data.Where(x => x.SymbolType == Enums.SymbolType.Futures);
                     if (!futuresOrders.Any())
                         return;
@@ -153,11 +156,14 @@ namespace HyperLiquid.Net.Clients.FuturesApi
             var result = await SubscribeToOrderUpdatesAsync(null,
                 update =>
                 {
-                    var FuturesOrders = update.Data.Where(x => x.Order.SymbolType == Enums.SymbolType.Futures);
-                    if (!FuturesOrders.Any())
+                    if (update.UpdateType == SocketUpdateType.Snapshot)
                         return;
 
-                    handler(update.AsExchangeEvent<IEnumerable<SharedFuturesOrder>>(Exchange, FuturesOrders.Select(x =>
+                    var futuresOrders = update.Data.Where(x => x.Order.SymbolType == Enums.SymbolType.Futures);
+                    if (!futuresOrders.Any())
+                        return;
+
+                    handler(update.AsExchangeEvent<IEnumerable<SharedFuturesOrder>>(Exchange, futuresOrders.Select(x =>
                         new SharedFuturesOrder(
                             x.Order.Symbol!,
                             x.Order.OrderId.ToString(),
@@ -167,8 +173,8 @@ namespace HyperLiquid.Net.Clients.FuturesApi
                             x.Order.Timestamp)
                         {
                             OrderPrice = x.Order.Price,
-                            Quantity = x.Order.OriginalQuantity,
-                            QuantityFilled = x.Order.Quantity,
+                            Quantity = x.Order.Quantity,
+                            QuantityFilled = x.Order.Quantity - x.Order.QuantityRemaining,
                             UpdateTime = x.Timestamp,
                             ReduceOnly = x.Order.ReduceOnly,
                         }
@@ -197,7 +203,32 @@ namespace HyperLiquid.Net.Clients.FuturesApi
 
             var result = await SubscribeToUserUpdatesAsync(
                 null,
-                update => handler(update.AsExchangeEvent<IEnumerable<SharedBalance>>(Exchange, [new SharedBalance("USDC", update.Data.FuturesInfo.Withdrawable, update.Data.FuturesInfo.MarginSummary.TotalRawUsd)])),
+                update => handler(update.AsExchangeEvent<IEnumerable<SharedBalance>>(Exchange, [new SharedBalance("USDC", update.Data.FuturesInfo.Withdrawable, update.Data.FuturesInfo.Withdrawable + update.Data.FuturesInfo.MarginSummary.TotalMarginUsed + update.Data.FuturesInfo.CrossMarginSummary.TotalMarginUsed)])),
+                ct: ct).ConfigureAwait(false);
+
+            return new ExchangeResult<UpdateSubscription>(Exchange, result);
+        }
+
+        #endregion
+
+        #region Position client
+        EndpointOptions<SubscribePositionRequest> IPositionSocketClient.SubscribePositionOptions { get; } = new EndpointOptions<SubscribePositionRequest>(false);
+        async Task<ExchangeResult<UpdateSubscription>> IPositionSocketClient.SubscribeToPositionUpdatesAsync(SubscribePositionRequest request, Action<ExchangeEvent<IEnumerable<SharedPosition>>> handler, CancellationToken ct)
+        {
+            var validationError = ((IPositionSocketClient)this).SubscribePositionOptions.ValidateRequest(Exchange, request, request.TradingMode, SupportedTradingModes);
+            if (validationError != null)
+                return new ExchangeResult<UpdateSubscription>(Exchange, validationError);
+
+            var result = await SubscribeToUserUpdatesAsync(
+                null,
+                update => handler(update.AsExchangeEvent<IEnumerable<SharedPosition>>(Exchange, update.Data.FuturesInfo.Positions.Select(x => new SharedPosition(x.Position.Symbol, Math.Abs(x.Position.PositionQuantity ?? 0), update.Timestamp)
+                {
+                    AverageOpenPrice = x.Position.AverageEntryPrice,
+                    Leverage = x.Position.Leverage!.Value,
+                    LiquidationPrice = x.Position.LiquidationPrice,
+                    PositionSide = x.Position.PositionQuantity < 0 ? SharedPositionSide.Short : SharedPositionSide.Long,
+                    UnrealizedPnl = x.Position.UnrealizedPnl
+                }).ToArray())),
                 ct: ct).ConfigureAwait(false);
 
             return new ExchangeResult<UpdateSubscription>(Exchange, result);
