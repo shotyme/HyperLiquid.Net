@@ -76,7 +76,7 @@
         <member name="M:HyperLiquid.Net.Clients.BaseApi.HyperLiquidRestClientTrading.CancelAfterAsync(System.Nullable{System.TimeSpan},System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
-        <member name="M:HyperLiquid.Net.Clients.BaseApi.HyperLiquidRestClientTrading.EditOrderAsync(System.String,System.Nullable{System.Int64},System.String,HyperLiquid.Net.Enums.OrderSide,HyperLiquid.Net.Enums.OrderType,System.Decimal,System.Nullable{System.Decimal},System.Nullable{HyperLiquid.Net.Enums.TimeInForce},System.Nullable{System.Boolean},System.String,System.Nullable{System.Decimal},System.Nullable{HyperLiquid.Net.Enums.TpSlType},System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Clients.BaseApi.HyperLiquidRestClientTrading.EditOrderAsync(System.String,System.Nullable{System.Int64},System.String,HyperLiquid.Net.Enums.OrderSide,HyperLiquid.Net.Enums.OrderType,System.Decimal,System.Decimal,System.Nullable{HyperLiquid.Net.Enums.TimeInForce},System.Nullable{System.Boolean},System.String,System.Threading.CancellationToken)">
             <inheritdoc />
         </member>
         <member name="M:HyperLiquid.Net.Clients.BaseApi.HyperLiquidRestClientTrading.EditOrdersAsync(System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidEditOrderRequest},System.Threading.CancellationToken)">
@@ -1058,7 +1058,7 @@
             <param name="timeout">Timeout after which to cancel all order, or null to cancel the countdown</param>
             <param name="ct">Cancellation token</param>
         </member>
-        <member name="M:HyperLiquid.Net.Interfaces.Clients.BaseApi.IHyperLiquidRestClientTrading.EditOrderAsync(System.String,System.Nullable{System.Int64},System.String,HyperLiquid.Net.Enums.OrderSide,HyperLiquid.Net.Enums.OrderType,System.Decimal,System.Nullable{System.Decimal},System.Nullable{HyperLiquid.Net.Enums.TimeInForce},System.Nullable{System.Boolean},System.String,System.Nullable{System.Decimal},System.Nullable{HyperLiquid.Net.Enums.TpSlType},System.Threading.CancellationToken)">
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.BaseApi.IHyperLiquidRestClientTrading.EditOrderAsync(System.String,System.Nullable{System.Int64},System.String,HyperLiquid.Net.Enums.OrderSide,HyperLiquid.Net.Enums.OrderType,System.Decimal,System.Decimal,System.Nullable{HyperLiquid.Net.Enums.TimeInForce},System.Nullable{System.Boolean},System.String,System.Threading.CancellationToken)">
             <summary>
             Edit an existing order
             <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#modify-an-order" /></para>
@@ -1073,8 +1073,6 @@
             <param name="timeInForce">Time in force</param>
             <param name="reduceOnly">Reduce only</param>
             <param name="newClientOrderId">The new client order id, an optional 128 bit hex string, e.g. 0x1234567890abcdef1234567890abcdef</param>
-            <param name="triggerPrice">Trigger order trigger price</param>
-            <param name="tpSlType">Trigger order type</param>
             <param name="ct">Cancellation token</param>
         </member>
         <member name="M:HyperLiquid.Net.Interfaces.Clients.BaseApi.IHyperLiquidRestClientTrading.EditOrdersAsync(System.Collections.Generic.IEnumerable{HyperLiquid.Net.Objects.Models.HyperLiquidEditOrderRequest},System.Threading.CancellationToken)">
@@ -2137,7 +2135,7 @@
             Take profit / Stop loss type
             </summary>
         </member>
-        <member name="M:HyperLiquid.Net.Objects.Models.HyperLiquidEditOrderRequest.#ctor(System.String,System.Nullable{System.Int64},System.String,HyperLiquid.Net.Enums.OrderSide,HyperLiquid.Net.Enums.OrderType,System.Decimal,System.Nullable{System.Decimal},System.Nullable{HyperLiquid.Net.Enums.TimeInForce},System.Nullable{System.Boolean},System.Nullable{System.Decimal},System.Nullable{HyperLiquid.Net.Enums.TpSlType},System.String)">
+        <member name="M:HyperLiquid.Net.Objects.Models.HyperLiquidEditOrderRequest.#ctor(System.String,System.Nullable{System.Int64},System.String,HyperLiquid.Net.Enums.OrderSide,HyperLiquid.Net.Enums.OrderType,System.Decimal,System.Decimal,System.Nullable{HyperLiquid.Net.Enums.TimeInForce},System.Nullable{System.Boolean},System.Nullable{System.Decimal},System.Nullable{HyperLiquid.Net.Enums.TpSlType},System.String)">
             <summary>
             ctor
             </summary>
@@ -2584,6 +2582,16 @@
             Max leverage
             </summary>
         </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesSymbol.OnlyIsolated">
+            <summary>
+            Only isolated margin
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesSymbol.IsDelisted">
+            <summary>
+            Is delisted
+            </summary>
+        </member>
         <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidFuturesSymbol.Index">
             <summary>
             Index
@@ -2724,6 +2732,11 @@
             Close timestamp
             </summary>
         </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidKline.Interval">
+            <summary>
+            Kline interval
+            </summary>
+        </member>
         <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidKline.ClosePrice">
             <summary>
             Close price
@@ -2819,6 +2832,11 @@
             Symbol type
             </summary>
         </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidOrder.ClientOrderId">
+            <summary>
+            Client order id
+            </summary>
+        </member>
         <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidOrder.ExchangeSymbol">
             <summary>
             Symbol name as returned by the API
@@ -2852,6 +2870,11 @@
         <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidOrder.OrderType">
             <summary>
             Order type
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidOrder.TimeInForce">
+            <summary>
+            Time in force
             </summary>
         </member>
         <member name="P:HyperLiquid.Net.Objects.Models.HyperLiquidOrder.Quantity">

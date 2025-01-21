@@ -4,7 +4,6 @@ using System.Linq;
 using System.Net.Http;
 using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Clients;
-using CryptoExchange.Net.Converters.SystemTextJson;
 using CryptoExchange.Net.Objects;
 using Nethereum.Signer.EIP712;
 using Nethereum.Util;

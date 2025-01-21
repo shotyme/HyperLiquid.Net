@@ -20,6 +20,11 @@ namespace HyperLiquid.Net.Objects.Models
         [JsonIgnore]
         public SymbolType SymbolType { get; set; }
         /// <summary>
+        /// Client order id
+        /// </summary>
+        [JsonPropertyName("cloid")]
+        public string? ClientOrderId { get; set; }
+        /// <summary>
         /// Symbol name as returned by the API
         /// </summary>
         [JsonPropertyName("coin")]
@@ -52,8 +57,13 @@ namespace HyperLiquid.Net.Objects.Models
         /// <summary>
         /// Order type
         /// </summary>
-        [JsonPropertyName("type")]
+        [JsonPropertyName("orderType")]
         public OrderType OrderType { get; set; }
+        /// <summary>
+        /// Time in force
+        /// </summary>
+        [JsonPropertyName("tif")]
+        public TimeInForce TimeInForce { get; set; }
         /// <summary>
         /// Original order quantity
         /// </summary>

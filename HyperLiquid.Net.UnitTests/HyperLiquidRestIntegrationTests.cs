@@ -43,10 +43,10 @@ namespace HyperLiquid.Net.UnitTests
         [Test]
         public async Task TestSpotAccount()
         {
-            await RunAndCheckResult(client => client.SpotApi.Account.GetBalancesAsync(default, default), false);
-            await RunAndCheckResult(client => client.SpotApi.Account.GetAccountLedgerAsync(DateTime.UtcNow.AddDays(-30), default, default, default), false);
-            await RunAndCheckResult(client => client.SpotApi.Account.GetRateLimitsAsync(default, default), false);
-            await RunAndCheckResult(client => client.SpotApi.Account.GetApprovedBuilderFeeAsync(default, default, default), false);
+            await RunAndCheckResult(client => client.SpotApi.Account.GetBalancesAsync(default, default), true);
+            await RunAndCheckResult(client => client.SpotApi.Account.GetAccountLedgerAsync(DateTime.UtcNow.AddDays(-30), default, default, default), true);
+            await RunAndCheckResult(client => client.SpotApi.Account.GetRateLimitsAsync(default, default), true);
+            await RunAndCheckResult(client => client.SpotApi.Account.GetApprovedBuilderFeeAsync(default, default, default), true);
         }
 
         [Test]
@@ -63,18 +63,18 @@ namespace HyperLiquid.Net.UnitTests
         [Test]
         public async Task TestSpotTrading()
         {
-            await RunAndCheckResult(client => client.SpotApi.Trading.GetOpenOrdersAsync(default, default), false);
-            await RunAndCheckResult(client => client.SpotApi.Trading.GetOpenOrdersExtendedAsync(default, default), false);
-            await RunAndCheckResult(client => client.SpotApi.Trading.GetUserTradesAsync(default, default), false);
-            await RunAndCheckResult(client => client.SpotApi.Trading.GetUserTradesByTimeAsync(DateTime.UtcNow.AddDays(-30), default, default, default, default), false);
-            await RunAndCheckResult(client => client.SpotApi.Trading.GetOrderHistoryAsync(default, default), false);
+            await RunAndCheckResult(client => client.SpotApi.Trading.GetOpenOrdersAsync(default, default), true);
+            await RunAndCheckResult(client => client.SpotApi.Trading.GetOpenOrdersExtendedAsync(default, default), true);
+            await RunAndCheckResult(client => client.SpotApi.Trading.GetUserTradesAsync(default, default), true);
+            await RunAndCheckResult(client => client.SpotApi.Trading.GetUserTradesByTimeAsync(DateTime.UtcNow.AddDays(-30), default, default, default, default), true);
+            await RunAndCheckResult(client => client.SpotApi.Trading.GetOrderHistoryAsync(default, default), true);
         }
 
         [Test]
         public async Task TestFuturesAccount()
         {
-            await RunAndCheckResult(client => client.FuturesApi.Account.GetAccountInfoAsync(default, default), false);
-            await RunAndCheckResult(client => client.FuturesApi.Account.GetFundingHistoryAsync(DateTime.UtcNow.AddDays(-10), default, default, default), false);
+            await RunAndCheckResult(client => client.FuturesApi.Account.GetAccountInfoAsync(default, default), true);
+            await RunAndCheckResult(client => client.FuturesApi.Account.GetFundingHistoryAsync(DateTime.UtcNow.AddDays(-10), default, default, default), true);
         }
 
         [Test]

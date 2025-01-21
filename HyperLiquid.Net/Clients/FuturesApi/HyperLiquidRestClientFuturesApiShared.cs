@@ -6,6 +6,7 @@ using System.Threading;
 using System;
 using CryptoExchange.Net.Objects;
 using System.Linq;
+using HyperLiquid.Net.Enums;
 
 namespace HyperLiquid.Net.Clients.FuturesApi
 {
@@ -38,7 +39,10 @@ namespace HyperLiquid.Net.Clients.FuturesApi
 
         #region Klines Client
 
-        GetKlinesOptions IKlineRestClient.GetKlinesOptions { get; } = new GetKlinesOptions(SharedPaginationSupport.Descending, true, 1000, false);
+        GetKlinesOptions IKlineRestClient.GetKlinesOptions { get; } = new GetKlinesOptions(SharedPaginationSupport.Descending, true, 1000, false)
+        {
+            MaxTotalDataPoints = 5000
+        };
 
         async Task<ExchangeWebResult<IEnumerable<SharedKline>>> IKlineRestClient.GetKlinesAsync(GetKlinesRequest request, INextPageToken? pageToken, CancellationToken ct)
         {
@@ -169,7 +173,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
             if (!result)
                 return result.AsExchangeResult<IEnumerable<SharedFuturesSymbol>>(Exchange, null, default);
 
-            return result.AsExchangeResult<IEnumerable<SharedFuturesSymbol>>(Exchange, TradingMode.Spot, result.Data.Select(s => new SharedFuturesSymbol(SharedSymbolType.PerpetualLinear, s.Name, "USDC", s.Name + "/USDC", true)
+            return result.AsExchangeResult<IEnumerable<SharedFuturesSymbol>>(Exchange, TradingMode.Spot, result.Data.Where(x => !x.IsDelisted).Select(s => new SharedFuturesSymbol(SharedSymbolType.PerpetualLinear, s.Name, "USDC", s.Name + "/USDC", true)
             {
                 MinTradeQuantity = 1m / (decimal)(Math.Pow(10, s.QuantityDecimals)),
                 MinNotionalValue = 10, // Order API returns error mentioning at least 10$ order value, but value isn't returned by symbol API
@@ -370,6 +374,8 @@ namespace HyperLiquid.Net.Clients.FuturesApi
                 ParseOrderStatus(order.Data.Status),
                 order.Data.Order.Timestamp)
             {
+                TimeInForce = ParseTimeInForce(order.Data.Order.TimeInForce),
+                ClientOrderId = order.Data.Order.ClientOrderId,
                 OrderPrice = order.Data.Order.Price,
                 Quantity = order.Data.Order.Quantity,
                 QuantityFilled = order.Data.Order.Quantity - order.Data.Order.QuantityRemaining,
@@ -403,6 +409,8 @@ namespace HyperLiquid.Net.Clients.FuturesApi
                 SharedOrderStatus.Open,
                 x.Timestamp)
             {
+                TimeInForce = ParseTimeInForce(x.TimeInForce),
+                ClientOrderId = x.ClientOrderId,
                 OrderPrice = x.Price,
                 Quantity = x.Quantity,
                 QuantityFilled = x.Quantity - x.QuantityRemaining,
@@ -440,6 +448,8 @@ namespace HyperLiquid.Net.Clients.FuturesApi
                 ParseOrderStatus(x.Status),
                 x.Order.Timestamp)
             {
+                TimeInForce = ParseTimeInForce(x.Order.TimeInForce),
+                ClientOrderId = x.Order.ClientOrderId,
                 OrderPrice = x.Order.Price,
                 Quantity = x.Order.Quantity,
                 QuantityFilled = x.Order.Quantity - x.Order.QuantityRemaining,
@@ -596,6 +606,14 @@ namespace HyperLiquid.Net.Clients.FuturesApi
                 return result.AsExchangeResult<SharedId>(Exchange, null, default);
 
             return result.AsExchangeResult(Exchange, request.Symbol.TradingMode, new SharedId(result.Data.OrderId.ToString()));
+        }
+
+        private SharedTimeInForce? ParseTimeInForce(TimeInForce timeInForce)
+        {
+            if (timeInForce == TimeInForce.ImmediateOrCancel) return SharedTimeInForce.ImmediateOrCancel;
+            if (timeInForce == TimeInForce.GoodTillCanceled) return SharedTimeInForce.GoodTillCanceled;
+
+            return null;
         }
 
         private Enums.TimeInForce? GetTimeInForce(SharedTimeInForce? tif, SharedOrderType type)

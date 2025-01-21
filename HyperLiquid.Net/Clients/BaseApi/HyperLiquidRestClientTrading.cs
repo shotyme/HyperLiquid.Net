@@ -696,20 +696,36 @@ namespace HyperLiquid.Net.Clients.BaseApi
             OrderSide side,
             OrderType orderType,
             decimal quantity,
-            decimal? price = null,
+            decimal price,
             TimeInForce? timeInForce = null,
             bool? reduceOnly = null,
             string? newClientOrderId = null,
-            decimal? triggerPrice = null,
-            TpSlType? tpSlType = null,
             CancellationToken ct = default)
         {
+            if (orderId == null == (clientOrderId == null))
+                throw new ArgumentException("Either orderId or clientOrderId should be provided");
+
+            if (orderType == OrderType.Market)
+                throw new ArgumentException("Order type can't be market");
+
             var symbolId = await HyperLiquidUtils.GetSymbolIdFromNameAsync(symbol).ConfigureAwait(false);
             if (!symbolId)
                 return new WebCallResult(symbolId.Error!);
 
-            if (orderId == null == (clientOrderId == null))
-                throw new ArgumentException("Either orderId or clientOrderId should be provided");
+            var orderParameters = new ParameterCollection();
+            orderParameters.Add("a", symbolId.Data);
+            orderParameters.Add("b", side == OrderSide.Buy);
+
+            var orderTypeParameters = new ParameterCollection();
+            orderParameters.AddString("p", price.Normalize());
+            
+            orderParameters.AddString("s", quantity);
+            orderParameters.Add("r", reduceOnly ?? false);
+            var limitParameters = new ParameterCollection();
+            limitParameters.AddEnum("tif", timeInForce ?? TimeInForce.GoodTillCanceled);
+            orderTypeParameters.Add("limit", limitParameters);
+            orderParameters.Add("t", orderTypeParameters);
+            orderParameters.AddOptional("c", newClientOrderId);
 
             var parameters = new ParameterCollection();
             var actionParameters = new ParameterCollection()
@@ -718,37 +734,6 @@ namespace HyperLiquid.Net.Clients.BaseApi
             };
             actionParameters.AddOptional("oid", orderId);
             actionParameters.AddOptional("oid", clientOrderId);
-
-            var orderParameters = new ParameterCollection();
-
-            orderParameters.Add("a", symbolId.Data);
-            orderParameters.Add("b", side == OrderSide.Buy);
-            orderParameters.AddStringOrNull("p", price);
-            orderParameters.AddString("s", quantity);
-            orderParameters.Add("r", reduceOnly ?? false);
-
-            var orderTypeParameters = new ParameterCollection();
-            if (orderType == OrderType.Limit)
-            {
-                var limitParameters = new ParameterCollection();
-                limitParameters.AddEnum("tif", timeInForce);
-                orderTypeParameters.Add("limit", limitParameters);
-            }
-            else if (orderType == OrderType.StopMarket || orderType == OrderType.StopLimit)
-            {
-                if (triggerPrice == null)
-                    throw new ArgumentNullException(nameof(triggerPrice), "Trigger price should be provided for trigger orders");
-
-                var triggerParameters = new ParameterCollection();
-                triggerParameters.Add("isMarket", orderType == OrderType.Market);
-                triggerParameters.Add("triggerPx", triggerPrice);
-                triggerParameters.AddEnum("tpsl", tpSlType);
-                orderTypeParameters.Add("trigger", triggerParameters);
-            }
-
-            orderParameters.Add("t", orderTypeParameters);
-            orderParameters.AddOptional("c", newClientOrderId);
-
             actionParameters.Add("order", orderParameters);
             parameters.Add("action", actionParameters);
             var request = _definitions.GetOrCreate(HttpMethod.Post, "exchange", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 1, true);
@@ -771,6 +756,9 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 if (order.OrderId == null == (order.ClientOrderId == null))
                     throw new ArgumentException("Either OrderId or ClientOrderId should be provided per order");
 
+                if (order.OrderType == OrderType.Market)
+                    throw new ArgumentException("Order type can't be market");
+
                 var symbolId = await HyperLiquidUtils.GetSymbolIdFromNameAsync(order.Symbol).ConfigureAwait(false);
                 if (!symbolId)
                     return new WebCallResult<IEnumerable<CallResult<HyperLiquidOrderResult>>>(symbolId.Error!);
@@ -781,42 +769,21 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 var orderParameters = new ParameterCollection();
                 orderParameters.Add("a", symbolId.Data);
                 orderParameters.Add("b", order.Side == OrderSide.Buy);
-                orderParameters.AddStringOrNull("p", order.Price);
+                orderParameters.AddString("p", order.Price);
                 orderParameters.AddString("s", order.Quantity);
                 orderParameters.Add("r", order.ReduceOnly ?? false);
 
                 var orderTypeParameters = new ParameterCollection();
-                if (order.OrderType == OrderType.Limit)
-                {
-                    var limitParameters = new ParameterCollection();
-                    limitParameters.AddEnum("tif", order.TimeInForce);
-                    orderTypeParameters.Add("limit", limitParameters);
-                }
-                else if (order.OrderType == OrderType.StopMarket || order.OrderType == OrderType.StopLimit)
-                {
-                    if (order.TriggerPrice == null)
-                        throw new ArgumentNullException(nameof(order.TriggerPrice), "Trigger price should be provided for trigger orders");
-
-                    var triggerParameters = new ParameterCollection();
-                    triggerParameters.Add("isMarket", order.OrderType == OrderType.Market);
-                    triggerParameters.Add("triggerPx", order.TriggerPrice);
-                    triggerParameters.AddEnum("tpsl", order.TpSlType);
-                    orderTypeParameters.Add("trigger", triggerParameters);
-                }
-
+                var limitParameters = new ParameterCollection();
+                limitParameters.AddEnum("tif", order.OrderType == OrderType.Market ? TimeInForce.ImmediateOrCancel : order.TimeInForce ?? TimeInForce.GoodTillCanceled);
+                orderTypeParameters.Add("limit", limitParameters);
                 orderParameters.Add("t", orderTypeParameters);
 
-                orderParameters.AddOptional("c", order.NewClientOrderId);
+                orderParameters.AddOptional("c", order.ClientOrderId);
 
                 modifyParameters.Add("order", orderParameters);
                 orderRequests.Add(modifyParameters);
             }
-
-            //#warning TODO builder
-            //            if (order.TpSlGrouping != null)
-            //                orderParameters.AddEnum("grouping", order.TpSlGrouping);
-            //            else
-            //                orderParameters.Add("grouping", "na");
 
             var parameters = new ParameterCollection()
             {

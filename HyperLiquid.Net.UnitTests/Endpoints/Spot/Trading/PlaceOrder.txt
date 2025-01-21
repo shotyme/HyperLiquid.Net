@@ -1,0 +1,18 @@
+POST
+/exchange
+true
+{
+   "status":"ok",
+   "response":{
+      "type":"order",
+      "data":{
+         "statuses":[
+            {
+               "resting":{
+                  "oid":77738308
+               }
+            }
+         ]
+      }
+   }
+}

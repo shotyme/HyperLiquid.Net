@@ -1,0 +1,13 @@
+POST
+/info
+false
+[
+    {
+        "coin": "BTC",
+        "limitPx": "29792.0",
+        "oid": 91490942,
+        "side": "A",
+        "sz": "0.0",
+        "timestamp": 1681247412573
+    }
+]

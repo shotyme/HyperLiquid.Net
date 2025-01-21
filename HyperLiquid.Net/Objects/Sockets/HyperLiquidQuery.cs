@@ -15,9 +15,9 @@ namespace HyperLiquid.Net.Objects.Sockets
 
         private string? _errorString;
 
-        public HyperLiquidQuery(HyperLiquidSocketRequest request, string listenId, bool authenticated, int weight = 1) : base(request, authenticated, weight)
+        public HyperLiquidQuery(HyperLiquidSocketRequest request, string listenId, string errorListenId, bool authenticated, int weight = 1) : base(request, authenticated, weight)
         {
-            ListenerIdentifiers = new HashSet<string> { listenId, "error" };
+            ListenerIdentifiers = new HashSet<string> { listenId, errorListenId };
         }
 
         public override Type? GetMessageType(IMessageAccessor message)
@@ -44,7 +44,9 @@ namespace HyperLiquid.Net.Objects.Sockets
 
         public override CallResult<HyperLiquidSocketUpdate<T>> HandleMessage(SocketConnection connection, DataEvent<HyperLiquidSocketUpdate<T>> message)
         {
-            if (_errorString != null && !_errorString.StartsWith("Already subscribed:")) // Allow duplicate subscriptions
+            if (_errorString != null 
+                && !_errorString.StartsWith("Already subscribed:") // Allow duplicate subscriptions
+                && !_errorString.StartsWith("Already unsubscribed")) // Can happen when subscribe returns an error
             {
                 var err = _errorString;
                 _errorString = null;

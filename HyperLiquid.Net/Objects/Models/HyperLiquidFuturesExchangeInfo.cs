@@ -36,6 +36,16 @@ namespace HyperLiquid.Net.Objects.Models
         [JsonPropertyName("maxLeverage")]
         public int MaxLeverage { get; set; }
         /// <summary>
+        /// Only isolated margin
+        /// </summary>
+        [JsonPropertyName("onlyIsolated")]
+        public bool OnlyIsolated { get; set; }
+        /// <summary>
+        /// Is delisted
+        /// </summary>
+        [JsonPropertyName("isDelisted")]
+        public bool IsDelisted { get; set; }
+        /// <summary>
         /// Index
         /// </summary>
         [JsonIgnore]

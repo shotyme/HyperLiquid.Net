@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HyperLiquid.Net.Enums;
+using System;
 using System.Text.Json.Serialization;
 
 namespace HyperLiquid.Net.Objects.Models
@@ -18,6 +19,11 @@ namespace HyperLiquid.Net.Objects.Models
         /// </summary>
         [JsonPropertyName("T")]
         public DateTime CloseTime { get; set; }
+        /// <summary>
+        /// Kline interval
+        /// </summary>
+        [JsonPropertyName("i")]
+        public KlineInterval Interval { get; set; }
         /// <summary>
         /// Close price
         /// </summary>

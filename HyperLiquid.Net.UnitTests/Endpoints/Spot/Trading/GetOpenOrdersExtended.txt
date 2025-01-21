@@ -1,0 +1,4 @@
+POST
+/info
+false
+[{"coin":"HYPE","side":"B","limitPx":"21.0","sz":"1.0","oid":123,"timestamp":1737446504435,"triggerCondition":"N/A","isTrigger":false,"triggerPx":"0.0","children":[],"isPositionTpsl":false,"reduceOnly":false,"orderType":"Limit","origSz":"1.0","tif":"Gtc","cloid":null}]

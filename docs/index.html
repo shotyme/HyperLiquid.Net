@@ -97,7 +97,7 @@
         <section id="idocs_intro">
 			<h1>HyperLiquid.Net</h1>
 			
-		<p>HyperLiquid.Net is a client library for accessing the <a href="HyperLiquid" target="_blank">HyperLiquid REST and Websocket API</a>. </p>
+		<p>HyperLiquid.Net is a client library for accessing the <a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api" target="_blank">HyperLiquid DEX REST and Websocket API</a>. </p>
 		<h4>Features</h4>
 		<ul>
 			<li>Response data is mapped to descriptive models</li>
@@ -134,6 +134,10 @@
 		<p>A Discord server is available <a href="https://discord.gg/MSpeEtSY8t">here</a>. Feel free to join for discussion and/or questions around the CryptoExchange.Net and implementation libraries.</p>
 
 		<h4>Support the project</h4>
+		
+		<b>Referral</b><br />
+		<p>If you do not yet have an account please consider using this referal link to sign up: <a target="_blank" href="https://app.hyperliquid.xyz/join/JKORF">Link</a></p>		
+		<p>Not only will you support development at no cost, you also get a 4% discount in fees.</p>
 		
 		<b>Donate</b><br />
 		<p>Make a one time donation in a crypto currency of your choice. If you prefer to donate a currency not listed here please contact me.<p>
@@ -200,7 +204,7 @@ builder.Services.AddHyperLiquid(builder.Configuration.GetSection("HyperLiquid"))
   options.ApiCredentials = new ApiCredentials("APIKEY", "APISECRET");
 });</code></pre>
 		  
-		  <p>The <code>IHyperLiquidRestClient</code> and <code>IHyperLiquidtSocketClient</code> can then be injected.</p>
+		  <p>The <code>IHyperLiquidRestClient</code> and <code>IHyperLiquidSocketClient</code> can then be injected.</p>
 		  <p>Alternatively the rest and socket client can be constructed directly</p>
 		  <pre><code>var restClient = new HyperLiquidRestClient(options => {
   // Options can be configured here, for example:
@@ -215,10 +219,107 @@ var socketClient = new HyperLiquidSocketClient();</code></pre>
 		<section id="idocs_examples">
           <h2>Examples</h2>
           
-		  <b id="idocs_example_symbols">Get Symbols</b><br />
-		  <p>Get a list of supported symbols on HyperLiquid</p>
-		  <pre><code>await HyperLiquidClient.SpotApi.ExchangeData.GetSymbolsAsync();</code></pre>
+		  <h3>Spot API</h3>
 		  
+		  <b id="idocs_example_symbols">Get Symbols</b><br />
+		  <p>Get a list of supported spot symbols</p>
+		  <pre><code>var hyperLiquidClient = new HyperLiquidRestClient();
+
+var result = await hyperLiquidClient.SpotApi.ExchangeData.GetExchangeInfoAsync();
+var symbols = result.Data.Symbols;</code></pre>
+		  
+		  <b id="idocs_example_symbols">Get Symbol Ticker</b><br />
+		  <p>Get the 24h price ticker of a spot symbol</p>
+		  <pre><code>var hyperLiquidClient = new HyperLiquidRestClient();
+
+var result = await hyperLiquidClient.SpotApi.ExchangeData.GetExchangeInfoAndTickersAsync();
+var symbolTicker = result.Data.Tickers.Single(x => x.Symbol == "HYPE/USDC");</code></pre>
+
+		  <b id="idocs_example_symbols">Get Balances</b><br />
+		  <p>Get asset balances of the spot account</p>
+		  <pre><code>var hyperLiquidClient = new HyperLiquidRestClient(options => {
+    options.ApiCredentials = new ApiCredentials("ADDRESS", "PRIVATE KEY");
+});
+
+var result = await hyperLiquidClient.SpotApi.Account.GetBalancesAsync();</code></pre>
+
+		  <b id="idocs_example_symbols">Place Limit Order</b><br />
+		  <p>Place a new limit order for buying 1 HYPE at a price of 20 USDC</p>
+		  <pre><code>var hyperLiquidClient = new HyperLiquidRestClient(options => {
+    options.ApiCredentials = new ApiCredentials("ADDRESS", "PRIVATE KEY");
+});
+
+var result = await hyperLiquidClient.SpotApi.Trading.PlaceOrderAsync(
+    "HYPE/USDC",
+    OrderSide.Buy,
+    OrderType.Limit,
+    1m,
+    20);</code></pre>
+
+		  <b id="idocs_example_symbols">Place Market Order</b><br />
+		  <p>Place a new market order for buying 1 HYPE at the best available price. Note that the current symbol price needs to be passed to calculate max slippage as HyperLiquid does not natively support market orders</p>
+		  <pre><code>var hyperLiquidClient = new HyperLiquidRestClient(options => {
+    options.ApiCredentials = new ApiCredentials("ADDRESS", "PRIVATE KEY");
+});
+
+var currentPrices = await hyperLiquidClient.SpotApi.ExchangeData.GetPricesAsync();
+var symbolPrice = currentPrices.Data.Single(x => x.Key == "HYPE/USDC");
+var result = await hyperLiquidClient.SpotApi.Trading.PlaceOrderAsync(
+    "HYPE/USDC",
+    OrderSide.Buy,
+    OrderType.Market,
+    quantity: 1,
+    price: symbolPrice.Value);</code></pre>
+
+		  <b id="idocs_example_symbols">Get Order Info</b><br />
+		  <p>Retrieve order information for a specific order</p>
+		  <pre><code>var hyperLiquidClient = new HyperLiquidRestClient(options => {
+    options.ApiCredentials = new ApiCredentials("ADDRESS", "PRIVATE KEY");
+});
+
+var result = await hyperLiquidClient.SpotApi.Trading.GetOrderAsync(123);</code></pre>
+
+		  <b id="idocs_example_symbols">Cancel an order</b><br />
+		  <p>Cancel a currently active order</p>
+		  <pre><code>var hyperLiquidClient = new HyperLiquidRestClient(options => {
+    options.ApiCredentials = new ApiCredentials("ADDRESS", "PRIVATE KEY");
+});
+
+var result = await hyperLiquidClient.SpotApi.Trading.CancelOrderAsync("HYPE/USDC", 123);</code></pre>
+
+		  <h3>Futures API</h3>
+		  <b id="idocs_example_symbols">Get Symbols</b><br />
+		  <p>Get a list of supported usd futures symbols</p>
+		  <pre><code>var hyperLiquidClient = new HyperLiquidRestClient();
+
+var result = await hyperLiquidClient.FuturesApi.ExchangeData.GetExchangeInfoAsync();</code></pre>
+		  
+		  <b id="idocs_example_symbols">Get Symbol Ticker</b><br />
+		  <p>Get the 24h price ticker of a futures symbol</p>
+		  <pre><code>var result = await hyperLiquidClient.SpotApi.ExchangeData.GetExchangeInfoAndTickersAsync();
+var symbolTicker = result.Data.Tickers.Single(x => x.Symbol == "ETH");</code></pre>
+
+		  <b id="idocs_example_symbols">Get Balances and Position</b><br />
+		  <p>Get balance of the perpetual futures account</p>
+		  <pre><code>var hyperLiquidClient = new HyperLiquidRestClient(options => {
+    options.ApiCredentials = new ApiCredentials("ADDRESS", "PRIVATE KEY");
+});
+
+var result = await hyperLiquidClient.FuturesApi.Account.GetAccountInfoAsync();</code></pre>
+
+<b id="idocs_example_symbols">Place Limit Order</b><br />
+		  <p>Place a new limit order for going long on 0.1 ETH at a price of 2000 USDT</p>
+		  <pre><code>var hyperLiquidClient = new HyperLiquidRestClient(options => {
+    options.ApiCredentials = new ApiCredentials("ADDRESS", "PRIVATE KEY");
+});
+
+var result = await hyperLiquidClient.FuturesApi.Trading.PlaceOrderAsync(
+    "ETH",
+    OrderSide.Buy,
+    OrderType.Limit,
+    0.1m,
+    price: 2000);
+</code></pre>
         </section>
         		
       </div>

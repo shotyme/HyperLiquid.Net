@@ -1,0 +1,4 @@
+POST
+/info
+false
+[{"universe":[{"tokens":[1,0],"name":"PURR/USDC","index":0,"isCanonical":true}],"tokens":[{"name":"USDC","szDecimals":8,"weiDecimals":8,"index":0,"tokenId":"0x6d1e7cde53ba9467b783cb7c530ce054","isCanonical":true,"evmContract":null,"fullName":null},{"name":"PURR","szDecimals":0,"weiDecimals":5,"index":1,"tokenId":"0xc1fb593aeffbeb02f85e0308e9956a90","isCanonical":true,"evmContract":null,"fullName":null}]},[{"prevDayPx":"0.2108","dayNtlVlm":"14350747.92152","markPx":"0.22695","midPx":"0.2268","circulatingSupply":"597683272.12003005","coin":"PURR/USDC","totalSupply":"597683276.64275002","dayBaseVlm":"65824101.0"}]]

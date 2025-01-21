@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using HyperLiquid.Net.Objects.Internal;
+using System.Linq;
 
 namespace HyperLiquid.Net.Objects.Sockets.Subscriptions
 {
@@ -46,7 +47,9 @@ namespace HyperLiquid.Net.Objects.Sockets.Subscriptions
             return new HyperLiquidQuery<HyperLiquidSubscribeRequest>(new HyperLiquidSubscribeRequest
             {
                 Subscription = subscription
-            }, "subscriptionResponse-" + _topic, false);
+            }, 
+            "subscriptionResponse-" + _topic + ((_parameters.Any() ? "-" : "") + string.Join("-", _parameters.Select(x => x.Value))),
+            "error-" + _topic + ((_parameters.Any() ? "-" : "") + string.Join("-", _parameters.Select(x => x.Value))), false);
         }
 
         /// <inheritdoc />
@@ -59,7 +62,9 @@ namespace HyperLiquid.Net.Objects.Sockets.Subscriptions
             return new HyperLiquidQuery<HyperLiquidSubscribeRequest>(new HyperLiquidUnsubscribeRequest
             {
                 Subscription = subscription
-            }, "subscriptionResponse-" + _topic, false);
+            },
+            "subscriptionResponse-" + _topic + ((_parameters.Any() ? "-" : "") + string.Join("-", _parameters.Select(x => x.Value))),
+            "error-" + _topic + ((_parameters.Any() ? "-" : "") + string.Join("-", _parameters.Select(x => x.Value))), false);
         }
 
         /// <inheritdoc />

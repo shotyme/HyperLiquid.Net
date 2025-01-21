@@ -2,7 +2,7 @@
 
 [![.NET](https://img.shields.io/github/actions/workflow/status/JKorf/HyperLiquid.Net/dotnet.yml?style=for-the-badge)](https://github.com/JKorf/HyperLiquid.Net/actions/workflows/dotnet.yml) ![License](https://img.shields.io/github/license/JKorf/HyperLiquid.Net?style=for-the-badge)
 
-HyperLiquid.Net is a client library for accessing the [HyperLiquid REST and Websocket API](HyperLiquid). 
+HyperLiquid.Net is a client library for accessing the [HyperLiquid DEX REST and Websocket API](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api). 
 
 ## Features
 * Response data is mapped to descriptive models
@@ -44,19 +44,26 @@ The NuGet package files are added along side the source with the latest GitHub r
 
 ## How to use
 * REST Endpoints
-	```csharp
-	// Get the ETH/USDT ticker via rest request
+	```csharp	
 	var restClient = new HyperLiquidRestClient();
-	var tickerResult = await restClient.SpotApi.ExchangeData.GetTickerAsync("ETHUSDT");
-	var lastPrice = tickerResult.Data.LastPrice;
+	
+	// Spot HYPE/USDC info
+	var spotTickerResult = await restClient.SpotApi.ExchangeData.GetExchangeInfoAndTickersAsync();
+	var hypeInfo = spotTickerResult.Data.Tickers.Single(x => x.Symbol == "HYPE/USDC");
+	var currentHypePrice = hypeInfo.MidPrice;
+
+	// Futures ETH perpetual contract info
+	var futuresTickerResult = await restClient.FuturesApi.ExchangeData.GetExchangeInfoAndTickersAsync();
+	var ethInfo = futuresTickerResult.Data.Tickers.Single(x => x.Symbol == "ETH");
+	var currentEthPrice = ethInfo.MidPrice;
 	```
 * Websocket streams
 	```csharp
-	// Subscribe to ETH/USDT ticker updates via the websocket API
+	// Subscribe to HYPE/USDC Spot ticker updates via the websocket API
 	var socketClient = new HyperLiquidSocketClient();
-	var tickerSubscriptionResult = socketClient.SpotApi.SubscribeToTickerUpdatesAsync("ETHUSDT", (update) => 
+	var tickerSubscriptionResult = await hyperLiquidSocketClient.SpotApi.SubscribeToSymbolUpdatesAsync("HYPE/USDC", (update) =>
 	{
-	  var lastPrice = update.Data.LastPrice;
+		var lastPrice = update.Data.MidPrice;
 	});
 	```
 
@@ -97,17 +104,26 @@ A Discord server is available [here](https://discord.gg/MSpeEtSY8t). For discuss
 
 ## Supported functionality
 
-### Spot
+### Rest
 |API|Supported|Location|
 |--|--:|--|
-|TODO|✓|`restClient.SpotApi.Account`|
-### Futures
+|Info|✓|`restClient.SpotApi.Account` / `restClient.SpotApi.ExchangeData` / `restClient.SpotApi.Trading` `restClient.FuturesApi.Account` / `restClient.FuturesApi.ExchangeData` / `restClient.FuturesApi.Trading`|
+|Info Perpetuals|✓|`restClient.FuturesApi.Account` / `restClient.FuturesApi.ExchangeData`|
+|Info Spot|✓|`restClient.SpotApi.Account` / `restClient.SpotApi.ExchangeData`|
+|Exchange|✓|`restClient.SpotApi.Account` / `restClient.SpotApi.Trading` `restClient.FuturesApi.Account` / `restClient.FuturesApi.Trading`|
+
+### Websocket
 |API|Supported|Location|
 |--|--:|--|
-|TODO|✓|`restClient.FuturesApi.ExchangeData`|
+|*|✓|`socketClient.SpotApi` / `socketClient.FuturesApi`|
 
 ## Support the project
 Any support is greatly appreciated.
+
+### Referral
+If you do not yet have an account please consider using this referal link to sign up:
+[Link](https://app.hyperliquid.xyz/join/JKORF)  
+Not only will you support development at no cost, you also get a 4% discount in fees.
 
 ### Donate
 Make a one time donation in a crypto currency of your choice. If you prefer to donate a currency not listed here please contact me.

@@ -34,7 +34,7 @@ namespace HyperLiquid.Net.Objects.Models
         /// <summary>
         /// Price
         /// </summary>
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; }
         /// <summary>
         /// Quantity
         /// </summary>
@@ -78,7 +78,7 @@ namespace HyperLiquid.Net.Objects.Models
             OrderSide side,
             OrderType orderType,
             decimal quantity,
-            decimal? price = null,
+            decimal price,
             TimeInForce? timeInForce = null,
             bool? reduceOnly = null,
             decimal? triggerPrice = null,

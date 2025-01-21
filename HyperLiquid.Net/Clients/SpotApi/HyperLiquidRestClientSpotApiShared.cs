@@ -6,6 +6,7 @@ using System.Threading;
 using System.Linq;
 using System;
 using CryptoExchange.Net.Objects;
+using HyperLiquid.Net.Enums;
 
 namespace HyperLiquid.Net.Clients.SpotApi
 {
@@ -38,7 +39,10 @@ namespace HyperLiquid.Net.Clients.SpotApi
 
         #region Klines Client
 
-        GetKlinesOptions IKlineRestClient.GetKlinesOptions { get; } = new GetKlinesOptions(SharedPaginationSupport.Descending, true, 1000, false);
+        GetKlinesOptions IKlineRestClient.GetKlinesOptions { get; } = new GetKlinesOptions(SharedPaginationSupport.Descending, true, 1000, false)
+        {
+            MaxTotalDataPoints = 5000
+        };
 
         async Task<ExchangeWebResult<IEnumerable<SharedKline>>> IKlineRestClient.GetKlinesAsync(GetKlinesRequest request, INextPageToken? pageToken, CancellationToken ct)
         {
@@ -244,6 +248,8 @@ namespace HyperLiquid.Net.Clients.SpotApi
                 ParseOrderStatus(order.Data.Status),
                 order.Data.Order.Timestamp)
             {
+                TimeInForce = ParseTimeInForce(order.Data.Order.TimeInForce),
+                ClientOrderId = order.Data.Order.ClientOrderId,
                 OrderPrice = order.Data.Order.Price,
                 Quantity = order.Data.Order.Quantity,
                 QuantityFilled = order.Data.Order.Quantity - order.Data.Order.QuantityRemaining,
@@ -275,6 +281,8 @@ namespace HyperLiquid.Net.Clients.SpotApi
                 SharedOrderStatus.Open,
                 x.Timestamp)
             {
+                TimeInForce = ParseTimeInForce(x.TimeInForce),
+                ClientOrderId = x.ClientOrderId,
                 OrderPrice = x.Price,
                 Quantity = x.Quantity,
                 QuantityFilled = x.Quantity - x.QuantityRemaining,
@@ -313,6 +321,8 @@ namespace HyperLiquid.Net.Clients.SpotApi
                 ParseOrderStatus(x.Status),
                 x.Order.Timestamp)
             {
+                TimeInForce = ParseTimeInForce(x.Order.TimeInForce),
+                ClientOrderId = x.Order.ClientOrderId,
                 OrderPrice = x.Order.Price,
                 Quantity = x.Order.Quantity,
                 QuantityFilled = x.Order.Quantity - x.Order.QuantityRemaining,
@@ -411,6 +421,14 @@ namespace HyperLiquid.Net.Clients.SpotApi
                 return order.AsExchangeResult<SharedId>(Exchange, null, default);
 
             return order.AsExchangeResult(Exchange, TradingMode.Spot, new SharedId(request.OrderId));
+        }
+
+        private SharedTimeInForce? ParseTimeInForce(TimeInForce timeInForce)
+        {
+            if (timeInForce == TimeInForce.ImmediateOrCancel) return SharedTimeInForce.ImmediateOrCancel;
+            if (timeInForce == TimeInForce.GoodTillCanceled) return SharedTimeInForce.GoodTillCanceled;
+
+            return null;
         }
 
         private Enums.TimeInForce? GetTimeInForce(SharedTimeInForce? tif, SharedOrderType type)

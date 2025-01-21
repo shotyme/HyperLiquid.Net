@@ -1,0 +1,4 @@
+POST
+/info
+false
+["1", "2"]

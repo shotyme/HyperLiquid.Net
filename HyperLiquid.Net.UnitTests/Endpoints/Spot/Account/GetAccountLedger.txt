@@ -1,0 +1,4 @@
+POST
+/info
+false
+[{"time":1736927066501,"hash":"1","delta":{"type":"accountClassTransfer","usdc":"1.0","toPerp":true}},{"time":1736945660673,"hash":"2","delta":{"type":"accountClassTransfer","usdc":"1.0","toPerp":true}},{"time":1737020927671,"hash":"3","delta":{"type":"accountClassTransfer","usdc":"1.0","toPerp":true}},{"time":1737020942448,"hash":"5","delta":{"type":"accountClassTransfer","usdc":"1.0","toPerp":true}},{"time":1737021050532,"hash":"6","delta":{"type":"accountClassTransfer","usdc":"1.0","toPerp":true}},{"time":1737021990814,"hash":"7","delta":{"type":"accountClassTransfer","usdc":"1.0","toPerp":true}},{"time":1737123969670,"hash":"8","delta":{"type":"accountClassTransfer","usdc":"1.0","toPerp":true}},{"time":1737360873983,"hash":"9","delta":{"type":"accountClassTransfer","usdc":"10.0","toPerp":true}},{"time":1737370449463,"hash":"10","delta":{"type":"deposit","usdc":"97.142685"}}]
