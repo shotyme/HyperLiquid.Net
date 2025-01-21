@@ -43,6 +43,10 @@ HyperLiquid.Net is available on [GitHub packages](https://github.com/JKorf/Hyper
 The NuGet package files are added along side the source with the latest GitHub release which can found [here](https://github.com/JKorf/HyperLiquid.Net/releases).
 
 ## How to use
+The library uses `[BaseAsset]/[QuoteAsset]` notation for Spot symbols and `[BaseAsset]` for futures symbols. Futures symbols inherently have `USDC` as quote symbol.  
+**Spot symbol**: `HYPE/USDC`  
+**Futures symbol**: `HYPE` 
+
 * REST Endpoints
 	```csharp	
 	var restClient = new HyperLiquidRestClient();
