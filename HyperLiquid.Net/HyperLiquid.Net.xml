@@ -798,6 +798,16 @@
             Exchange name
             </summary>
         </member>
+        <member name="P:HyperLiquid.Net.HyperLiquidExchange.DisplayName">
+            <summary>
+            Exchange name
+            </summary>
+        </member>
+        <member name="P:HyperLiquid.Net.HyperLiquidExchange.ImageUrl">
+            <summary>
+            Url to exchange image
+            </summary>
+        </member>
         <member name="P:HyperLiquid.Net.HyperLiquidExchange.Url">
             <summary>
             Url to the main website
@@ -3520,31 +3530,6 @@
         <member name="T:HyperLiquid.Net.Objects.Options.HyperLiquidOptions">
             <summary>
             HyperLiquid options
-            </summary>
-        </member>
-        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidOptions.Rest">
-            <summary>
-            Rest client options
-            </summary>
-        </member>
-        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidOptions.Socket">
-            <summary>
-            Socket client options
-            </summary>
-        </member>
-        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidOptions.Environment">
-            <summary>
-            Trade environment. Contains info about URL's to use to connect to the API. Use `HyperLiquidEnvironment` to swap environment, for example `Environment = HyperLiquidEnvironment.Live`
-            </summary>
-        </member>
-        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidOptions.ApiCredentials">
-            <summary>
-            The api credentials used for signing requests.
-            </summary>
-        </member>
-        <member name="P:HyperLiquid.Net.Objects.Options.HyperLiquidOptions.SocketClientLifeTime">
-            <summary>
-            The DI service lifetime for the IHyperLiquidSocketClient
             </summary>
         </member>
         <member name="T:HyperLiquid.Net.Objects.Options.HyperLiquidOrderBookOptions">
