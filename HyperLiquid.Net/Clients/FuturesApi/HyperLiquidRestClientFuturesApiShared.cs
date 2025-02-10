@@ -39,7 +39,19 @@ namespace HyperLiquid.Net.Clients.FuturesApi
 
         #region Klines Client
 
-        GetKlinesOptions IKlineRestClient.GetKlinesOptions { get; } = new GetKlinesOptions(SharedPaginationSupport.Descending, true, 1000, false)
+        GetKlinesOptions IKlineRestClient.GetKlinesOptions { get; } = new GetKlinesOptions(SharedPaginationSupport.Descending, true, 1000, false,
+            SharedKlineInterval.OneMinute,
+            SharedKlineInterval.FiveMinutes,
+            SharedKlineInterval.FifteenMinutes,
+            SharedKlineInterval.ThirtyMinutes,
+            SharedKlineInterval.OneHour,
+            SharedKlineInterval.TwoHours,
+            SharedKlineInterval.FourHours,
+            SharedKlineInterval.EightHours,
+            SharedKlineInterval.TwelveHours,
+            SharedKlineInterval.OneDay,
+            SharedKlineInterval.OneWeek,
+            SharedKlineInterval.OneMonth)
         {
             MaxTotalDataPoints = 5000
         };

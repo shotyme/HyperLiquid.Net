@@ -63,7 +63,20 @@ namespace HyperLiquid.Net.Clients.FuturesApi
         #endregion
 
         #region Kline client
-        SubscribeKlineOptions IKlineSocketClient.SubscribeKlineOptions { get; } = new SubscribeKlineOptions(false);
+        SubscribeKlineOptions IKlineSocketClient.SubscribeKlineOptions { get; } = new SubscribeKlineOptions(false,
+            SharedKlineInterval.OneMinute,
+            SharedKlineInterval.ThreeMinutes,
+            SharedKlineInterval.FiveMinutes,
+            SharedKlineInterval.FifteenMinutes,
+            SharedKlineInterval.ThirtyMinutes,
+            SharedKlineInterval.OneHour,
+            SharedKlineInterval.TwoHours,
+            SharedKlineInterval.FourHours,
+            SharedKlineInterval.EightHours,
+            SharedKlineInterval.TwelveHours,
+            SharedKlineInterval.OneDay,
+            SharedKlineInterval.OneWeek,
+            SharedKlineInterval.OneMonth);
         async Task<ExchangeResult<UpdateSubscription>> IKlineSocketClient.SubscribeToKlineUpdatesAsync(SubscribeKlineRequest request, Action<ExchangeEvent<SharedKline>> handler, CancellationToken ct)
         {
             var interval = (Enums.KlineInterval)request.Interval;
@@ -221,7 +234,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
 
             var result = await SubscribeToUserUpdatesAsync(
                 null,
-                update => handler(update.AsExchangeEvent<IEnumerable<SharedPosition>>(Exchange, update.Data.FuturesInfo.Positions.Select(x => new SharedPosition(x.Position.Symbol, Math.Abs(x.Position.PositionQuantity ?? 0), update.Timestamp)
+                update => handler(update.AsExchangeEvent<IEnumerable<SharedPosition>>(Exchange, update.Data.FuturesInfo.Positions.Select(x => new SharedPosition(x.Position.Symbol, Math.Abs(x.Position.PositionQuantity ?? 0), update.DataTime ?? update.ReceiveTime)
                 {
                     AverageOpenPrice = x.Position.AverageEntryPrice,
                     Leverage = x.Position.Leverage!.Value,

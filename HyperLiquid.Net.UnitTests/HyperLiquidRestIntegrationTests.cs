@@ -10,7 +10,7 @@ using HyperLiquid.Net.Objects.Options;
 namespace HyperLiquid.Net.UnitTests
 {
     [NonParallelizable]
-    public class HyperLiquidRestIntegrationTests : RestIntergrationTest<HyperLiquidRestClient>
+    public class HyperLiquidRestIntegrationTests : RestIntegrationTest<HyperLiquidRestClient>
     {
         public override bool Run { get; set; } = true;
 

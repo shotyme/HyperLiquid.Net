@@ -149,7 +149,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
             x =>
             {
                 x.Data.Symbol = symbol;
-                onMessage(x.WithSymbol(symbol));
+                onMessage(x.WithSymbol(symbol).WithDataTimestamp(x.Data.Timestamp));
             }, false);
             return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
         }
@@ -176,7 +176,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
             {
                 foreach (var trade in x.Data)
                     trade.Symbol = symbol;
-                onMessage(x.WithSymbol(symbol));
+                onMessage(x.WithSymbol(symbol).WithDataTimestamp(x.Data.Max(x => x.Timestamp)));
             }, false);
             return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
         }
@@ -218,7 +218,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                     }
                 }
 
-                onMessage(x);
+                onMessage(x.WithDataTimestamp(x.Data.Max(x => x.Timestamp)));
             }, false);
             return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
         }
@@ -258,7 +258,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
             },
             x =>
             {
-                onMessage(x);
+                onMessage(x.WithDataTimestamp(x.Data.ServerTime));
             }, false);
             return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
         }
@@ -300,7 +300,8 @@ namespace HyperLiquid.Net.Clients.BaseApi
                     }
                 }
 
-                onMessage(x.As(x.Data.Trades).WithUpdateType(x.Data.IsSnapshot ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
+                onMessage(x.As(x.Data.Trades).WithUpdateType(x.Data.IsSnapshot ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
+                    .WithDataTimestamp(x.Data.Trades.Any() ? x.Data.Trades.Max(x => x.Timestamp) : null));
             }, false);
             return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
         }
@@ -342,7 +343,8 @@ namespace HyperLiquid.Net.Clients.BaseApi
                     }
                 }
 
-                onMessage(x.As(x.Data.Trades).WithUpdateType(x.Data.IsSnapshot ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
+                onMessage(x.As(x.Data.Trades).WithUpdateType(x.Data.IsSnapshot ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
+                    .WithDataTimestamp(x.Data.Trades.Any() ? x.Data.Trades.Max(x => x.Timestamp) : null));
             }, false);
             return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
         }
@@ -384,7 +386,8 @@ namespace HyperLiquid.Net.Clients.BaseApi
                     }
                 }
 
-                onMessage(x.As(x.Data.History).WithUpdateType(x.Data.IsSnapshot ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
+                onMessage(x.As(x.Data.History).WithUpdateType(x.Data.IsSnapshot ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
+                    .WithDataTimestamp(x.Data.History.Any() ? x.Data.History.Max(x => x.Timestamp) : null));
             }, false);
             return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
         }

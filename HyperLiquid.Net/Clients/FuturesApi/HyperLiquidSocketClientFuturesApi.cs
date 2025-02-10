@@ -13,6 +13,7 @@ using HyperLiquid.Net.Objects.Internal;
 using HyperLiquid.Net.Utils;
 using HyperLiquid.Net.Clients.BaseApi;
 using HyperLiquid.Net.Interfaces.Clients.FuturesApi;
+using System.Linq;
 
 namespace HyperLiquid.Net.Clients.FuturesApi
 {
@@ -83,7 +84,8 @@ namespace HyperLiquid.Net.Clients.FuturesApi
             },
             x =>
             {
-                onMessage(x.As(x.Data.Fundings).WithUpdateType(x.Data.IsSnapshot ? SocketUpdateType.Snapshot : SocketUpdateType.Update));
+                onMessage(x.As(x.Data.Fundings).WithUpdateType(x.Data.IsSnapshot ? SocketUpdateType.Snapshot : SocketUpdateType.Update)
+                    .WithDataTimestamp(x.Data.Fundings.Any() ? x.Data.Fundings.Max(x => x.Timestamp) : null));
             }, false);
             return await SubscribeAsync(BaseAddress.AppendPath("ws"), subscription, ct).ConfigureAwait(false);
         }
