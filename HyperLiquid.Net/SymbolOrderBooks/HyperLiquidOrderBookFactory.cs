@@ -36,7 +36,7 @@ namespace HyperLiquid.Net.SymbolOrderBooks
         /// <inheritdoc />
         public ISymbolOrderBook Create(SharedSymbol symbol, Action<HyperLiquidOrderBookOptions>? options = null)
         {
-            var symbolName = HyperLiquidExchange.FormatSymbol(symbol.BaseAsset, symbol.QuoteAsset, symbol.TradingMode, symbol.DeliverTime);
+            var symbolName = symbol.GetSymbol(HyperLiquidExchange.FormatSymbol);
             return Create(symbolName, options);
         }
 
