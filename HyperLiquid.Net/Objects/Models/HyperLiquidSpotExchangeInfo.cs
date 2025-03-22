@@ -120,12 +120,29 @@ namespace HyperLiquid.Net.Objects.Models
         /// EVM contract
         /// </summary>
         [JsonPropertyName("evmContract")]
-        public string EvmContract { get; set; } = string.Empty;
+        public HyperLiquidEvmContract? EvmContract { get; set; }
         /// <summary>
         /// Full asset name
         /// </summary>
         [JsonPropertyName("fullName")]
         public string FullName { get; set; } = string.Empty;
+    }
+
+    /// <summary>
+    /// EVM contract  info
+    /// </summary>
+    public record HyperLiquidEvmContract
+    {
+        /// <summary>
+        /// Address
+        /// </summary>
+        [JsonPropertyName("address")]
+        public string Address { get; set; } = string.Empty;
+        /// <summary>
+        /// Extra decimals
+        /// </summary>
+        [JsonPropertyName("evm_extra_wei_decimals")]
+        public int? EvmExtraWeiDecimals { get; set; }
     }
 
     internal record HyperLiquidSymbolReference
