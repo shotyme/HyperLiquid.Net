@@ -299,12 +299,15 @@ namespace HyperLiquid.Net.Clients.BaseApi
             TimeInForce? timeInForce = null,
             bool? reduceOnly = null,
             string? clientOrderId = null,
-            CancellationToken ct = default
-            )
+            decimal? triggerPrice = null,
+            TpSlType? tpSlType = null,
+            TpSlGrouping? tpSlGrouping = null, 
+            string? vaultAddress = null,
+            CancellationToken ct = default)
         {
             var result = await PlaceMultipleOrdersAsync([
-                new HyperLiquidOrderRequest(symbol, side, orderType, quantity, price, timeInForce, reduceOnly, clientOrderId: clientOrderId)
-                ], ct).ConfigureAwait(false);
+                new HyperLiquidOrderRequest(symbol, side, orderType, quantity, price, timeInForce, reduceOnly, triggerPrice: triggerPrice, tpSlType: tpSlType, clientOrderId: clientOrderId)
+            ], tpSlGrouping, vaultAddress, ct).ConfigureAwait(false);
 
             if (!result)
                 return result.As<HyperLiquidOrderResult>(default);
@@ -321,8 +324,10 @@ namespace HyperLiquid.Net.Clients.BaseApi
         #region Place Multiple Orders
 
         /// <inheritdoc />
-        public async Task<WebCallResult<IEnumerable<CallResult<HyperLiquidOrderResult>>>> PlaceMultipleOrdersAsync(
+        public async Task<WebCallResult<CallResult<HyperLiquidOrderResult>[]>> PlaceMultipleOrdersAsync(
             IEnumerable<HyperLiquidOrderRequest> orders,
+            TpSlGrouping? tpSlGrouping = null,
+			string? vaultAddress = null,			
             CancellationToken ct = default)
         {
             var orderRequests = new List<ParameterCollection>();
@@ -330,7 +335,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
             {
                 var symbolId = await HyperLiquidUtils.GetSymbolIdFromNameAsync(order.Symbol).ConfigureAwait(false);
                 if (!symbolId)
-                    return new WebCallResult<IEnumerable<CallResult<HyperLiquidOrderResult>>>(symbolId.Error);
+                    return new WebCallResult<CallResult<HyperLiquidOrderResult>[]>(symbolId.Error);
 
                 var orderParameters = new ParameterCollection();
                 orderParameters.Add("a", symbolId.Data);
@@ -339,22 +344,44 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 var orderTypeParameters = new ParameterCollection();                
                 if (order.OrderType == OrderType.Limit)
                 {
-                    orderParameters.AddString("p", order.Price.Normalize());
+                    orderParameters.AddString("p", order.Price?.Normalize() ?? 0);
+                    orderParameters.AddString("s", order.Quantity);
+                    orderParameters.Add("r", order.ReduceOnly ?? false);
+                    var limitParameters = new ParameterCollection();
+                    limitParameters.AddEnum("tif", order.OrderType == OrderType.Market ? TimeInForce.ImmediateOrCancel : order.TimeInForce ?? TimeInForce.GoodTillCanceled);
+                    orderTypeParameters.Add("limit", limitParameters);
                 }
-                else 
+                else if (order.OrderType == OrderType.Market)
                 {
                     var maxSlippage = order.MaxSlippage ?? 5;
                     var price = order.Side == OrderSide.Buy ? order.Price * (1 + maxSlippage / 100m) : order.Price * (1 - maxSlippage / 100m);
-                    orderParameters.AddString("p", Math.Round(price, 3).Normalize());
+                    var decimalPlaces = CountDecimalDigits(order.Price ?? 0);
+                    orderParameters.AddString("p", Math.Round(price ?? 0, decimalPlaces).Normalize());
+                    orderParameters.AddString("s", order.Quantity);
+                    orderParameters.Add("r", order.ReduceOnly ?? false);
+                    var limitParameters = new ParameterCollection();
+                    limitParameters.AddEnum("tif", order.OrderType == OrderType.Market ? TimeInForce.ImmediateOrCancel : order.TimeInForce ?? TimeInForce.GoodTillCanceled);
+                    orderTypeParameters.Add("limit", limitParameters);
+                }
+                else
+                {
+                    if (order.TriggerPrice == null)
+                       throw new ArgumentNullException(nameof(order.TriggerPrice), "Stop order should have a trigger price");
+
+                    if (order.TpSlType == null)
+                        throw new ArgumentNullException(nameof(order.TpSlType), "Stop order should have a TpSlType");
+
+                    orderParameters.AddString("p", order.Price?.Normalize() ?? 0);
+                    orderParameters.AddString("s", order.Quantity);
+                    orderParameters.Add("r", order.ReduceOnly ?? false);
+                    var triggerParameters = new ParameterCollection();
+                    triggerParameters.Add("isMarket", order.OrderType == OrderType.StopMarket);
+                    triggerParameters.AddString("triggerPx", order.TriggerPrice.Value);
+                    triggerParameters.AddEnum("tpsl", order.TpSlType.Value);
+                    orderTypeParameters.Add("trigger", triggerParameters);
                 }
 
-                orderParameters.AddString("s", order.Quantity);
-                orderParameters.Add("r", order.ReduceOnly ?? false);
-                var limitParameters = new ParameterCollection();
-                limitParameters.AddEnum("tif", order.OrderType == OrderType.Market ? TimeInForce.ImmediateOrCancel : order.TimeInForce ?? TimeInForce.GoodTillCanceled);
-                orderTypeParameters.Add("limit", limitParameters);
                 orderParameters.Add("t", orderTypeParameters);
-
                 orderParameters.AddOptional("c", order.ClientOrderId);
 
                 orderRequests.Add(orderParameters);
@@ -364,8 +391,12 @@ namespace HyperLiquid.Net.Clients.BaseApi
             {
                 { "type", "order" },
                 { "orders", orderRequests },
-                { "grouping", "na" }                
             };
+
+            if (tpSlGrouping != null)
+                actionParameters.AddEnum("grouping", tpSlGrouping.Value);
+            else
+                actionParameters.Add("grouping", "na");
 
             if (_baseClient.ClientOptions.BuilderFeePercentage > 0)
             {
@@ -384,12 +415,15 @@ namespace HyperLiquid.Net.Clients.BaseApi
             {
                 { "action", actionParameters }
             };
+            
+            if (vaultAddress != null)
+                parameters.Add("vaultAddress", vaultAddress);
 
             var weight = 1 + (int)Math.Floor(orderRequests.Count / 40m);
             var request = _definitions.GetOrCreate(HttpMethod.Post, "exchange", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 1, true);
             var intResult = await _baseClient.SendAuthAsync<HyperLiquidOrderResultIntWrapper>(request, parameters, ct, weight).ConfigureAwait(false);
             if (!intResult)
-                return intResult.As<IEnumerable<CallResult<HyperLiquidOrderResult>>>(default);
+                return intResult.As<CallResult<HyperLiquidOrderResult>[]>(default);
 
             var result = new List<CallResult<HyperLiquidOrderResult>>();
             foreach (var order in intResult.Data.Statuses)
@@ -398,11 +432,18 @@ namespace HyperLiquid.Net.Clients.BaseApi
                     result.Add(new CallResult<HyperLiquidOrderResult>(new ServerError(order.Error)));
                 else if (order.ResultResting != null)
                     result.Add(new CallResult<HyperLiquidOrderResult>(order.ResultResting with { Status = OrderStatus.Open }));
-                else
+                else if (order.ResultFilled != null)
                     result.Add(new CallResult<HyperLiquidOrderResult>(order.ResultFilled! with { Status = OrderStatus.Filled }));
+                else if (order.WaitingForFill != null)
+                    result.Add(new CallResult<HyperLiquidOrderResult>(order.WaitingForFill! with { Status = OrderStatus.WaitingTrigger }));
+                else
+                    result.Add(new CallResult<HyperLiquidOrderResult>(order.WaitingForTrigger! with { Status = OrderStatus.WaitingTrigger }));
             }
 
-            return intResult.As<IEnumerable<CallResult<HyperLiquidOrderResult>>>(result);
+            // if (result.All(x => !x.Success))
+            //     return intResult.AsError<CallResult<HyperLiquidOrderResult>[]>(new ServerError("All orders failed"));
+            
+            return intResult.As<CallResult<HyperLiquidOrderResult>[]>(result.ToArray());
         }
 
         #endregion
@@ -464,7 +505,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 if (order.TriggerPrice == null)
                     throw new ArgumentNullException(nameof(order.TriggerPrice), "Trigger price should be provided for trigger orders");
 
-                orderParameters.AddString("p", order.Price);
+                orderParameters.AddString("p", order.Price?.Normalize() ?? 0);
                 orderParameters.AddString("s", order.Quantity);
                 orderParameters.Add("r", order.ReduceOnly ?? false);
                 var triggerParameters = new ParameterCollection();
@@ -700,6 +741,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
             TimeInForce? timeInForce = null,
             bool? reduceOnly = null,
             string? newClientOrderId = null,
+            string? vaultAddress = null,
             CancellationToken ct = default)
         {
             if (orderId == null == (clientOrderId == null))
@@ -736,6 +778,10 @@ namespace HyperLiquid.Net.Clients.BaseApi
             actionParameters.AddOptional("oid", clientOrderId);
             actionParameters.Add("order", orderParameters);
             parameters.Add("action", actionParameters);
+            
+            if (vaultAddress != null)
+                parameters.Add("vaultAddress", vaultAddress);
+            
             var request = _definitions.GetOrCreate(HttpMethod.Post, "exchange", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 1, true);
             var result = await _baseClient.SendAsync<HyperLiquidResponse>(request, parameters, ct).ConfigureAwait(false);
             return result.AsDataless();
@@ -891,5 +937,13 @@ namespace HyperLiquid.Net.Clients.BaseApi
         }
 
         #endregion
+        
+        private int CountDecimalDigits(decimal n)
+        {
+            return n.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                .SkipWhile(c => c != '.')
+                .Skip(1)
+                .Count();
+        }
     }
 }

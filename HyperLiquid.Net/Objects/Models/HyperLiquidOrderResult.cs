@@ -1,13 +1,15 @@
 ﻿using HyperLiquid.Net.Enums;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using HyperLiquid.Net.Converters;
 
 namespace HyperLiquid.Net.Objects.Models
 {
     internal record HyperLiquidOrderResultIntWrapper
     {
         [JsonPropertyName("statuses")]
-        public IEnumerable<HyperLiquidOrderResultInt> Statuses { get; set; } = [];
+        [JsonConverter(typeof(OrderResultConverter))]
+        public HyperLiquidOrderResultInt[] Statuses { get; set; } = [];
     }
 
     internal record HyperLiquidOrderResultInt
@@ -16,6 +18,8 @@ namespace HyperLiquid.Net.Objects.Models
         public HyperLiquidOrderResult? ResultResting { get; set; }
         [JsonPropertyName("filled")]
         public HyperLiquidOrderResult? ResultFilled { get; set; }
+        public HyperLiquidOrderResult? WaitingForTrigger { get; set; }
+        public HyperLiquidOrderResult? WaitingForFill { get; set; }
         [JsonPropertyName("error")]
         public string? Error { get; set; }
     }

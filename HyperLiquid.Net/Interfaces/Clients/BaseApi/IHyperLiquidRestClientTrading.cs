@@ -116,7 +116,11 @@ namespace HyperLiquid.Net.Interfaces.Clients.BaseApi
         /// <param name="price">Limit price. For market orders pass the current price of the symbol for max slippage calculation.</param>
         /// <param name="timeInForce">Time in force</param>
         /// <param name="reduceOnly">Reduce only</param>
+        /// <param name="triggerPrice">Trigger order trigger price</param>
+        /// <param name="tpSlType">Trigger order type</param>
+        /// <param name="tpSlGrouping">Trigger order grouping</param>
         /// <param name="clientOrderId">Client order id, an optional 128 bit hex string, e.g. 0x1234567890abcdef1234567890abcdef</param>
+        /// <param name="vaultAddress">Vault address</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult<HyperLiquidOrderResult>> PlaceOrderAsync(
             string symbol,
@@ -127,17 +131,25 @@ namespace HyperLiquid.Net.Interfaces.Clients.BaseApi
             TimeInForce? timeInForce = null,
             bool? reduceOnly = null,
             string? clientOrderId = null,
+            decimal? triggerPrice = null,
+            TpSlType? tpSlType = null,
+            TpSlGrouping? tpSlGrouping = null,
+            string? vaultAddress = null,
             CancellationToken ct = default
-            );
+        );
 
         /// <summary>
         /// Place multiple new orders in a single call
         /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#place-an-order" /></para>
         /// </summary>
         /// <param name="orders">Orders to place</param>
+        /// <param name="tpSlGrouping">Take profit / Stop loss grouping</param>
+        /// <param name="vaultAddress">Vault address</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<IEnumerable<CallResult<HyperLiquidOrderResult>>>> PlaceMultipleOrdersAsync(
+        Task<WebCallResult<CallResult<HyperLiquidOrderResult>[]>> PlaceMultipleOrdersAsync(
             IEnumerable<HyperLiquidOrderRequest> orders,
+            TpSlGrouping? tpSlGrouping = null,
+            string? vaultAddress = null,
             CancellationToken ct = default);
 
         /// <summary>
@@ -205,6 +217,7 @@ namespace HyperLiquid.Net.Interfaces.Clients.BaseApi
         /// <param name="timeInForce">Time in force</param>
         /// <param name="reduceOnly">Reduce only</param>
         /// <param name="newClientOrderId">The new client order id, an optional 128 bit hex string, e.g. 0x1234567890abcdef1234567890abcdef</param>
+        /// <param name="vaultAddress">Vault address</param>
         /// <param name="ct">Cancellation token</param>
         Task<WebCallResult> EditOrderAsync(
             string symbol,
@@ -217,6 +230,7 @@ namespace HyperLiquid.Net.Interfaces.Clients.BaseApi
             TimeInForce? timeInForce = null,
             bool? reduceOnly = null,
             string? newClientOrderId = null,
+            string? vaultAddress = null,
             CancellationToken ct = default);
 
         /// <summary>

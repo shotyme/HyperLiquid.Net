@@ -19,7 +19,7 @@ namespace HyperLiquid.Net.Clients.SpotApi
     {
         private static readonly RequestDefinitionCache _definitions = new RequestDefinitionCache();
         private readonly HyperLiquidRestClientSpotApi _baseClient;
-        private readonly string _chainId = "0xabc";
+        private readonly string _chainId = "0x66eee";
 
         internal HyperLiquidRestClientSpotApiAccount(HyperLiquidRestClientSpotApi baseClient): base(baseClient)
         {
@@ -303,14 +303,15 @@ namespace HyperLiquid.Net.Clients.SpotApi
         /// <inheritdoc />
         public async Task<WebCallResult> ApproveBuilderFeeAsync(string builderAddress, decimal maxFeePercentage, CancellationToken ct = default)
         {
+            // NOTE; order of the parameters matters
             var actionParameters = new ParameterCollection()
             {
                 { "hyperliquidChain", _baseClient.ClientOptions.Environment.Name == TradeEnvironmentNames.Testnet ? "Testnet" : "Mainnet" },
                 { "maxFeeRate", $"{maxFeePercentage.ToString(CultureInfo.InvariantCulture)}%" },
-                { "builder", builderAddress.ToLower() },
+                { "builder", builderAddress },
                 { "nonce", DateTimeConverter.ConvertToMilliseconds(DateTime.UtcNow).Value },
+                { "signatureChainId", _chainId },
                 { "type", "approveBuilderFee" },
-                { "signatureChainId", _chainId }
             };
 
             var parameters = new ParameterCollection()
@@ -321,7 +322,8 @@ namespace HyperLiquid.Net.Clients.SpotApi
             };
 
             var request = _definitions.GetOrCreate(HttpMethod.Post, "exchange", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 1, true);
-            return await _baseClient.SendAsync(request, parameters, ct).ConfigureAwait(false);
+            var result = await _baseClient.SendAuthAsync<HyperLiquidDefault>(request, parameters, ct).ConfigureAwait(false);
+            return result.AsDataless();
         }
 
         #endregion
