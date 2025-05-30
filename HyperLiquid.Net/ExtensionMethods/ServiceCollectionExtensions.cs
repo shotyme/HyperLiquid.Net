@@ -120,6 +120,12 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<ICryptoSocketClient, CryptoSocketClient>();
             services.AddTransient<IHyperLiquidOrderBookFactory, HyperLiquidOrderBookFactory>();
             services.AddTransient<IHyperLiquidTrackerFactory, HyperLiquidTrackerFactory>();
+            services.AddSingleton<IHyperLiquidUserClientProvider, HyperLiquidUserClientProvider>(x =>
+            new HyperLiquidUserClientProvider(
+                x.GetRequiredService<HttpClient>(),
+                x.GetRequiredService<ILoggerFactory>(),
+                x.GetRequiredService<IOptions<HyperLiquidRestOptions>>(),
+                x.GetRequiredService<IOptions<HyperLiquidSocketOptions>>()));
 
             services.RegisterSharedRestInterfaces(x => x.GetRequiredService<IHyperLiquidRestClient>().SpotApi.SharedClient);
             services.RegisterSharedRestInterfaces(x => x.GetRequiredService<IHyperLiquidRestClient>().FuturesApi.SharedClient);

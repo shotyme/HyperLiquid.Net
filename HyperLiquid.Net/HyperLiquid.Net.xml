@@ -291,6 +291,29 @@
         <member name="M:HyperLiquid.Net.Clients.HyperLiquidSocketClient.SetApiCredentials(CryptoExchange.Net.Authentication.ApiCredentials)">
             <inheritdoc />
         </member>
+        <member name="T:HyperLiquid.Net.Clients.HyperLiquidUserClientProvider">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.HyperLiquidUserClientProvider.#ctor(System.Action{HyperLiquid.Net.Objects.Options.HyperLiquidOptions})">
+            <summary>
+            ctor
+            </summary>
+            <param name="optionsDelegate">Options to use for created clients</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.HyperLiquidUserClientProvider.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Logging.ILoggerFactory,Microsoft.Extensions.Options.IOptions{HyperLiquid.Net.Objects.Options.HyperLiquidRestOptions},Microsoft.Extensions.Options.IOptions{HyperLiquid.Net.Objects.Options.HyperLiquidSocketOptions})">
+            <summary>
+            ctor
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.HyperLiquidUserClientProvider.InitializeUserClient(System.String,CryptoExchange.Net.Authentication.ApiCredentials,HyperLiquid.Net.HyperLiquidEnvironment)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.HyperLiquidUserClientProvider.GetRestClient(System.String,CryptoExchange.Net.Authentication.ApiCredentials,HyperLiquid.Net.HyperLiquidEnvironment)">
+            <inheritdoc />
+        </member>
+        <member name="M:HyperLiquid.Net.Clients.HyperLiquidUserClientProvider.GetSocketClient(System.String,CryptoExchange.Net.Authentication.ApiCredentials,HyperLiquid.Net.HyperLiquidEnvironment)">
+            <inheritdoc />
+        </member>
         <member name="T:HyperLiquid.Net.Clients.SpotApi.HyperLiquidRestClientSpotApi">
             <inheritdoc cref="T:HyperLiquid.Net.Interfaces.Clients.SpotApi.IHyperLiquidRestClientSpotApi" />
         </member>
@@ -2587,6 +2610,35 @@
             Set the API credentials for this client. All Api clients in this client will use the new credentials, regardless of earlier set options.
             </summary>
             <param name="credentials">The credentials to set</param>
+        </member>
+        <member name="T:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidUserClientProvider">
+            <summary>
+            Provider for clients with credentials for specific users
+            </summary>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidUserClientProvider.InitializeUserClient(System.String,CryptoExchange.Net.Authentication.ApiCredentials,HyperLiquid.Net.HyperLiquidEnvironment)">
+            <summary>
+            Initialize a client for the specified user identifier. This can be used so to initialize a client for a user so ApiCredentials do not need to be passed later.
+            </summary>
+            <param name="userIdentifier">The identifier for the user</param>
+            <param name="credentials">The credentials for the user</param>
+            <param name="environment">The environment to use</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidUserClientProvider.GetRestClient(System.String,CryptoExchange.Net.Authentication.ApiCredentials,HyperLiquid.Net.HyperLiquidEnvironment)">
+            <summary>
+            Get the Rest client for a specific user. In case the client does not exist yet it will be created and the <paramref name="credentials"/> should be provided, unless <see cref="M:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidUserClientProvider.InitializeUserClient(System.String,CryptoExchange.Net.Authentication.ApiCredentials,HyperLiquid.Net.HyperLiquidEnvironment)" /> has been called prior for this user.
+            </summary>
+            <param name="userIdentifier">The identifier for user</param>
+            <param name="credentials">The credentials for the user. Required the first time a client is requested for this user unless <see cref="M:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidUserClientProvider.InitializeUserClient(System.String,CryptoExchange.Net.Authentication.ApiCredentials,HyperLiquid.Net.HyperLiquidEnvironment)" /> has been called prior for this user.</param>
+            <param name="environment">The environment to use</param>
+        </member>
+        <member name="M:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidUserClientProvider.GetSocketClient(System.String,CryptoExchange.Net.Authentication.ApiCredentials,HyperLiquid.Net.HyperLiquidEnvironment)">
+            <summary>
+            Get the Socket client for a specific user. In case the client does not exist yet it will be created and the <paramref name="credentials"/> should be provided, unless <see cref="M:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidUserClientProvider.InitializeUserClient(System.String,CryptoExchange.Net.Authentication.ApiCredentials,HyperLiquid.Net.HyperLiquidEnvironment)" /> has been called prior for this user.
+            </summary>
+            <param name="userIdentifier">The identifier for user</param>
+            <param name="credentials">The credentials for the user. Required the first time a client is requested for this user unless <see cref="M:HyperLiquid.Net.Interfaces.Clients.IHyperLiquidUserClientProvider.InitializeUserClient(System.String,CryptoExchange.Net.Authentication.ApiCredentials,HyperLiquid.Net.HyperLiquidEnvironment)" /> has been called prior for this user.</param>
+            <param name="environment">The environment to use</param>
         </member>
         <member name="T:HyperLiquid.Net.Interfaces.Clients.SpotApi.IHyperLiquidRestClientSpotApi">
             <summary>
