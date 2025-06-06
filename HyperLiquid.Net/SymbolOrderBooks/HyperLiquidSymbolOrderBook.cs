@@ -68,6 +68,8 @@ namespace HyperLiquid.Net.SymbolOrderBooks
             if (!sub)
                 return sub;
 
+            Status = OrderBookStatus.Syncing;
+
             var set = await WaitForSetOrderBookAsync(_initialDataTimeout, ct).ConfigureAwait(false);
             if (!set)
             {
@@ -75,6 +77,7 @@ namespace HyperLiquid.Net.SymbolOrderBooks
                 return new CallResult<UpdateSubscription>(set.Error!);
             }
 
+            Status = OrderBookStatus.Synced;
             return sub;
         }
 
