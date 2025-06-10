@@ -345,7 +345,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 if (order.OrderType == OrderType.Limit)
                 {
                     orderParameters.AddString("p", order.Price?.Normalize() ?? 0);
-                    orderParameters.AddString("s", order.Quantity);
+                    orderParameters.AddString("s", order.Quantity.Normalize());
                     orderParameters.Add("r", order.ReduceOnly ?? false);
                     var limitParameters = new ParameterCollection();
                     limitParameters.AddEnum("tif", order.OrderType == OrderType.Market ? TimeInForce.ImmediateOrCancel : order.TimeInForce ?? TimeInForce.GoodTillCanceled);
@@ -357,7 +357,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                     var price = order.Side == OrderSide.Buy ? order.Price * (1 + maxSlippage / 100m) : order.Price * (1 - maxSlippage / 100m);
                     price = ExchangeHelpers.RoundToSignificantDigits(price ?? 0, 5, RoundingType.Closest);
                     orderParameters.AddString("p", price.Value.Normalize());
-                    orderParameters.AddString("s", order.Quantity);
+                    orderParameters.AddString("s", order.Quantity.Normalize());
                     orderParameters.Add("r", order.ReduceOnly ?? false);
                     var limitParameters = new ParameterCollection();
                     limitParameters.AddEnum("tif", order.OrderType == OrderType.Market ? TimeInForce.ImmediateOrCancel : order.TimeInForce ?? TimeInForce.GoodTillCanceled);
@@ -372,7 +372,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                         throw new ArgumentNullException(nameof(order.TpSlType), "Stop order should have a TpSlType");
 
                     orderParameters.AddString("p", order.Price?.Normalize() ?? 0);
-                    orderParameters.AddString("s", order.Quantity);
+                    orderParameters.AddString("s", order.Quantity.Normalize());
                     orderParameters.Add("r", order.ReduceOnly ?? false);
                     var triggerParameters = new ParameterCollection();
                     triggerParameters.Add("isMarket", order.OrderType == OrderType.StopMarket);
