@@ -15,6 +15,9 @@ namespace HyperLiquid.Net
                     if (msg.StartsWith("Order must have minimum value of"))
                         return new ErrorInfo(ErrorType.InvalidQuantity, false, "Order value too low", code);
 
+                    if (msg.StartsWith("Order has invalid size"))
+                        return new ErrorInfo(ErrorType.InvalidQuantity, false, "Order quantity invalid", code);
+
                     if (msg.StartsWith("Price must be divisible by tick size"))
                         return new ErrorInfo(ErrorType.InvalidPrice, false, "Price decimal places invalid", code);
 
@@ -45,6 +48,9 @@ namespace HyperLiquid.Net
                     if (msg.StartsWith("Order would increase open interest while open interest is capped") ||
                         msg.StartsWith("Order would cause position to exceed margin tier limit at current leverage"))
                         return new ErrorInfo(ErrorType.MaxPosition, false, "Max position size exceeded", code);
+
+                    if (msg.StartsWith("Order was never placed, already canceled, or filled"))
+                        return new ErrorInfo(ErrorType.UnknownOrder, false, "Order was not found or in incorrect state", code);
 
                     return new ErrorInfo(ErrorType.Unknown, false, msg, code);
                 }),

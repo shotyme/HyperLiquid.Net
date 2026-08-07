@@ -1,10 +1,5 @@
-﻿using HyperLiquid.Net.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using HyperLiquid.Net.Enums;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace HyperLiquid.Net.Objects.Models
 {
@@ -14,7 +9,7 @@ namespace HyperLiquid.Net.Objects.Models
     public record HyperLiquidUserRole
     {
         /// <summary>
-        /// Role of the user
+        /// ["<c>role</c>"] Role of the user
         /// </summary>
         [JsonPropertyName("role")]
         public UserRole Role { get; set; }

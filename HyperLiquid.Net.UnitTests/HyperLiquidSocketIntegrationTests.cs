@@ -7,13 +7,14 @@ using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using System;
 using System.Threading.Tasks;
+using HyperLiquid.Net.Objects;
 
 namespace HyperLiquid.Net.UnitTests
 {
     [NonParallelizable]
     internal class HyperLiquidSocketIntegrationTests : SocketIntegrationTest<HyperLiquidSocketClient>
     {
-        public override bool Run { get; set; } = false;
+        public override bool Run { get; set; } = true;
 
         public HyperLiquidSocketIntegrationTests()
         {
@@ -28,15 +29,15 @@ namespace HyperLiquid.Net.UnitTests
             return new HyperLiquidSocketClient(Options.Create(new HyperLiquidSocketOptions
             {
                 OutputOriginalData = true,
-                ApiCredentials = Authenticated ? new CryptoExchange.Net.Authentication.ApiCredentials(key, sec) : null
+                ApiCredentials = Authenticated ? new HyperLiquidCredentials(key, sec) : null
             }), loggerFactory);
         }
 
         [Test]
         public async Task TestSubscriptions()
         {
-            await RunAndCheckUpdate<HyperLiquidTicker>((client, updateHandler) => client.SpotApi.SubscribeToUserUpdatesAsync(default , default, default), false, true);
-            await RunAndCheckUpdate<HyperLiquidTicker>((client, updateHandler) => client.SpotApi.SubscribeToSymbolUpdatesAsync("HYPE/USDC", updateHandler, default), true, false);
+            await RunAndCheckUpdate<HyperLiquidTicker>((client, updateHandler) => client.SpotApi.Account.SubscribeToUserUpdatesAsync(default , default, default), false, true);
+            await RunAndCheckUpdate<HyperLiquidTicker>((client, updateHandler) => client.SpotApi.ExchangeData.SubscribeToSymbolUpdatesAsync("HYPE/USDC", updateHandler, default), true, false);
         } 
     }
 }

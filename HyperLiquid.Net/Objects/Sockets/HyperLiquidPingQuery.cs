@@ -1,6 +1,6 @@
 ﻿using CryptoExchange.Net.Sockets;
+using CryptoExchange.Net.Sockets.Default.Routing;
 using System;
-using System.Collections.Generic;
 using HyperLiquid.Net.Objects.Internal;
 
 namespace HyperLiquid.Net.Objects.Sockets
@@ -10,7 +10,7 @@ namespace HyperLiquid.Net.Objects.Sockets
         public HyperLiquidPingQuery() : base(new HyperLiquidPing(), false)
         {
             RequestTimeout = TimeSpan.FromSeconds(5);
-            MessageMatcher = MessageMatcher.Create<HyperLiquidPong>("pong");
+            MessageRouter = MessageRouter.CreateVoid<HyperLiquidPong>("pong");
         }
     }
 }

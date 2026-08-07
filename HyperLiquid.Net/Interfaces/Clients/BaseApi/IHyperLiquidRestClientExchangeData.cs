@@ -4,7 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using CryptoExchange.Net.Objects;
 using HyperLiquid.Net.Enums;
+using HyperLiquid.Net.Interfaces.Clients.SpotApi;
 using HyperLiquid.Net.Objects.Models;
+using HyperLiquid.Net.Utils;
 
 namespace HyperLiquid.Net.Interfaces.Clients.BaseApi
 {
@@ -14,32 +16,50 @@ namespace HyperLiquid.Net.Interfaces.Clients.BaseApi
     public interface IHyperLiquidRestClientExchangeData
     {
         /// <summary>
-        /// Get mid prices for all assets, includes both Spot and Futures symbols
-        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#retrieve-mids-for-all-actively-traded-coins" /></para>
+        /// Get mid prices for all assets, includes both Spot, Futures and Outcomes symbols. <br />
+        /// Names starting with '@' failed to map to a live symbol, potentially due to delisting. <br />
+        /// Names starting with '#' are  HIP-4 outcomes, details can be retrieved with <see cref="HyperLiquidUtils.GetOutcomeInfoAsync(Net.Clients.HyperLiquidRestClient, string)" /> or <see cref="IHyperLiquidRestClientSpotApiExchangeData.GetQuestionsAndOutcomesInfoAsync(CancellationToken)"/>.
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#retrieve-mids-for-all-actively-traded-coins" /><br />
+        /// Endpoint:<br />
+        /// POST /info (type: allMids)
+        /// </para>
         /// </summary>
+        /// <param name="dex">["<c>dex</c>"] Filter by DEX</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<Dictionary<string, decimal>>> GetPricesAsync(CancellationToken ct = default);
+        Task<HttpResult<Dictionary<string, decimal>>> GetPricesAsync(string? dex = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get order book
-        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#l2-book-snapshot" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#l2-book-snapshot" /><br />
+        /// Endpoint:<br />
+        /// POST /info (type: l2Book)
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
-        /// <param name="numberSignificantFigures">Asset name</param>
-        /// <param name="mantissa">Mantissa</param>
+        /// <param name="numberSignificantFigures">["<c>nSigFigs</c>"] Asset name</param>
+        /// <param name="mantissa">["<c>mantissa</c>"] Mantissa</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<HyperLiquidOrderBook>> GetOrderBookAsync(string symbol, int? numberSignificantFigures = null, int? mantissa = null, CancellationToken ct = default);
+        Task<HttpResult<HyperLiquidOrderBook>> GetOrderBookAsync(string symbol, int? numberSignificantFigures = null, int? mantissa = null, CancellationToken ct = default);
 
         /// <summary>
         /// Get klines/candlestick data
-        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#candle-snapshot" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#candle-snapshot" /><br />
+        /// Endpoint:<br />
+        /// POST /info (type: candleSnapshot)
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol, for example "HYPE/USDC" for spot, or "ETH" for futures</param>
-        /// <param name="interval">Kline interval</param>
-        /// <param name="startTime">Data start time</param>
-        /// <param name="endTime">Data end time</param>
+        /// <param name="interval">["<c>interval</c>"] Kline interval</param>
+        /// <param name="startTime">["<c>startTime</c>"] Data start time</param>
+        /// <param name="endTime">["<c>endTime</c>"] Data end time</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult<HyperLiquidKline[]>> GetKlinesAsync(string symbol, KlineInterval interval, DateTime startTime, DateTime endTime, CancellationToken ct = default);
+        Task<HttpResult<HyperLiquidKline[]>> GetKlinesAsync(string symbol, KlineInterval interval, DateTime startTime, DateTime endTime, CancellationToken ct = default);
 
     }
 }

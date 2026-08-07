@@ -1,11 +1,6 @@
 ﻿using CryptoExchange.Net.Attributes;
 using CryptoExchange.Net.Converters.SystemTextJson;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace HyperLiquid.Net.Enums
 {
@@ -16,27 +11,27 @@ namespace HyperLiquid.Net.Enums
     public enum UserRole
     {
         /// <summary>
-        /// Missing
+        /// ["<c>missing</c>"] Missing
         /// </summary>
         [Map("missing")]
         Missing,
         /// <summary>
-        /// User
+        /// ["<c>user</c>"] User
         /// </summary>
         [Map("user")]
         User,
         /// <summary>
-        /// Agent
+        /// ["<c>agent</c>"] Agent
         /// </summary>
         [Map("agent")]
         Agent,
         /// <summary>
-        /// Vault
+        /// ["<c>vault</c>"] Vault
         /// </summary>
         [Map("vault")]
         Vault,
         /// <summary>
-        /// Sub account
+        /// ["<c>subAccount</c>"] Sub account
         /// </summary>
         [Map("subAccount")]
         SubAccount

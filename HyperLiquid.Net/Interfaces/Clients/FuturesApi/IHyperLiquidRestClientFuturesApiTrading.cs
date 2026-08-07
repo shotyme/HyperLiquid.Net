@@ -15,15 +15,20 @@ namespace HyperLiquid.Net.Interfaces.Clients.FuturesApi
     {
         /// <summary>
         /// Set leverage for a symbol
-        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#update-leverage" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#update-leverage" /><br />
+        /// Endpoint:<br />
+        /// POST /exchange (type: updateLeverage)
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol name, for example "ETH"</param>
-        /// <param name="leverage">New leverage</param>
+        /// <param name="leverage">["<c>leverage</c>"] New leverage</param>
         /// <param name="marginType">Margin type</param>
-        /// <param name="vaultAddress">Vault address</param>
-        /// <param name="expireAfter">Timestamp after which the request expires and is rejected by the server</param>
+        /// <param name="vaultAddress">["<c>vaultAddress</c>"] Vault address</param>
+        /// <param name="expireAfter">["<c>expiresAfter</c>"] Timestamp after which the request expires and is rejected by the server</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult> SetLeverageAsync(
+        Task<HttpResult> SetLeverageAsync(
             string symbol,
             int leverage,
             MarginType marginType,
@@ -33,14 +38,19 @@ namespace HyperLiquid.Net.Interfaces.Clients.FuturesApi
 
         /// <summary>
         /// Add or remove margin from isolated position
-        /// <para><a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#update-isolated-margin" /></para>
+        /// <para>
+        /// Docs:<br />
+        /// <a href="https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/exchange-endpoint#update-isolated-margin" /><br />
+        /// Endpoint:<br />
+        /// POST /exchange (type: updateIsolatedMargin)
+        /// </para>
         /// </summary>
         /// <param name="symbol">Symbol name, for example "ETH"</param>
-        /// <param name="updateValue">Change value</param>
-        /// <param name="vaultAddress">Vault address</param>
-        /// <param name="expireAfter">Timestamp after which the request expires and is rejected by the server</param>
+        /// <param name="updateValue">["<c>ntli</c>"] Change value</param>
+        /// <param name="vaultAddress">["<c>vaultAddress</c>"] Vault address</param>
+        /// <param name="expireAfter">["<c>expiresAfter</c>"] Timestamp after which the request expires and is rejected by the server</param>
         /// <param name="ct">Cancellation token</param>
-        Task<WebCallResult> UpdateIsolatedMarginAsync(
+        Task<HttpResult> UpdateIsolatedMarginAsync(
             string symbol,
             decimal updateValue,
             string? vaultAddress = null, 

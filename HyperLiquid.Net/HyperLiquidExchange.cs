@@ -5,12 +5,12 @@ using CryptoExchange.Net.RateLimiting.Interfaces;
 using CryptoExchange.Net.RateLimiting;
 using System;
 using CryptoExchange.Net.SharedApis;
-using System.Text.Json.Serialization;
 using HyperLiquid.Net.Converters;
 using CryptoExchange.Net.Converters;
 using System.Collections.Generic;
 using System.Text.Json;
 using CryptoExchange.Net.Converters.SystemTextJson;
+using System.Threading;
 
 namespace HyperLiquid.Net
 {
@@ -19,6 +19,20 @@ namespace HyperLiquid.Net
     /// </summary>
     public static class HyperLiquidExchange
     {
+        /// <summary>
+        /// Platform metadata
+        /// </summary>
+        public static PlatformInfo Metadata { get; } = new PlatformInfo(
+                "HyperLiquid",
+                "HyperLiquid",
+                "https://raw.githubusercontent.com/JKorf/HyperLiquid.Net/master/HyperLiquid.Net/Icon/icon.png",
+                "https://app.hyperliquid.xyz/",
+                ["https://hyperliquid.gitbook.io/hyperliquid-docs"],
+                PlatformType.CryptoCurrencyExchange,
+                CentralizationType.Decentralized,
+                HyperLiquidEnvironment.All
+                );
+
         /// <summary>
         /// Exchange name
         /// </summary>
@@ -71,7 +85,27 @@ namespace HyperLiquid.Net
         /// </summary>
         public static Func<string, string, Dictionary<string, object>>? SignRequestDelegate { get; set; }
 
+        private static readonly AsyncLocal<Func<string, IEnumerable<(string Name, string Type, object Value)>, IEnumerable<(string Name, string Type, object Value)>, Dictionary<string, object>>?> _asyncTypedDataSignRequestDelegate = new();
+        /// <summary>
+        /// Async-context-scoped structured typed data signing delegate. Takes priority over AsyncSignRequestDelegate and SignRequestDelegate when set.
+        /// Receives the EIP-712 typed data components (primaryType, domainFields, messageFields) before they are encoded or hashed,
+        /// enabling external signers (e.g. MPC/HSM providers such as Turnkey) to reconstruct the full typed data structure
+        /// and satisfy policy engine requirements that inspect decoded EIP-712 fields (e.g. Turnkey's eth.eip_712.* conditions).
+        /// Scoped to the current async execution context via AsyncLocal, making it thread-safe for concurrent calls.
+        /// Parameters: primaryType, domainFields (name/type/value tuples), messageFields (name/type/value tuples).
+        /// </summary>
+        public static Func<string, IEnumerable<(string Name, string Type, object Value)>, IEnumerable<(string Name, string Type, object Value)>, Dictionary<string, object>>? AsyncTypedDataSignRequestDelegate
+        {
+            get => _asyncTypedDataSignRequestDelegate.Value;
+            set => _asyncTypedDataSignRequestDelegate.Value = value;
+        }
+
         internal static JsonSerializerOptions _serializerContext = SerializerOptions.WithConverters(JsonSerializerContextCache.GetOrCreate<HyperLiquidSourceGenerationContext>());
+        internal static readonly ParameterSerializationSettings _parameterSerializationSettings = new ParameterSerializationSettings()
+        {
+            Decimal = DecimalSerialization.String,
+            Sort = false
+        };
 
         /// <summary>
         /// Format a base and quote asset to an HyperLiquid recognized symbol 
@@ -98,7 +132,7 @@ namespace HyperLiquid.Net
         /// <summary>
         /// Rate limiter configuration for the HyperLiquid API
         /// </summary>
-        public static HyperLiquidRateLimiters RateLimiter { get; } = new HyperLiquidRateLimiters();
+        public static HyperLiquidRateLimiters RateLimiter { get; set; } = new HyperLiquidRateLimiters();
     }
 
     /// <summary>
@@ -117,13 +151,19 @@ namespace HyperLiquid.Net
         public event Action<RateLimitUpdateEvent> RateLimitUpdated;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        internal HyperLiquidRateLimiters()
+        /// <summary>
+        /// ctor
+        /// </summary>
+        public HyperLiquidRateLimiters()
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             Initialize();
         }
 
-        private void Initialize()
+        /// <summary>
+        /// Initialize the rate limits
+        /// </summary>
+        protected virtual void Initialize()
         {
             HyperLiquidRest = new RateLimitGate("HyperLiquid REST")
                 .AddGuard(new RateLimitGuard(RateLimitGuard.PerHost, [], 1200, TimeSpan.FromSeconds(60), RateLimitWindowType.Sliding)); // Limit of 1200 weight per minute

@@ -1,17 +1,9 @@
-using CryptoExchange.Net.Authentication;
 using CryptoExchange.Net.Objects;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using HyperLiquid.Net.Objects.Options;
-using CryptoExchange.Net.Converters.SystemTextJson;
-using CryptoExchange.Net.Interfaces;
-using CryptoExchange.Net.SharedApis;
-using CryptoExchange.Net.Converters.MessageParsing;
-using HyperLiquid.Net.Objects.Models;
 using HyperLiquid.Net.Clients.BaseApi;
 using HyperLiquid.Net.Interfaces.Clients.FuturesApi;
 using HyperLiquid.Net.Interfaces.Clients;
@@ -22,8 +14,6 @@ namespace HyperLiquid.Net.Clients.FuturesApi
     internal partial class HyperLiquidRestClientFuturesApi : HyperLiquidRestClientApi, IHyperLiquidRestClientFuturesApi
     {
         #region fields 
-        internal static TimeSyncState _timeSyncState = new TimeSyncState("Futures Api");
-
         internal new HyperLiquidRestOptions ClientOptions => (HyperLiquidRestOptions)base.ClientOptions;
         #endregion
 
@@ -37,24 +27,21 @@ namespace HyperLiquid.Net.Clients.FuturesApi
         #endregion
 
         #region constructor/destructor
-        internal HyperLiquidRestClientFuturesApi(ILogger logger, IHyperLiquidRestClient baseClient, HttpClient? httpClient, HyperLiquidRestOptions options)
-            : base(logger, baseClient, httpClient, options, options.FuturesOptions)
+        internal HyperLiquidRestClientFuturesApi(
+            ILoggerFactory? loggerFactory,
+            HyperLiquidRestClient baseClient,
+            HttpClient? httpClient,
+            HyperLiquidRestOptions options)
+            : base(loggerFactory, baseClient, httpClient, options, options.FuturesOptions)
         {
             Account = new HyperLiquidRestClientFuturesApiAccount(this);
-            ExchangeData = new HyperLiquidRestClientFuturesApiExchangeData(logger, this);
-            Trading = new HyperLiquidRestClientFuturesApiTrading(logger, this);
+            ExchangeData = new HyperLiquidRestClientFuturesApiExchangeData(_logger, this);
+            Trading = new HyperLiquidRestClientFuturesApiTrading(_logger, this);
         }
         #endregion
 
-
         /// <inheritdoc />
-        protected override Task<WebCallResult<DateTime>> GetServerTimestampAsync() => throw new NotImplementedException();
-
-        /// <inheritdoc />
-        public override TimeSyncInfo? GetTimeSyncInfo() => null;
-
-        /// <inheritdoc />
-        public override TimeSpan? GetTimeOffset() => _timeSyncState.TimeOffset;
+        protected override Task<HttpResult<DateTime>> GetServerTimestampAsync() => throw new NotImplementedException();
 
         /// <inheritdoc />
         public IHyperLiquidRestClientFuturesApiShared SharedClient => this;

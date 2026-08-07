@@ -1,0 +1,101 @@
+﻿using CryptoExchange.Net.Converters.MessageParsing.DynamicConverters;
+using CryptoExchange.Net.Converters.SystemTextJson.MessageHandlers;
+using HyperLiquid.Net.Objects.Internal;
+using HyperLiquid.Net.Objects.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+
+namespace HyperLiquid.Net.Clients.MessageHandlers
+{
+    internal class HyperLiquidSocketMessageHandler : JsonSocketMessageHandler
+    {
+        private static readonly HashSet<string> _errorJsonMessages = [
+            "Invalid subscription ",
+            "Already subscribed: ",
+            "Already unsubscribed: ",
+            ];
+
+        public override JsonSerializerOptions Options { get; } = HyperLiquidExchange._serializerContext;
+
+        public HyperLiquidSocketMessageHandler()
+        {
+            AddTopicMapping<HyperLiquidSocketUpdate<HyperLiquidSubscribeRequest>>(x =>
+            {
+                x.Data.Subscription.TryGetValue("type", out var type);
+                x.Data.Subscription.TryGetValue("coin", out var coin);
+                x.Data.Subscription.TryGetValue("interval", out var interval);
+                x.Data.Subscription.TryGetValue("user", out var user);
+                x.Data.Subscription.TryGetValue("nSigFigs", out var nSigFigs);
+                x.Data.Subscription.TryGetValue("mantissa", out var mantissa);
+                x.Data.Subscription.TryGetValue("dex", out var dex);
+                return type?.ToString() + coin?.ToString() + interval?.ToString() + user?.ToString() + nSigFigs + mantissa + dex;
+            });
+            AddTopicMapping<HyperLiquidSocketUpdate<string>>(x =>
+            {
+                // error message format: "Invalid subscription {\"type\":\"candle\",\"interval\":\"1d\",\"coin\":\"TST2\"}"
+
+                if (x.Channel != "error")
+                    return null;
+
+                // Error mapping
+                if (!_errorJsonMessages.Any(err => x.Data.StartsWith(err)))
+                    return "error";
+
+                var json = x.Data;
+                foreach (var item in _errorJsonMessages)
+                    json = json.Replace(item, "");
+
+                JsonDocument jsonDoc;
+                try
+                {
+                    jsonDoc = JsonDocument.Parse(json);
+                }
+                catch (Exception)
+                {
+                    return "error";
+                }
+
+                var type = jsonDoc.RootElement.GetProperty("type").GetString();
+                var coin = jsonDoc.RootElement.TryGetProperty("coin", out var coinProp) ? coinProp.GetString() : null;
+                var interval = jsonDoc.RootElement.TryGetProperty("interval", out var intervalProp) ? intervalProp.GetString() : null;
+                var user = jsonDoc.RootElement.TryGetProperty("user", out var userProp) ? userProp.GetString() : null;
+                return type?.ToString() + coin?.ToString() + interval?.ToString() + user?.ToString();
+            });
+
+            AddTopicMapping<HyperLiquidSocketUpdate<HyperLiquidKline>>(x => x.Data.Symbol + x.Data.Interval);
+            AddTopicMapping<HyperLiquidSocketUpdate<HyperLiquidOrderBook>>(x => x.Data.Symbol);
+            AddTopicMapping<HyperLiquidSocketUpdate<HyperLiquidTrade[]>>(x => x.Data.First().Symbol);
+            AddTopicMapping<HyperLiquidSocketUpdate<HyperLiquidFuturesTickerUpdate>>(x => x.Data.Symbol);
+            AddTopicMapping<HyperLiquidSocketUpdate<HyperLiquidFuturesUserSymbolUpdate>>(x => x.Data.Symbol);
+            AddTopicMapping<HyperLiquidSocketUpdate<HyperLiquidTickerUpdate>>(x => x.Data.Symbol);
+            AddTopicMapping<HyperLiquidSocketUpdate<HyperLiquidBookTicker>>(x => x.Data.Symbol);
+
+            AddTopicMapping<HyperLiquidSocketUpdate<HyperLiquidTwapOrderUpdate>>(x => x.Data.User.ToLowerInvariant());
+            AddTopicMapping<HyperLiquidSocketUpdate<HyperLiquidTwapTradeUpdate>>(x => x.Data.User.ToLowerInvariant());
+            AddTopicMapping<HyperLiquidSocketUpdate<HyperLiquidUserTradeUpdate>>(x => x.Data.User.ToLowerInvariant());
+            AddTopicMapping<HyperLiquidSocketUpdate<HyperLiquidOpenOrderUpdate>>(x => x.Data.User.ToLowerInvariant());
+            AddTopicMapping<HyperLiquidSocketUpdate<HyperLiquidAllDexPositionUpdate>>(x => x.Data.User.ToLowerInvariant());
+            AddTopicMapping<HyperLiquidSocketUpdate<HyperLiquidPositionUpdate>>(x => x.Data.User.ToLowerInvariant());
+
+        }
+
+        protected override MessageTypeDefinition[] TypeEvaluators { get; } = [
+             new MessageTypeDefinition {
+                Fields = [
+                    new PropertyFieldReference("channel"),
+                    new PropertyFieldReference("id") { Depth = 2 }
+                ],
+                TypeIdentifierCallback = x => $"{x.FieldValue("id")}"
+            },
+            new MessageTypeDefinition {
+                Fields = [
+                    new PropertyFieldReference("channel"),
+                ],
+                TypeIdentifierCallback = x => $"{x.FieldValue("channel")}"
+            },
+             
+        ];
+    }
+}

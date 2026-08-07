@@ -1,5 +1,4 @@
 using CryptoExchange.Net.Converters.SystemTextJson;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace HyperLiquid.Net.Objects.Models
@@ -11,15 +10,20 @@ namespace HyperLiquid.Net.Objects.Models
     public record HyperLiquidFuturesExchangeInfo
     {
         /// <summary>
-        /// Symbols
+        /// ["<c>universe</c>"] Symbols
         /// </summary>
         [JsonPropertyName("universe")]
         public HyperLiquidFuturesSymbol[] Symbols { get; set; } = [];
         /// <summary>
-        /// Margin tables
+        /// ["<c>marginTables</c>"] Margin tables
         /// </summary>
         [JsonPropertyName("marginTables")]
         public HyperLiquidMarginTable[] MarginTables { get; set; } = [];
+        /// <summary>
+        /// ["<c>collateralToken</c>"] Collateral token
+        /// </summary>
+        [JsonPropertyName("collateralToken")]
+        public int CollateralToken { get; set; }
     }
 
     /// <summary>
@@ -29,32 +33,32 @@ namespace HyperLiquid.Net.Objects.Models
     public record HyperLiquidFuturesSymbol
     {
         /// <summary>
-        /// Symbol name
+        /// ["<c>name</c>"] Symbol name
         /// </summary>
         [JsonPropertyName("name")]
         public string Name { get; set; } = string.Empty;
         /// <summary>
-        /// Decimal places for quantities
+        /// ["<c>szDecimals</c>"] Decimal places for quantities
         /// </summary>
         [JsonPropertyName("szDecimals")]
         public int QuantityDecimals { get; set; }
         /// <summary>
-        /// Max leverage
+        /// ["<c>maxLeverage</c>"] Max leverage
         /// </summary>
         [JsonPropertyName("maxLeverage")]
         public int MaxLeverage { get; set; }
         /// <summary>
-        /// Only isolated margin
+        /// ["<c>onlyIsolated</c>"] Only isolated margin
         /// </summary>
         [JsonPropertyName("onlyIsolated")]
         public bool OnlyIsolated { get; set; }
         /// <summary>
-        /// Is delisted
+        /// ["<c>isDelisted</c>"] Is delisted
         /// </summary>
         [JsonPropertyName("isDelisted")]
         public bool IsDelisted { get; set; }
         /// <summary>
-        /// Margin table id
+        /// ["<c>marginTableId</c>"] Margin table id
         /// </summary>
         [JsonPropertyName("marginTableId")]
         public int MarginTableId { get; set; }

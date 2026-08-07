@@ -1,4 +1,6 @@
+using CryptoExchange.Net;
 using CryptoExchange.Net.Converters.SystemTextJson;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -16,7 +18,7 @@ namespace HyperLiquid.Net.Objects.Models
         private HyperLiquidSymbol[]? _symbols;
 
         /// <summary>
-        /// Assets
+        /// ["<c>tokens</c>"] Assets
         /// </summary>
         [JsonPropertyName("tokens")]
         public HyperLiquidAsset[] Assets { get; set; } = [];
@@ -31,10 +33,23 @@ namespace HyperLiquid.Net.Objects.Models
             {
                 if (_symbols == null)
                 {
-                    _symbols = SymbolsInt.Select(x => {
-                        var baseAsset = Assets.ElementAt(x.BaseAssetIndex);
-                        var quoteAsset = Assets.ElementAt(x.QuoteAssetIndex);
-                        return new HyperLiquidSymbol
+                    // Build a dictionary of assets by index for quick lookup
+                    var assetsByIndex = new Dictionary<int, HyperLiquidAsset>(Assets.Length);
+                    foreach (var asset in Assets)
+                        assetsByIndex[asset.Index] = asset;
+
+                    var symbols = new List<HyperLiquidSymbol>(SymbolsInt.Length);
+                    foreach (var x in SymbolsInt)
+                    {
+                        if (!assetsByIndex.TryGetValue(x.BaseAssetIndex, out var baseAsset)
+                            || !assetsByIndex.TryGetValue(x.QuoteAssetIndex, out var quoteAsset))
+                        {
+                            LibraryHelpers.StaticLogger?.Log(LogLevel.Warning, "Failed to find assets {BaseAssetIndex}, {QuoteAssetIndex} for symbol {SymbolIndex}",
+                                x.BaseAssetIndex, x.QuoteAssetIndex, x.Index);
+                            continue;
+                        }
+
+                        symbols.Add(new HyperLiquidSymbol
                         {
                             Index = x.Index,
                             IsCanonical = x.IsCanonical,
@@ -42,9 +57,10 @@ namespace HyperLiquid.Net.Objects.Models
                             ExchangeName = x.Name,
                             BaseAsset = baseAsset,
                             QuoteAsset = quoteAsset,
-                        };
-                        }
-                    ).ToArray();
+                        });
+                    }
+
+                    _symbols = symbols.ToArray();
                 }
 
                 return _symbols;
@@ -91,45 +107,50 @@ namespace HyperLiquid.Net.Objects.Models
     public record HyperLiquidAsset
     {
         /// <summary>
-        /// Asset name
+        /// ["<c>name</c>"] Asset name
         /// </summary>
         [JsonPropertyName("name")]
         public string Name { get; set; } = string.Empty;
         /// <summary>
-        /// Decimal places for quantities
+        /// ["<c>szDecimals</c>"] Decimal places for quantities
         /// </summary>
         [JsonPropertyName("szDecimals")]
         public int QuantityDecimals { get; set; }
         /// <summary>
-        /// Decimal prices for prices
+        /// ["<c>weiDecimals</c>"] Decimal prices for prices
         /// </summary>
         [JsonPropertyName("weiDecimals")]
         public int PriceDecimals { get; set; }
         /// <summary>
-        /// Asset index
+        /// ["<c>index</c>"] Asset index
         /// </summary>
         [JsonPropertyName("index")]
         public int Index { get; set; }
         /// <summary>
-        /// Asset id
+        /// ["<c>tokenId</c>"] Asset id
         /// </summary>
         [JsonPropertyName("tokenId")]
         public string AssetId { get; set; } = string.Empty;
         /// <summary>
-        /// Is canonical
+        /// ["<c>isCanonical</c>"] Is canonical
         /// </summary>
         [JsonPropertyName("isCanonical")]
         public bool IsCanonical { get; set; }
         /// <summary>
-        /// EVM contract
+        /// ["<c>evmContract</c>"] EVM contract
         /// </summary>
         [JsonPropertyName("evmContract")]
         public HyperLiquidEvmContract? EvmContract { get; set; }
         /// <summary>
-        /// Full asset name
+        /// ["<c>fullName</c>"] Full asset name
         /// </summary>
         [JsonPropertyName("fullName")]
         public string FullName { get; set; } = string.Empty;
+        /// <summary>
+        /// ["<c>deployerTradingFeeShare</c>"] Deployer trading fee share
+        /// </summary>
+        [JsonPropertyName("deployerTradingFeeShare")]
+        public decimal DeployerTradingFeeShare { get; set; } 
     }
 
     /// <summary>
@@ -138,12 +159,12 @@ namespace HyperLiquid.Net.Objects.Models
     public record HyperLiquidEvmContract
     {
         /// <summary>
-        /// Address
+        /// ["<c>address</c>"] Address
         /// </summary>
         [JsonPropertyName("address")]
         public string Address { get; set; } = string.Empty;
         /// <summary>
-        /// Extra decimals
+        /// ["<c>evm_extra_wei_decimals</c>"] Extra decimals
         /// </summary>
         [JsonPropertyName("evm_extra_wei_decimals")]
         public int? EvmExtraWeiDecimals { get; set; }

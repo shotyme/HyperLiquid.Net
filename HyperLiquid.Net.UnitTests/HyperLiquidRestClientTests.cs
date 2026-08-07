@@ -10,6 +10,7 @@ using Nethereum.Signer;
 using System.Net.Sockets;
 using Nethereum.Hex.HexConvertors.Extensions;
 using Nethereum.Signer.Crypto;
+using HyperLiquid.Net.Objects;
 
 namespace HyperLiquid.Net.UnitTests
 {
@@ -20,8 +21,8 @@ namespace HyperLiquid.Net.UnitTests
         public void CheckNonDeterministSignatureExample1()
         {
             const string hash = "FACE28327892D757909E0DB4B499EC67D51AD9127BFBC53B96CCB173155D7B94";
-            const string secret = "0xbb";
-            var authProvider = new HyperLiquidAuthenticationProvider(new ApiCredentials("0xaa", secret));
+            const string secret = "0x00000000000000000000000000000000000000000000000000000000000000bb";
+            var authProvider = new HyperLiquidAuthenticationProvider(new HyperLiquidCredentials("0xaa", secret));
             var client = (RestApiClient)new HyperLiquidRestClient().SpotApi;
 
             CryptoExchange.Net.Testing.TestHelpers.CheckSignature(
@@ -65,9 +66,9 @@ namespace HyperLiquid.Net.UnitTests
                     return "Good";
                 },
                 "Good",
-                new Dictionary<string, object>
+                new Parameters(HyperLiquidExchange._parameterSerializationSettings)
                 {
-                    { "action", new ParameterCollection
+                    { "action", new Parameters(HyperLiquidExchange._parameterSerializationSettings)
                         {
                             { "type", "order" },
                             { "orders", new [] {
@@ -80,16 +81,18 @@ namespace HyperLiquid.Net.UnitTests
                         }
                     },
                 },
-                DateTimeConverter.ParseFromDouble(1499827319559),
-                true,
+                DateTimeConverter.ParseFromDouble(1499827320559),
                 false);
         }
 
         [Test]
         public void CheckInterfaces()
         {
-            CryptoExchange.Net.Testing.TestHelpers.CheckForMissingRestInterfaces<HyperLiquidRestClient>(["IHyperLiquidRestClientAccount", "IHyperLiquidRestClientExchangeData", "IHyperLiquidRestClientTrading"]);
-            CryptoExchange.Net.Testing.TestHelpers.CheckForMissingSocketInterfaces<HyperLiquidSocketClient>(["IHyperLiquidSocketClientApi"]);
+            CryptoExchange.Net.Testing.TestHelpers.CheckForMissingRestInterfaces<HyperLiquidRestClient>(
+                ["IHyperLiquidRestClientAccount", "IHyperLiquidRestClientExchangeData", "IHyperLiquidRestClientTrading"]);
+            // TODO marks intentionally missing interface, need to be able to specify exceptions
+            //CryptoExchange.Net.Testing.TestHelpers.CheckForMissingSocketInterfaces<HyperLiquidSocketClient>(
+            //    ["IHyperLiquidSocketClientApiAccount", "IHyperLiquidSocketClientApiExchangeData", "IHyperLiquidSocketClientApiTrading"]);
         }
     }
 }

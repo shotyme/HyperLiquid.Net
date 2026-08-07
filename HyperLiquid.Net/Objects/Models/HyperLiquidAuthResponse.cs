@@ -1,20 +1,21 @@
-﻿using System.Text.Json.Serialization;
+﻿using HyperLiquid.Net.Converters;
+using System.Text.Json.Serialization;
 
 namespace HyperLiquid.Net.Objects.Models
 {
-    internal class HyperLiquidResponse
+    internal record HyperLiquidResponse
     {
         [JsonPropertyName("status")]
         public string Status { get; set; } = string.Empty;
     }
 
-    internal class HyperLiquidResponse<T> : HyperLiquidResponse
+    internal record HyperLiquidResponse<T> : HyperLiquidResponse
     {
         [JsonPropertyName("response")]
         public HyperLiquidAuthResponse<T>? Data { get; set; }
     }
 
-    internal class HyperLiquidAuthResponse<T>
+    internal record HyperLiquidAuthResponse<T>
     {
         [JsonPropertyName("type")]
         public string Type { get; set; } = string.Empty;
@@ -22,7 +23,8 @@ namespace HyperLiquid.Net.Objects.Models
         public T Data { get; set; } = default!;
     }
 
-    internal class HyperLiquidDefault
+    [JsonConverter(typeof(HyperLiquidDefaultConverter))]
+    internal record HyperLiquidDefault
     {
         [JsonPropertyName("type")]
         public string Type { get; set; } = string.Empty;

@@ -1,12 +1,12 @@
 using CryptoExchange.Net.Objects;
-using CryptoExchange.Net.Objects.Sockets;
 using CryptoExchange.Net.Sockets;
-using System.Collections.Generic;
 using HyperLiquid.Net.Objects.Internal;
 using System;
 using CryptoExchange.Net.Interfaces;
 using CryptoExchange.Net.Converters.MessageParsing;
 using CryptoExchange.Net.Clients;
+using CryptoExchange.Net.Sockets.Default;
+using CryptoExchange.Net.Sockets.Default.Routing;
 
 namespace HyperLiquid.Net.Objects.Sockets
 {
@@ -15,25 +15,35 @@ namespace HyperLiquid.Net.Objects.Sockets
         private string? _errorString;
         private readonly SocketApiClient _client;
 
-        public HyperLiquidQuery(SocketApiClient client, HyperLiquidSocketRequest request, string listenId, string errorListenId, bool authenticated, int weight = 1) : base(request, authenticated, weight)
+        public HyperLiquidQuery(
+            SocketApiClient client,
+            HyperLiquidSocketRequest request,
+            string listenId,
+            bool authenticated, 
+            int weight = 1) : base(request, authenticated, weight)
         {
             _client = client;
-            MessageMatcher = MessageMatcher.Create<HyperLiquidSocketUpdate<T>>([listenId, errorListenId], HandleMessage);
+            MessageRouter = MessageRouter.Create([
+                MessageRoute.CreateForQuery<HyperLiquidSocketUpdate<T>>("subscriptionResponse", listenId, HandleMessage),
+                MessageRoute.CreateForQuery<HyperLiquidSocketUpdate<string>, HyperLiquidSocketUpdate<T>>("error", listenId, HandleError)
+                ]);
         }
 
-        public override CallResult<object> Deserialize(IMessageAccessor message, Type type)
+        public CallResult<HyperLiquidSocketUpdate<T>> HandleError(SocketConnection connection, DateTime receiveTime, string? originalData, HyperLiquidSocketUpdate<string> message)
         {
-            if (message.GetValue<string>(MessagePath.Get().Property("channel"))?.Equals("error") == true)
+            var error = message.Data;
+
+            if (error.StartsWith("Already subscribed:")
+             || error.StartsWith("Already unsubscribed"))
             {
-                // Error is set, the actual model doesn't matter
-                _errorString = message.GetValue<string>(MessagePath.Get().Property("data"));
-                return new CallResult<object>(new HyperLiquidSocketUpdate<T>());
+                // Allow duplicate subscriptions
+                return CallResult.Ok(new HyperLiquidSocketUpdate<T> { Channel = message.Channel }, originalData);
             }
 
-            return base.Deserialize(message, type);
+            return CallResult<HyperLiquidSocketUpdate<T>>.Fail(new ServerError(_client.GetErrorInfo("Subscription", error)), originalData);
         }
 
-        public CallResult<HyperLiquidSocketUpdate<T>> HandleMessage(SocketConnection connection, DataEvent<HyperLiquidSocketUpdate<T>> message)
+        public CallResult<HyperLiquidSocketUpdate<T>> HandleMessage(SocketConnection connection, DateTime receiveTime, string? originalData, HyperLiquidSocketUpdate<T> message)
         {
             if (_errorString != null 
                 && !_errorString.StartsWith("Already subscribed:") // Allow duplicate subscriptions
@@ -41,10 +51,10 @@ namespace HyperLiquid.Net.Objects.Sockets
             {
                 var err = _errorString;
                 _errorString = null;
-                return message.ToCallResult<HyperLiquidSocketUpdate<T>>(new ServerError(_client.GetErrorInfo("Subscription", err)));
+                return CallResult.Fail<HyperLiquidSocketUpdate<T>>(new ServerError(_client.GetErrorInfo("Subscription", err)), originalData);
             }
 
-            return message.ToCallResult();
+            return CallResult.Ok(message, originalData);
         }
     }
 }
