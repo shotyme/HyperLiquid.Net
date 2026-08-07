@@ -26,14 +26,14 @@ namespace HyperLiquid.Net.Objects.Options
         }
 
         /// <summary>
-        /// The builder fee percentage to apply to orders. This refers to a fee percentage being paid to the developer to support development. Defaults to 1bps/0.01%, but can be set to 0/null. Value can be between 0.001% and 0.1%.
+        /// The builder fee percentage to apply to orders. Disabled by default in this fork; set together with <see cref="BuilderAddress"/> to collect the fee. Value can be between 0.001% and 0.1%.
         /// </summary>
-        public decimal? BuilderFeePercentage { get; set; } = 0.01m;
+        public decimal? BuilderFeePercentage { get; set; }
 
         /// <summary>
         /// Address of the builder
         /// </summary>
-        public string BuilderAddress { get; set; } = "0x64134a9577A857BcC5dAfa42E1647E1439e5F8E7".ToLower();
+        public string BuilderAddress { get; set; } = string.Empty;
 
         /// <summary>
         /// If set requests will only be accepted by the server if they're received within (RequestTime + ExpiresAfter) timespan
