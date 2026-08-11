@@ -44,6 +44,10 @@ namespace HyperLiquid.Net.Utils
                 // No credentials provided, no need to check builder fee
                 return CallResult.Ok();
 
+            if (client.ClientOptions.BuilderFeeApproved)
+                // The caller manages the approval itself
+                return CallResult.Ok();
+
             var envName = client.ClientOptions.Environment.Name;
             if (envName.Equals("UnitTest", StringComparison.Ordinal))
                 return CallResult.Ok();
@@ -64,6 +68,10 @@ namespace HyperLiquid.Net.Utils
         {
             if (!client.SpotApi.Authenticated)
                 // No credentials provided, no need to check builder fee
+                return CallResult.Ok();
+
+            if (client.ClientOptions.BuilderFeeApproved)
+                // The caller manages the approval itself
                 return CallResult.Ok();
 
             var envName = client.ClientOptions.Environment.Name;

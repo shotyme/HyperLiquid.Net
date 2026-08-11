@@ -36,6 +36,13 @@ namespace HyperLiquid.Net.Objects.Options
         public string BuilderAddress { get; set; } = string.Empty;
 
         /// <summary>
+        /// Set this when the caller manages the builder fee approval itself, for example because the approval was signed by the master wallet
+        /// outside of this library. The client then skips its own approval check and attaches <see cref="BuilderFeePercentage"/> to orders right away.
+        /// Note that the exchange rejects an order whose builder fee exceeds the approved rate, so only set this for an approval you have verified.
+        /// </summary>
+        public bool BuilderFeeApproved { get; set; }
+
+        /// <summary>
         /// If set requests will only be accepted by the server if they're received within (RequestTime + ExpiresAfter) timespan
         /// </summary>
         public TimeSpan? ExpiresAfter { get; set; }
@@ -54,6 +61,7 @@ namespace HyperLiquid.Net.Objects.Options
             targetOptions = base.Set<HyperLiquidRestOptions>(targetOptions);
             targetOptions.BuilderFeePercentage = BuilderFeePercentage;
             targetOptions.BuilderAddress = BuilderAddress;
+            targetOptions.BuilderFeeApproved = BuilderFeeApproved;
             targetOptions.ExpiresAfter = ExpiresAfter;
             targetOptions.SpotOptions = SpotOptions.Set(targetOptions.SpotOptions);
             targetOptions.FuturesOptions = FuturesOptions.Set(targetOptions.FuturesOptions);
