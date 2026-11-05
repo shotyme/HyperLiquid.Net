@@ -184,6 +184,7 @@ namespace HyperLiquid.Net.Clients.SpotApi
             if (status == Enums.OrderStatus.Open) return SharedOrderStatus.Open;
             if (status == Enums.OrderStatus.Filled) return SharedOrderStatus.Filled;
             if (status == Enums.OrderStatus.Canceled
+                || status == Enums.OrderStatus.ReduceOnlyCanceled
                 || status == Enums.OrderStatus.Rejected
                 || status == Enums.OrderStatus.MarginCanceled
                 || status == Enums.OrderStatus.RejectedInsufficientBalance

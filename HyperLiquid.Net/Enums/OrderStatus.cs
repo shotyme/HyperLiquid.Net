@@ -23,7 +23,7 @@ namespace HyperLiquid.Net.Enums
         /// <summary>
         /// ["<c>canceled</c>"] Canceled
         /// </summary>
-        [Map("canceled", "reduceOnlyCanceled")]
+        [Map("canceled")]
         Canceled,
         /// <summary>
         /// ["<c>triggered</c>"] Trigger
@@ -160,6 +160,11 @@ namespace HyperLiquid.Net.Enums
         /// <summary>
         /// Waiting for trigger price to be reached before placing this order
         /// </summary>
-        WaitingTrigger
+        WaitingTrigger,
+        /// <summary>
+        /// ["<c>reduceOnlyCanceled</c>"] Canceled reduce-only order that does not reduce the position
+        /// </summary>
+        [Map("reduceOnlyCanceled")]
+        ReduceOnlyCanceled
     }
 }
