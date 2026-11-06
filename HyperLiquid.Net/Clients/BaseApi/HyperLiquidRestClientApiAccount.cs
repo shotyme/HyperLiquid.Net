@@ -40,7 +40,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "type", "userFees" },
                 { "user", address ?? _baseClient.AuthenticationProvider!.Key }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("userFees", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidFeeInfo>(request, parameters, ct).ConfigureAwait(false);
         }
 
@@ -101,7 +101,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
             };
             parameters.Add("startTime", startTime);
             parameters.Add("endTime", endTime);
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("userNonFundingLedgerUpdates", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidAccountLedger>(request, parameters, ct).ConfigureAwait(false);
         }
 
@@ -122,7 +122,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "type", "userRateLimit" },
                 { "user", address ?? _baseClient.AuthenticationProvider!.Key }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("userRateLimit", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidRateLimit>(request, parameters, ct).ConfigureAwait(false);
         }
 
@@ -139,7 +139,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "user", address ?? _baseClient.AuthenticationProvider!.Key },
                 { "builder", builderAddress ?? _baseClient.ClientOptions.BuilderAddress }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("maxBuilderFee", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<int>(request, parameters, ct).ConfigureAwait(false);
         }
 
@@ -370,7 +370,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "type", "subAccounts" },
                 { "user", address ?? _baseClient.AuthenticationProvider!.Key }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("subAccounts", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidSubAccount[]>(request, parameters, ct).ConfigureAwait(false);
             if (!result.Success)
                 return result;
@@ -395,7 +395,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "type", "subAccounts2" },
                 { "user", address ?? _baseClient.AuthenticationProvider!.Key }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("subAccounts2", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidSubAccount2[]>(request, parameters, ct).ConfigureAwait(false);
             if (!result.Success)
                 return result;
@@ -420,7 +420,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "type", "userRole" },
                 { "user", address ?? _baseClient.AuthenticationProvider!.Key }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 60, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 60, false, identifier: HyperLiquidRequestKeys.Info("userRole", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidUserRole>(request, parameters, ct).ConfigureAwait(false);
         }
 
@@ -438,7 +438,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "type", "extraAgents" },
                 { "user", address ?? _baseClient.AuthenticationProvider!.Key }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("extraAgents", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidUserAgent[]>(request, parameters, ct).ConfigureAwait(false);
         }
 
@@ -459,7 +459,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "user", address ?? _baseClient.AuthenticationProvider!.Key }
             };
 
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("delegations", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidStakingDelegation[]>(request, parameters, ct).ConfigureAwait(false);
         }
         #endregion
@@ -479,7 +479,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "user", address ?? _baseClient.AuthenticationProvider!.Key }
             };
 
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("delegatorSummary", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidStakingSummary>(request, parameters, ct).ConfigureAwait(false);
         }
         #endregion
@@ -499,7 +499,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "user", address ?? _baseClient.AuthenticationProvider!.Key }
             };
 
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("delegatorHistory", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidStakingHistory[]>(request, parameters, ct).ConfigureAwait(false);
         }
         #endregion
@@ -519,7 +519,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "user", address ?? _baseClient.AuthenticationProvider!.Key }
             };
 
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("delegatorRewards", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidStakingReward[]>(request, parameters, ct).ConfigureAwait(false);
         }
         #endregion
@@ -539,7 +539,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "user", address ?? _baseClient.AuthenticationProvider!.Key }
             };
 
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("userAbstraction", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<UserAbstractionState>(request, parameters, ct).ConfigureAwait(false);
         }
         #endregion
@@ -559,7 +559,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "user", address ?? _baseClient.AuthenticationProvider!.Key }
             };
 
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("portfolio", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidUserPortfolioData[]>(request, parameters, ct).ConfigureAwait(false);
         }
         #endregion

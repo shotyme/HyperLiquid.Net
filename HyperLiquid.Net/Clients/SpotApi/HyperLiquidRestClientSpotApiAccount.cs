@@ -50,7 +50,7 @@ namespace HyperLiquid.Net.Clients.SpotApi
                 { "type", "spotClearinghouseState" },
                 { "user", address ?? _baseClient.AuthenticationProvider!.Key }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 2, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 2, false, identifier: HyperLiquidRequestKeys.Info("spotClearinghouseState", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidBalances>(request, parameters, ct).ConfigureAwait(false);
         }
 

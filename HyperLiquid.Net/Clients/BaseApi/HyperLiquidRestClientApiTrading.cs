@@ -45,7 +45,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "user", address ?? _baseClient.AuthenticationProvider!.Key  }
             };
             parameters.Add("dex", dex);
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("openOrders", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidOpenOrder[]>(request, parameters, ct).ConfigureAwait(false);
             if (!result.Success)
                 return result;
@@ -89,7 +89,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "user", address ?? _baseClient.AuthenticationProvider!.Key }
             };
             parameters.Add("dex", dex);
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("frontendOpenOrders", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidOrder[]>(request, parameters, ct).ConfigureAwait(false);
             if (!result.Success)
                 return result;
@@ -132,7 +132,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "type", "userFills" },
                 { "user", address ?? _baseClient.AuthenticationProvider!.Key }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("userFills", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidUserTrade[]>(request, parameters, ct).ConfigureAwait(false);
             if (!result.Success)
                 return result;
@@ -184,7 +184,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
             parameters.Add("endTime", endTime);
             parameters.Add("aggregateByTime", aggregateByTime);
 
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("userFillsByTime", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidUserTrade[]>(request, parameters, ct).ConfigureAwait(false);
             if (!result.Success)
                 return result;
@@ -231,7 +231,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
             parameters.Add("oid", orderId);
             parameters.Add("oid", clientOrderId);
 
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 2, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 2, false, identifier: HyperLiquidRequestKeys.Info("orderStatus", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidOrderStatusResult>(request, parameters, ct).ConfigureAwait(false);
             if (!result.Success)
                 return HttpResult.Fail<HyperLiquidOrderStatus>(result);
@@ -275,7 +275,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "user",  address ?? _baseClient.AuthenticationProvider!.Key }
             };
 
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("historicalOrders", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidOrderStatus[]>(request, parameters, ct).ConfigureAwait(false);
 
             if (!result.Success)

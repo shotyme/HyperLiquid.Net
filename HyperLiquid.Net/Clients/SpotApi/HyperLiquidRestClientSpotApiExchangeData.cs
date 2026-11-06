@@ -30,7 +30,7 @@ namespace HyperLiquid.Net.Clients.SpotApi
             {
                 { "type", "spotMeta" }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("spotMeta", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidSpotExchangeInfo>(request, parameters, ct).ConfigureAwait(false);
         }
 
@@ -45,7 +45,7 @@ namespace HyperLiquid.Net.Clients.SpotApi
             {
                 { "type", "spotMetaAndAssetCtxs" }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("spotMetaAndAssetCtxs", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidExchangeInfoAndTickers>(request, parameters, ct).ConfigureAwait(false);
             if (!result.Success)
                 return result;
@@ -72,7 +72,7 @@ namespace HyperLiquid.Net.Clients.SpotApi
                 { "type", "tokenDetails" },
                 { "tokenId", assetId }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("tokenDetails", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidAssetInfo>(request, parameters, ct).ConfigureAwait(false);
         }
 
@@ -87,7 +87,7 @@ namespace HyperLiquid.Net.Clients.SpotApi
             {
                 { "type", "outcomeMeta" }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("outcomeMeta", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidQuestionsAndOutcomesInfo>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }
@@ -104,7 +104,7 @@ namespace HyperLiquid.Net.Clients.SpotApi
                 { "type", "settledOutcome" },
                 { "outcome", outcomeId }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("settledOutcome", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidSettledOutcome>(request, parameters, ct).ConfigureAwait(false);
             return result;
         }

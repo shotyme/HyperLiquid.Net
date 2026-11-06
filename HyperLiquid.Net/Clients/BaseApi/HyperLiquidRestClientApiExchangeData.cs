@@ -34,7 +34,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "type", "allMids" }
             };
             parameters.Add("dex", dex);
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 2, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 2, false, identifier: HyperLiquidRequestKeys.Info("allMids", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<Dictionary<string, decimal>>(request, parameters, ct).ConfigureAwait(false);
             if (!result.Success)
                 return result;
@@ -78,7 +78,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
 
             parameters.Add("nSigFigs", numberSignificantFigures);
             parameters.Add("mantissa", mantissa);
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 2, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 2, false, identifier: HyperLiquidRequestKeys.Info("l2Book", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidOrderBook>(request, parameters, ct).ConfigureAwait(false);
             if (result.Data == null)
                 return HttpResult.Fail<HyperLiquidOrderBook>(result, new ServerError(new ErrorInfo(ErrorType.UnknownSymbol, "Symbol not found")));
@@ -116,7 +116,7 @@ namespace HyperLiquid.Net.Clients.BaseApi
                 { "req", innerParameters }
             };
 
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("candleSnapshot", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidKline[]>(request, parameters, ct).ConfigureAwait(false);
             if (result.ResponseStatusCode == (HttpStatusCode)500 && result.Error?.ErrorType == ErrorType.Unknown)
                 return HttpResult.Fail<HyperLiquidKline[]>(result, new ServerError(new ErrorInfo(ErrorType.UnknownSymbol, "Symbol not found")));

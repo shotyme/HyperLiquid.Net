@@ -32,7 +32,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
             {
                 { "type", "perpDexs" }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("perpDexs", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidPerpDex[]>(request, parameters, ct).ConfigureAwait(false);
 
             return result;
@@ -44,7 +44,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
             {
                 { "type", "allPerpMetas" }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("allPerpMetas", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidFuturesExchangeInfo[]>(request, parameters, ct).ConfigureAwait(false);
             if (!result.Success)
                 return HttpResult.Fail<HyperLiquidFuturesDexInfo[]>(result);
@@ -105,7 +105,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
             };
             parameters.Add("dex", dex);
 
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("meta", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidFuturesExchangeInfo>(request, parameters, ct).ConfigureAwait(false);
             if (!result.Success)
                 return HttpResult.Fail<HyperLiquidFuturesDexInfo>(result);
@@ -156,7 +156,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
             {
                 { "type", "metaAndAssetCtxs" }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("metaAndAssetCtxs", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidFuturesExchangeInfoAndTickers>(request, parameters, ct).ConfigureAwait(false);
             if (!result.Success)
                 return result;
@@ -186,7 +186,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
             parameters.Add("startTime", startTime);
             parameters.Add("endTime", endTime);
 
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("fundingHistory", _baseClient.BaseAddress));
             var result = await _baseClient.SendAsync<HyperLiquidFundingRate[]>(request, parameters, ct).ConfigureAwait(false);
             if (result.ResponseStatusCode == (HttpStatusCode)500 && result.Error?.ErrorType == ErrorType.Unknown)
                 return HttpResult.Fail<HyperLiquidFundingRate[]>(result, new ServerError(new ErrorInfo(ErrorType.UnknownSymbol, "Symbol not found")));
@@ -206,7 +206,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
                 { "type", "perpsAtOpenInterestCap" },
             };
             parameters.Add("dex", dex);
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("perpsAtOpenInterestCap", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<string[]>(request, parameters, ct).ConfigureAwait(false);
         }
 
@@ -222,7 +222,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
                 { "type", "perpDexLimits" },
             };
             parameters.Add("dex", dex);
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("perpDexLimits", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidPerpDexLimit>(request, parameters, ct).ConfigureAwait(false);
         }
 
@@ -238,7 +238,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
                 { "type", "perpDexStatus" },
             };
             parameters.Add("dex", dex);
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("perpDexStatus", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidPerpDexStatus>(request, parameters, ct).ConfigureAwait(false);
         }
 
@@ -254,7 +254,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
                 { "type", "perpAnnotation" },
                 { "coin", asset }
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("perpAnnotation", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidAnnotation>(request, parameters, ct).ConfigureAwait(false);
         }
 
@@ -269,7 +269,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
             {
                 { "type", "perpCategories" },
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("perpCategories", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidCategory[]>(request, parameters, ct).ConfigureAwait(false);
         }
 
@@ -284,7 +284,7 @@ namespace HyperLiquid.Net.Clients.FuturesApi
             {
                 { "type", "perpConciseAnnotations" },
             };
-            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false);
+            var request = _definitions.GetOrCreate(HttpMethod.Post, _baseClient.BaseAddress, "info", HyperLiquidExchange.RateLimiter.HyperLiquidRest, 20, false, identifier: HyperLiquidRequestKeys.Info("perpConciseAnnotations", _baseClient.BaseAddress));
             return await _baseClient.SendAsync<HyperLiquidPerpAnnotation[]>(request, parameters, ct).ConfigureAwait(false);
         }
 
